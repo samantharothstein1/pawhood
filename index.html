@@ -123,6 +123,25 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 
 .post-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
 .post-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--bark-pale);border:2px solid var(--border);object-fit:cover}
+
+/* ONLINE INDICATOR */
+.avatar-wrap{position:relative;display:inline-block;flex-shrink:0}
+.online-dot{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#22c55e;border:2px solid white;z-index:2}
+.online-dot.offline{background:var(--border-mid)}
+
+/* COMMENTS */
+.comments-section{border-top:1px solid var(--border);margin-top:8px;padding-top:8px}
+.comment-item{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.comment-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--bark-pale);border:1.5px solid var(--border);object-fit:cover;cursor:pointer}
+.comment-bubble{background:var(--cream);border-radius:12px;padding:7px 10px;flex:1}
+.comment-author{font-size:11px;font-weight:800;color:var(--text);margin-bottom:2px;cursor:pointer}
+.comment-author:hover{color:var(--grass)}
+.comment-text{font-size:12.5px;color:var(--text-mid);font-weight:600;line-height:1.4}
+.comment-time{font-size:10px;color:var(--text-soft);font-weight:600;margin-top:3px}
+.comment-input-row{display:flex;gap:8px;align-items:center;margin-top:6px}
+.comment-input{flex:1;padding:7px 12px;border:1px solid var(--border-mid);border-radius:20px;font-size:12.5px;font-family:'Nunito',sans-serif;font-weight:600;color:var(--text);background:var(--cream);outline:none}
+.comment-input:focus{border-color:var(--grass)}
+.comment-send-btn{background:var(--grass);color:white;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
 .post-meta{flex:1}
 .post-dog-name{font-size:14px;font-weight:800;color:var(--text)}
 .post-owner{font-size:12px;color:var(--text-soft);font-weight:600}
@@ -849,6 +868,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
       <div style="font-size:20px;font-weight:900;color:var(--text)" id="dp-name">—</div>
       <div style="font-size:12px;color:var(--text-mid);font-weight:700;margin-top:2px" id="dp-breed-age">—</div>
       <div style="font-size:11px;color:var(--text-soft);font-weight:600;margin-top:2px" id="dp-neighborhood">—</div>
+      <div style="font-size:11px;font-weight:700;margin-top:4px" id="dp-last-seen"></div>
       <div class="dog-profile-actions">
         <button class="dp-action-btn dp-friend-btn" id="dp-friend-btn" onclick="toggleFriend()">
           <i class="ti ti-user-plus"></i> <span id="dp-friend-label">Add Friend</span>
@@ -1281,6 +1301,7 @@ function showApp() {
   loadSitting(); loadFriends(); loadConversations(); loadMyProfile();
   loadNotifications(); loadPlaydates();
   subscribeToMessages(); subscribeToNotifications();
+  startPresenceHeartbeat();
   getLocation();
   checkExistingCheckin();
 }
@@ -1504,6 +1525,16 @@ async function openDogProfile(userId) {
   document.getElementById('dp-name').textContent = dog.name || 'Unknown pup';
   document.getElementById('dp-breed-age').textContent = [dog.breed, dog.age].filter(Boolean).join(' · ');
   document.getElementById('dp-neighborhood').textContent = dog.neighborhood || '';
+  document.getElementById('dp-last-seen').textContent = '';
+
+  // Load presence
+  const presMap = await loadPresence([userId]);
+  const lastSeenEl = document.getElementById('dp-last-seen');
+  if (lastSeenEl) {
+    const label = formatLastSeen(presMap[userId]);
+    lastSeenEl.textContent = label;
+    lastSeenEl.style.color = isOnline(presMap[userId]) ? '#22c55e' : 'var(--text-soft)';
+  }
 
   // Friend button state
   const friendBtn = document.getElementById('dp-friend-btn');
@@ -2262,6 +2293,151 @@ function renderActivityCard(ev) {
   return '';
 }
 
+// ---- PRESENCE / ONLINE ----
+const ONLINE_THRESHOLD_MS = 3 * 60 * 1000; // 3 minutes = online
+let presenceHeartbeat = null;
+
+async function updatePresence() {
+  await sb.from('presence').upsert({ user_id: currentUser.id, last_seen: new Date().toISOString() }, { onConflict: 'user_id' });
+}
+
+function startPresenceHeartbeat() {
+  updatePresence();
+  presenceHeartbeat = setInterval(updatePresence, 60000);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) updatePresence();
+  });
+}
+
+async function loadPresence(userIds) {
+  if (!userIds || !userIds.length) return {};
+  const { data } = await sb.from('presence').select('user_id,last_seen').in('user_id', userIds);
+  const map = {};
+  (data || []).forEach(p => { map[p.user_id] = p.last_seen; });
+  return map;
+}
+
+function isOnline(lastSeenTs) {
+  if (!lastSeenTs) return false;
+  return Date.now() - new Date(lastSeenTs).getTime() < ONLINE_THRESHOLD_MS;
+}
+
+function formatLastSeen(lastSeenTs) {
+  if (!lastSeenTs) return 'Never seen';
+  if (isOnline(lastSeenTs)) return '🟢 Online now';
+  return 'Last seen ' + formatTimeAgo(lastSeenTs);
+}
+
+function applyPresenceDots(presenceMap) {
+  // Update all online dots on the current page
+  Object.entries(presenceMap).forEach(([userId, ts]) => {
+    document.querySelectorAll(`[id$="-${userId}"].online-dot, #dot-post-${userId}, #dot-dir-${userId}, #dot-convo-${userId}`).forEach(dot => {
+      dot.classList.toggle('offline', !isOnline(ts));
+    });
+  });
+}
+
+async function refreshFeedPresence() {
+  // Collect all user_ids visible in the feed
+  const userIds = [...new Set([...document.querySelectorAll('[id^="dot-post-"]')].map(el => el.id.replace('dot-post-','')))] ;
+  if (!userIds.length) return;
+  const map = await loadPresence(userIds);
+  applyPresenceDots(map);
+}
+
+async function loadCommentCount(postId) {
+  const { count } = await sb.from('post_comments').select('*', { count: 'exact', head: true }).eq('post_id', postId);
+  const el = document.getElementById('comment-count-' + postId);
+  if (el) el.textContent = count ? `💬 ${count}` : '💬';
+}
+
+// ---- COMMENTS ----
+async function toggleComments(postId, postUserId) {
+  const section = document.getElementById('comments-' + postId);
+  if (!section) return;
+  if (section.style.display === 'block') { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  section.innerHTML = '<div class="loading" style="padding:8px 0"><div class="spinner"></div></div>';
+  await loadComments(postId);
+}
+
+async function loadComments(postId) {
+  const section = document.getElementById('comments-' + postId);
+  if (!section) return;
+  const { data } = await sb.from('post_comments')
+    .select('*, dogs(name,emoji,photo_url,user_id)')
+    .eq('post_id', postId)
+    .order('created_at', { ascending: true });
+
+  // Update comment count button
+  const countEl = document.getElementById('comment-count-' + postId);
+  if (countEl) countEl.textContent = (data && data.length) ? `💬 ${data.length}` : '💬';
+
+  const commentsHtml = (data && data.length) ? data.map(c => {
+    const dog = c.dogs || {};
+    const isOwn = c.user_id === currentUser.id;
+    const avatarEl = dog.photo_url
+      ? `<img src="${escHtml(dog.photo_url)}" class="comment-avatar" onclick="openDogProfile('${dog.user_id}')" />`
+      : `<div class="comment-avatar" onclick="openDogProfile('${dog.user_id}')">${dog.emoji||'🐶'}</div>`;
+    return `<div class="comment-item">
+      ${avatarEl}
+      <div class="comment-bubble">
+        <div class="comment-author" onclick="openDogProfile('${dog.user_id}')">${escHtml(dog.name||'Unknown')}</div>
+        <div class="comment-text">${escHtml(c.content)}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="comment-time">${formatTimeAgo(c.created_at)}</div>
+          ${isOwn?`<button onclick="deleteComment('${c.id}','${postId}')" style="background:none;border:none;color:var(--coral);font-size:10px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;padding:0">Delete</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('') : '<div style="font-size:12px;color:var(--text-soft);font-weight:600;padding:4px 0 8px">No comments yet — be the first! 🐾</div>';
+
+  const myAvatar = myDog?.photo_url
+    ? `<img src="${escHtml(myDog.photo_url)}" class="comment-avatar" style="cursor:default" />`
+    : `<div class="comment-avatar" style="cursor:default">${myDog?.emoji||'🐶'}</div>`;
+
+  section.innerHTML = commentsHtml + `
+    <div class="comment-input-row">
+      ${myAvatar}
+      <input class="comment-input" id="comment-input-${postId}" placeholder="Add a comment…" maxlength="280"
+        onkeydown="if(event.key==='Enter')submitComment('${postId}')" />
+      <button class="comment-send-btn" onclick="submitComment('${postId}')"><i class="ti ti-send" style="font-size:13px"></i></button>
+    </div>`;
+}
+
+async function submitComment(postId) {
+  const input = document.getElementById('comment-input-' + postId);
+  if (!input) return;
+  const content = input.value.trim();
+  if (!content) return;
+  input.value = '';
+  const { error } = await sb.from('post_comments').insert({
+    post_id: postId,
+    user_id: currentUser.id,
+    dog_id: myDog.id,
+    content
+  });
+  if (error) return showToast('Error posting comment');
+  await loadComments(postId);
+  // Notify post owner if not own post
+  const postEl = document.getElementById('post-' + postId);
+  if (postEl) {
+    // get post owner from dot id
+    const dot = postEl.querySelector('[id^="dot-post-"]');
+    if (dot) {
+      const ownerId = dot.id.replace('dot-post-','');
+      if (ownerId !== currentUser.id) {
+        await createNotification(ownerId, 'comment', `💬 ${myDog.name} commented on your post`);
+      }
+    }
+  }
+}
+
+async function deleteComment(commentId, postId) {
+  await sb.from('post_comments').delete().eq('id', commentId).eq('user_id', currentUser.id);
+  loadComments(postId);
+}
+
 // ---- FEED ----
 function toggleTag(tag) {
   activeTag = activeTag === tag ? null : tag;
@@ -2301,6 +2477,12 @@ async function loadFeed() {
   const activityHtml = activityEvents.map(renderActivityCard).join('');
   const postsHtml = (data && data.length) ? data.map(p => renderPost(p)).join('') : '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts yet. Be the first!</p></div>';
   container.innerHTML = tipHtml + activityHtml + postsHtml;
+  // Load comment counts for all posts
+  if (data && data.length) {
+    data.forEach(p => loadCommentCount(p.id));
+  }
+  // Refresh online dots
+  setTimeout(refreshFeedPresence, 300);
 }
 
 function renderPost(p) {
@@ -2310,9 +2492,11 @@ function renderPost(p) {
   const avatarClick = isOwn
     ? `onclick="showPage('profile', document.querySelector('.nav-item[onclick*=profile]'))" style="cursor:pointer"`
     : `onclick="openDogProfile('${p.user_id}')" style="cursor:pointer"`;
-  const avatarHtml = dog.photo_url
+  const onlineDot = `<span class="online-dot" id="dot-post-${p.user_id}"></span>`;
+  const avatarInner = dog.photo_url
     ? `<img src="${escHtml(dog.photo_url)}" class="post-avatar" style="object-fit:cover" ${avatarClick} />`
     : `<div class="post-avatar" ${avatarClick}>${dog.emoji||'🐶'}</div>`;
+  const avatarHtml = `<div class="avatar-wrap">${avatarInner}${onlineDot}</div>`;
   return `<div class="feed-post" id="post-${p.id}">
     <div class="post-header">
       ${avatarHtml}
@@ -2328,10 +2512,14 @@ function renderPost(p) {
       <button class="action-btn ${p.liked?'liked':''}" id="like-btn-${p.id}" onclick="toggleLike('${p.id}',this)">
         <i class="ti ti-heart"></i> <span id="likes-${p.id}">${p.likes||0}</span>
       </button>
+      <button class="action-btn" onclick="toggleComments('${p.id}','${p.user_id}')">
+        <i class="ti ti-message-2"></i> <span id="comment-count-${p.id}">💬</span>
+      </button>
       ${!isOwn?`<button class="action-btn" onclick="openDogProfile('${p.user_id}')"><i class="ti ti-paw"></i> Profile</button>`:''}
       ${!isOwn?`<button class="action-btn" onclick="startChat('${p.user_id}','${dog.name||''}','${dog.emoji||'🐶'}','${dog.photo_url||''}')"><i class="ti ti-message-circle"></i> Message</button>`:''}
       ${isOwn?`<button class="action-btn" style="margin-left:auto;color:var(--coral)" onclick="deletePost('${p.id}')"><i class="ti ti-trash"></i> Delete</button>`:''}
     </div>
+    <div class="comments-section" id="comments-${p.id}" style="display:none"></div>
   </div>`;
 }
 
@@ -2547,13 +2735,21 @@ async function openChat(userId,dogName,emoji,photo='') {
     ? `<img src="${escHtml(photo)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;cursor:pointer" onclick="openDogProfile('${userId}')" />`
     : `<div style="font-size:24px;cursor:pointer" onclick="openDogProfile('${userId}')">${emoji}</div>`;
   panel.innerHTML=`
-    <div class="chat-header">${avatarHtml}<div style="cursor:pointer" onclick="openDogProfile('${userId}')"><div style="font-size:14px;font-weight:800;color:var(--text)">${escHtml(dogName)}</div><div style="font-size:11px;color:var(--text-soft);font-weight:600">tap to view profile</div></div></div>
+    <div class="chat-header">${avatarHtml}<div style="cursor:pointer" onclick="openDogProfile('${userId}')"><div style="font-size:14px;font-weight:800;color:var(--text)">${escHtml(dogName)}</div><div style="font-size:11px;color:var(--text-soft);font-weight:600" id="chat-last-seen">…</div></div></div>
     <div class="chat-messages" id="chat-messages"><div class="loading"><div class="spinner"></div></div></div>
     <div class="chat-input-row">
       <input class="chat-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMessage('${userId}','${dogName}','${emoji}','${photo}')" />
       <button class="chat-send-btn" onclick="sendMessage('${userId}','${dogName}','${emoji}','${photo}')"><i class="ti ti-send" style="font-size:16px"></i></button>
     </div>`;
   await loadMessages(userId);
+  // Load last seen for chat header
+  loadPresence([userId]).then(map => {
+    const el = document.getElementById('chat-last-seen');
+    if (el) {
+      el.textContent = formatLastSeen(map[userId]);
+      el.style.color = isOnline(map[userId]) ? '#22c55e' : 'var(--text-soft)';
+    }
+  });
 }
 
 async function loadMessages(userId) {
