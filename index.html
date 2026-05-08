@@ -817,6 +817,19 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
   </div>
 </div>
 
+<!-- EDIT PLAYDATE MODAL -->
+<div id="edit-playdate-modal" style="display:none;position:fixed;inset:0;background:rgba(44,26,14,0.5);z-index:160;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeEditPlaydate()">
+  <div style="background:var(--warm-white);border-radius:20px;padding:24px;width:100%;max-width:380px;box-shadow:var(--shadow-lg);position:relative">
+    <button onclick="closeEditPlaydate()" style="position:absolute;top:12px;right:12px;background:var(--cream);border:1px solid var(--border);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
+    <div style="font-size:17px;font-weight:900;color:var(--text);margin-bottom:16px">✏️ Edit Playdate</div>
+    <div class="form-group"><label class="form-label">📅 Date</label><input class="form-input" id="edit-pd-date" type="date" /></div>
+    <div class="form-group"><label class="form-label">⏰ Time</label><input class="form-input" id="edit-pd-time" type="time" /></div>
+    <div class="form-group"><label class="form-label">📍 Location</label><input class="form-input" id="edit-pd-location" type="text" /></div>
+    <div class="form-group"><label class="form-label">💬 Note (optional)</label><textarea class="form-input" id="edit-pd-note" rows="2" style="resize:none"></textarea></div>
+    <button class="auth-btn" onclick="saveEditPlaydate()" id="edit-pd-save-btn">Save changes</button>
+  </div>
+</div>
+
 <!-- PARK CHECK-IN REMINDER -->
 <div id="checkin-reminder" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--warm-white);border:1.5px solid var(--grass);border-radius:16px;padding:14px 20px;box-shadow:var(--shadow-lg);z-index:180;text-align:center;min-width:280px">
   <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:4px">Still at the park? 🌳</div>
@@ -1808,12 +1821,14 @@ async function loadParkCheckinCounts() {
 }
 
 // ---- PLAYDATES ----
-let pdTargetUserId = null, pdTargetDogName = '';
+let pdTargetUserId = null, pdTargetDogName = '', pdTargetPhoto = '', pdTargetEmoji = '🐶';
 
 function dpRequestPlaydate() {
   if (!dpCurrentDog || !dpCurrentUserId) return;
   pdTargetUserId = dpCurrentUserId;
   pdTargetDogName = dpCurrentDog.name || 'this dog';
+  pdTargetPhoto = dpCurrentDog.photo_url || '';
+  pdTargetEmoji = dpCurrentDog.emoji || '🐶';
   closeDogProfile();
   openPlaydateModal();
 }
@@ -1846,6 +1861,10 @@ async function sendPlaydateRequest() {
     receiver_id: pdTargetUserId,
     requester_dog_name: myDog.name,
     receiver_dog_name: pdTargetDogName,
+    requester_photo: myDog.photo_url || null,
+    requester_emoji: myDog.emoji || '🐶',
+    receiver_photo: pdTargetPhoto || null,
+    receiver_emoji: pdTargetEmoji || '🐶',
     playdate_date: date,
     playdate_time: time,
     location,
@@ -1866,28 +1885,53 @@ async function loadPlaydates() {
     .or(`requester_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
     .order('created_at', { ascending: false });
   if (!data || !data.length) {
-    container.innerHTML = '<div class="empty-state"><div class="big-icon">📅</div><p>No playdate requests yet.<br>Find a dog you like and hit Playdate!</p></div>';
+    container.innerHTML = '<div class="empty-state"><div class="big-icon">📅</div><p>No playdate requests yet.<br>Find a dog and hit Playdate!</p></div>';
     return;
   }
   const hasPending = data.some(d => d.receiver_id === currentUser.id && d.status === 'pending');
   if (hasPending) document.getElementById('playdate-badge').style.display = 'inline';
+
   container.innerHTML = data.map(d => {
     const isRequester = d.requester_id === currentUser.id;
-    const otherDog = isRequester ? d.receiver_dog_name : d.requester_dog_name;
-    const dateStr = new Date(d.playdate_date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-    const timeStr = formatTime(d.playdate_time);
     const canRespond = !isRequester && d.status === 'pending';
+    const canEdit = isRequester && (d.status === 'pending' || d.status === 'accepted');
+    const dateStr = d.playdate_date ? new Date(d.playdate_date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) : '—';
+    const timeStr = d.playdate_time ? formatTime(d.playdate_time) : '';
+
+    // Both dog avatars
+    const reqAvatar = d.requester_photo
+      ? `<img src="${escHtml(d.requester_photo)}" onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
+      : `<div onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${d.requester_emoji||'🐶'}</div>`;
+    const recAvatar = d.receiver_photo
+      ? `<img src="${escHtml(d.receiver_photo)}" onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
+      : `<div onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${d.receiver_emoji||'🐶'}</div>`;
+
     return `<div class="playdate-inbox-item">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <div style="font-size:15px;font-weight:900;color:var(--text);flex:1">${isRequester?'You':'🐾 '+escHtml(d.requester_dog_name)} → ${escHtml(otherDog)}</div>
-        <span class="playdate-status status-${d.status}">${d.status}</span>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:4px">
+          ${reqAvatar}
+          <span style="font-size:18px;color:var(--text-soft)">🐾</span>
+          ${recAvatar}
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:900;color:var(--text)">${escHtml(d.requester_dog_name)} & ${escHtml(d.receiver_dog_name)}</div>
+          <span class="playdate-status status-${d.status}">${d.status}</span>
+        </div>
       </div>
-      <div style="font-size:12px;color:var(--text-mid);font-weight:700;margin-bottom:4px">📅 ${dateStr} at ${timeStr} · 📍 ${escHtml(d.location)}</div>
+      <div style="font-size:12px;color:var(--text-mid);font-weight:700;margin-bottom:4px">📅 ${dateStr}${timeStr?' at '+timeStr:''} · 📍 ${escHtml(d.location||'')}</div>
       ${d.note?`<div style="font-size:12px;color:var(--text-soft);font-weight:600;font-style:italic;margin-bottom:8px">"${escHtml(d.note)}"</div>`:''}
-      ${canRespond ? `<div style="display:flex;gap:6px;margin-top:8px">
-        <button onclick="respondPlaydate('${d.id}','accepted')" style="background:var(--grass);color:white;border:none;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✓ Accept</button>
-        <button onclick="respondPlaydate('${d.id}','declined')" style="background:var(--coral-pale);color:var(--coral);border:1.5px solid var(--coral);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✕ Decline</button>
-      </div>` : ''}
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        ${canRespond ? `
+          <button onclick="respondPlaydate('${d.id}','accepted')" style="background:var(--grass);color:white;border:none;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✓ Accept</button>
+          <button onclick="respondPlaydate('${d.id}','declined')" style="background:var(--coral-pale);color:var(--coral);border:1.5px solid var(--coral);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✕ Decline</button>
+        ` : ''}
+        ${canEdit ? `
+          <button onclick="openEditPlaydate('${d.id}','${escHtml(d.playdate_date||'')}','${escHtml(d.playdate_time||'')}','${escHtml(d.location||'')}','${escHtml(d.note||'')}')" style="background:var(--amber-pale);color:var(--amber);border:1.5px solid var(--amber);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✏️ Edit</button>
+        ` : ''}
+        ${d.status === 'accepted' ? `
+          <button onclick="inviteOthers('${d.id}','${escHtml(d.playdate_date||'')}','${escHtml(d.location||'')}','${escHtml(d.requester_dog_name)}','${escHtml(d.receiver_dog_name)}')" style="background:var(--sky-pale);color:var(--sky);border:1.5px solid var(--sky);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">👋 Invite others</button>
+        ` : ''}
+      </div>
     </div>`;
   }).join('');
 }
@@ -1901,6 +1945,45 @@ async function respondPlaydate(id, status) {
   }
   showToast(status === 'accepted' ? 'Playdate accepted! 🐾' : 'Playdate declined');
   loadPlaydates();
+}
+
+let editingPlaydateId = null;
+function openEditPlaydate(id, date, time, location, note) {
+  editingPlaydateId = id;
+  document.getElementById('edit-pd-date').value = date;
+  document.getElementById('edit-pd-time').value = time;
+  document.getElementById('edit-pd-location').value = location;
+  document.getElementById('edit-pd-note').value = note;
+  document.getElementById('edit-playdate-modal').style.display = 'flex';
+}
+function closeEditPlaydate() {
+  document.getElementById('edit-playdate-modal').style.display = 'none';
+  editingPlaydateId = null;
+}
+async function saveEditPlaydate() {
+  const date = document.getElementById('edit-pd-date').value;
+  const time = document.getElementById('edit-pd-time').value;
+  const location = document.getElementById('edit-pd-location').value.trim();
+  const note = document.getElementById('edit-pd-note').value.trim();
+  if (!date || !time || !location) return showToast('Please fill in date, time, and location');
+  const btn = document.getElementById('edit-pd-save-btn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  const { data, error } = await sb.from('playdates').update({ playdate_date: date, playdate_time: time, location, note: note||null }).eq('id', editingPlaydateId).select().single();
+  btn.disabled = false; btn.textContent = 'Save changes';
+  if (error) return showToast('Error: ' + error.message);
+  if (data) await createNotification(data.receiver_id === currentUser.id ? data.requester_id : data.receiver_id, 'playdate', `📅 Playdate details updated by ${myDog.name}`);
+  closeEditPlaydate();
+  showToast('Playdate updated! 📅');
+  loadPlaydates();
+}
+
+function inviteOthers(id, date, location, dog1, dog2) {
+  const text = `Hey! ${dog1} & ${dog2} are having a playdate on ${date} at ${location}. Want to join? Check it out on Pawhood! 🐾`;
+  if (navigator.share) {
+    navigator.share({ title: 'Join our playdate!', text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => showToast('Invite copied to clipboard! 📋'));
+  }
 }
 
 // ---- MEMBER DIRECTORY ----
@@ -2493,7 +2576,7 @@ async function loadMyProfile() {
   document.getElementById('profile-neighborhood').textContent=myDog.neighborhood||'';
   document.getElementById('profile-energy').textContent=myDog.energy||'—';
   document.getElementById('profile-sitting').textContent=myDog.can_sit?'Available ✓':'Not available';
-  document.getElementById('profile-badges').innerHTML=(myDog.can_sit?'<span class="badge badge-sitter">💙 Can sit</span>':'')+'<span class="badge badge-park">🌳 Park lover</span>';
+  document.getElementById('profile-badges').innerHTML=(myDog.can_sit?'<span class="badge badge-sitter">💙 Can sit</span>':'');
 
   // New fields — show row only if value exists
   function setInfoRow(rowId, valId, val) {
@@ -2634,6 +2717,15 @@ async function saveEditProfile() {
 
   if (error) { errEl.textContent = 'Error saving: ' + error.message; errEl.style.display = 'block'; return; }
   myDog = data;
+
+  // Propagate name changes to playdates
+  if (updates.name !== myDog.name) {
+    await Promise.all([
+      sb.from('playdates').update({ requester_dog_name: updates.name }).eq('requester_id', currentUser.id),
+      sb.from('playdates').update({ receiver_dog_name: updates.name }).eq('receiver_id', currentUser.id),
+    ]);
+  }
+
   closeEditProfile();
   loadMyProfile();
   showToast('Profile updated! 🐾');
