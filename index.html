@@ -1894,7 +1894,7 @@ async function loadPlaydates() {
   container.innerHTML = data.map(d => {
     const isRequester = d.requester_id === currentUser.id;
     const canRespond = !isRequester && d.status === 'pending';
-const canEdit = (d.status === 'pending' || d.status === 'accepted');
+    const canEdit = (d.status === 'pending' || d.status === 'accepted');
     const dateStr = d.playdate_date ? new Date(d.playdate_date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) : '—';
     const timeStr = d.playdate_time ? formatTime(d.playdate_time) : '';
 
@@ -2197,13 +2197,14 @@ async function loadActivityEvents() {
 
   const events = [];
   (checkins || []).forEach(c => events.push({ type: 'checkin', ts: c.checked_in_at, dog: c.dogs, park: c.park_name }));
-for (const p of (playdates || [])) {
-  const [{ data: rDog }, { data: recDog }] = await Promise.all([
-    sb.from('dogs').select('name').eq('user_id', p.requester_id).single(),
-    sb.from('dogs').select('name').eq('user_id', p.receiver_id).single(),
-  ]);
-  events.push({ type: 'playdate', ts: p.created_at, requester: rDog?.name || p.requester_dog_name, receiver: recDog?.name || p.receiver_dog_name });
-}  (newDogs || []).forEach(d => events.push({ type: 'newdog', ts: d.created_at, dog: d }));
+  for (const p of (playdates || [])) {
+    const [{ data: rDog }, { data: recDog }] = await Promise.all([
+      sb.from('dogs').select('name').eq('user_id', p.requester_id).single(),
+      sb.from('dogs').select('name').eq('user_id', p.receiver_id).single(),
+    ]);
+    events.push({ type: 'playdate', ts: p.created_at, requester: rDog?.name || p.requester_dog_name, receiver: recDog?.name || p.receiver_dog_name });
+  }
+  (newDogs || []).forEach(d => events.push({ type: 'newdog', ts: d.created_at, dog: d }));
   events.sort((a, b) => new Date(b.ts) - new Date(a.ts));
   return events;
 }
