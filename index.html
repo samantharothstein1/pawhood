@@ -1881,30 +1881,46 @@ async function sendPlaydateRequest() {
 async function loadPlaydates() {
   const container = document.getElementById('playdate-list');
   if (!container) return;
-  const { data } = await sb.from('playdates').select('*')
+  const { data: rawData } = await sb.from('playdates')
+    .select('*')
     .or(`requester_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
     .order('created_at', { ascending: false });
-  if (!data || !data.length) {
+  if (!rawData || !rawData.length) {
     container.innerHTML = '<div class="empty-state"><div class="big-icon">📅</div><p>No playdate requests yet.<br>Find a dog and hit Playdate!</p></div>';
     return;
   }
+  // Fetch live dog photos for all unique user_ids in one query
+  const userIds = [...new Set(rawData.flatMap(d => [d.requester_id, d.receiver_id]))];
+  const { data: dogsData } = await sb.from('dogs').select('user_id,name,emoji,photo_url').in('user_id', userIds);
+  const dogsByUserId = {};
+  (dogsData || []).forEach(d => dogsByUserId[d.user_id] = d);
+  const data = rawData.map(d => ({
+    ...d,
+    requester: dogsByUserId[d.requester_id] || {},
+    receiver: dogsByUserId[d.receiver_id] || {}
+  }));
   const hasPending = data.some(d => d.receiver_id === currentUser.id && d.status === 'pending');
   if (hasPending) document.getElementById('playdate-badge').style.display = 'inline';
 
   container.innerHTML = data.map(d => {
     const isRequester = d.requester_id === currentUser.id;
-    const canRespond = !isRequester && d.status === 'pending';
-    const canEdit = (d.status === 'pending' || d.status === 'accepted');
+    const canRespond = d.status === 'pending' && d.edited_by !== currentUser.id && (!isRequester || d.edited_by);
+    const canEdit = (d.status === 'pending' || d.status === 'accepted') && d.edited_by !== currentUser.id;
     const dateStr = d.playdate_date ? new Date(d.playdate_date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) : '—';
     const timeStr = d.playdate_time ? formatTime(d.playdate_time) : '';
 
     // Both dog avatars
-    const reqAvatar = d.requester_photo
-      ? `<img src="${escHtml(d.requester_photo)}" onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
-      : `<div onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${d.requester_emoji||'🐶'}</div>`;
-    const recAvatar = d.receiver_photo
-      ? `<img src="${escHtml(d.receiver_photo)}" onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
-      : `<div onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${d.receiver_emoji||'🐶'}</div>`;
+    const reqPhoto = d.requester?.photo_url || d.requester_photo || '';
+    const reqEmoji = d.requester?.emoji || d.requester_emoji || '🐶';
+    const recPhoto = d.receiver?.photo_url || d.receiver_photo || '';
+    const recEmoji = d.receiver?.emoji || d.receiver_emoji || '🐶';
+
+    const reqAvatar = reqPhoto
+      ? `<img src="${escHtml(reqPhoto)}" onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
+      : `<div onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${reqEmoji}</div>`;
+    const recAvatar = recPhoto
+      ? `<img src="${escHtml(recPhoto)}" onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
+      : `<div onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${recEmoji}</div>`;
 
     return `<div class="playdate-inbox-item">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -1914,8 +1930,8 @@ async function loadPlaydates() {
           ${recAvatar}
         </div>
         <div style="flex:1">
-          <div style="font-size:14px;font-weight:900;color:var(--text)">${escHtml(d.requester_dog_name)} & ${escHtml(d.receiver_dog_name)}</div>
-          <span class="playdate-status status-${d.status}">${d.status}</span>
+          <div style="font-size:14px;font-weight:900;color:var(--text)">${escHtml(d.requester?.name || d.requester_dog_name)} & ${escHtml(d.receiver?.name || d.receiver_dog_name)}</div>
+          <span class="playdate-status status-${d.status}">${d.status === 'pending' && d.edited_by ? '✏️ updated · pending review' : d.status}</span>
         </div>
       </div>
       <div style="font-size:12px;color:var(--text-mid);font-weight:700;margin-bottom:4px">📅 ${dateStr}${timeStr?' at '+timeStr:''} · 📍 ${escHtml(d.location||'')}</div>
@@ -1937,7 +1953,7 @@ async function loadPlaydates() {
 }
 
 async function respondPlaydate(id, status) {
-  const { data } = await sb.from('playdates').update({ status }).eq('id', id).select().single();
+  const { data } = await sb.from('playdates').update({ status, edited_by: null }).eq('id', id).select().single();
   if (data) {
     const emoji = status === 'accepted' ? '✅' : '❌';
     await createNotification(data.requester_id, 'playdate',
@@ -1968,12 +1984,22 @@ async function saveEditPlaydate() {
   if (!date || !time || !location) return showToast('Please fill in date, time, and location');
   const btn = document.getElementById('edit-pd-save-btn');
   btn.disabled = true; btn.textContent = 'Saving...';
-  const { data, error } = await sb.from('playdates').update({ playdate_date: date, playdate_time: time, location, note: note||null }).eq('id', editingPlaydateId).select().single();
+  const { data, error } = await sb.from('playdates').update({
+    playdate_date: date,
+    playdate_time: time,
+    location,
+    note: note || null,
+    status: 'pending',      // reset to pending so other party must re-accept
+    edited_by: currentUser.id  // track who made the edit
+  }).eq('id', editingPlaydateId).select().single();
   btn.disabled = false; btn.textContent = 'Save changes';
   if (error) return showToast('Error: ' + error.message);
-  if (data) await createNotification(data.receiver_id === currentUser.id ? data.requester_id : data.receiver_id, 'playdate', `📅 Playdate details updated by ${myDog.name}`);
+  if (data) {
+    const otherUserId = data.receiver_id === currentUser.id ? data.requester_id : data.receiver_id;
+    await createNotification(otherUserId, 'playdate', `✏️ ${myDog.name} updated your playdate details — please review and accept!`);
+  }
   closeEditPlaydate();
-  showToast('Playdate updated! 📅');
+  showToast('Playdate updated! The other dog needs to re-accept 🐾');
   loadPlaydates();
 }
 
