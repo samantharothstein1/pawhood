@@ -42,6 +42,17 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .auth-error{background:var(--coral-pale);color:var(--coral);padding:10px 14px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:14px;display:none}
 .city-hint{font-size:11px;color:var(--text-soft);font-weight:600;margin-top:4px}
 
+/* CITY DROPDOWN */
+.city-combo{position:relative}
+.city-combo-input{width:100%;padding:10px 14px;border:1px solid var(--border-mid);border-radius:10px;background:var(--cream);font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);font-weight:600;outline:none;transition:border-color 0.15s}
+.city-combo-input:focus{border-color:var(--grass)}
+.city-combo-input::placeholder{color:var(--text-soft)}
+.city-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1px solid var(--border-mid);border-radius:12px;box-shadow:var(--shadow-lg);z-index:300;max-height:200px;overflow-y:auto;display:none}
+.city-dropdown.open{display:block}
+.city-option{padding:9px 14px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:background 0.1s}
+.city-option:hover,.city-option.focused{background:var(--grass-pale);color:var(--grass)}
+.city-option-none{padding:10px 14px;font-size:12px;color:var(--text-soft);font-weight:600}
+
 #onboarding-screen{display:none;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--cream);overflow-y:auto}
 .onboard-box{background:var(--warm-white);border:1px solid var(--border);border-radius:24px;padding:32px;width:100%;max-width:500px;box-shadow:var(--shadow-lg)}
 .onboard-title{font-size:20px;font-weight:900;color:var(--text);margin-bottom:4px}
@@ -91,14 +102,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .page{display:none;flex:1}
 .page.active{display:flex;flex-direction:column}
 
-.feed-layout{display:grid;grid-template-columns:1fr 280px;flex:1;min-height:0}
-.feed-col{padding:16px 16px 16px 20px;overflow-y:auto;border-right:1px solid var(--border)}
-.sidebar-col{padding:16px;overflow-y:auto}
+.feed-layout{display:flex;flex-direction:column;flex:1;min-height:0}
+.feed-col{padding:0 20px;overflow-y:auto;max-width:680px;width:100%;margin:0 auto;background:var(--warm-white)}
 
-.card{background:var(--warm-white);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:none}
+.feed-post{background:transparent;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:14px 0;margin-bottom:0}
 .section-header{font-size:12px;font-weight:800;color:var(--text-soft);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 
-.compose-box{background:var(--warm-white);border:1px solid var(--border);border-radius:16px;padding:12px 14px;margin-bottom:14px;box-shadow:var(--shadow)}
+.compose-box{background:var(--warm-white);border:none;border-bottom:1px solid var(--border);padding:14px 0;margin-bottom:0}
 .compose-inner{display:flex;gap:10px;align-items:flex-start}
 .compose-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--bark-pale);border:2px solid var(--border);object-fit:cover}
 .compose-input{flex:1;padding:8px 12px;border:1px solid var(--border-mid);border-radius:20px;background:var(--cream);font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);font-weight:600;outline:none;resize:none}
@@ -112,6 +123,25 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 
 .post-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
 .post-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--bark-pale);border:2px solid var(--border);object-fit:cover}
+
+/* ONLINE INDICATOR */
+.avatar-wrap{position:relative;display:inline-block;flex-shrink:0}
+.online-dot{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#22c55e;border:2px solid white;z-index:2}
+.online-dot.offline{background:var(--border-mid)}
+
+/* COMMENTS */
+.comments-section{border-top:1px solid var(--border);margin-top:8px;padding-top:8px}
+.comment-item{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.comment-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--bark-pale);border:1.5px solid var(--border);object-fit:cover;cursor:pointer}
+.comment-bubble{background:var(--cream);border-radius:12px;padding:7px 10px;flex:1}
+.comment-author{font-size:11px;font-weight:800;color:var(--text);margin-bottom:2px;cursor:pointer}
+.comment-author:hover{color:var(--grass)}
+.comment-text{font-size:12.5px;color:var(--text-mid);font-weight:600;line-height:1.4}
+.comment-time{font-size:10px;color:var(--text-soft);font-weight:600;margin-top:3px}
+.comment-input-row{display:flex;gap:8px;align-items:center;margin-top:6px}
+.comment-input{flex:1;padding:7px 12px;border:1px solid var(--border-mid);border-radius:20px;font-size:12.5px;font-family:'Nunito',sans-serif;font-weight:600;color:var(--text);background:var(--cream);outline:none}
+.comment-input:focus{border-color:var(--grass)}
+.comment-send-btn{background:var(--grass);color:white;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
 .post-meta{flex:1}
 .post-dog-name{font-size:14px;font-weight:800;color:var(--text)}
 .post-owner{font-size:12px;color:var(--text-soft);font-weight:600}
@@ -121,6 +151,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .tag-park{background:var(--grass-pale);color:var(--grass)}
 .tag-playdate{background:var(--amber-pale);color:var(--amber)}
 .tag-sitting{background:var(--sky-pale);color:var(--sky)}
+.tag-sitting_need{background:var(--amber-pale);color:var(--amber)}
 .post-actions{display:flex;gap:4px;padding-top:8px;border-top:1px solid var(--border);margin-top:8px}
 .action-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:700;color:var(--text-soft);font-family:'Nunito',sans-serif;transition:all 0.15s}
 .action-btn:hover{background:var(--bark-pale);color:var(--bark)}
@@ -249,10 +280,152 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 
 .loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--text-soft);gap:8px;font-weight:600}
 .spinner{width:18px;height:18px;border:2px solid var(--border-mid);border-top-color:var(--grass);border-radius:50%;animation:spin 0.7s linear infinite}
+.spinner-sm{width:14px;height:14px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:5px}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-soft)}
 .empty-state .big-icon{font-size:48px;margin-bottom:10px}
 .empty-state p{font-size:14px;font-weight:600}
+
+/* SKELETON SCREENS */
+.skeleton{background:linear-gradient(90deg,var(--cream) 25%,var(--border) 50%,var(--cream) 75%);background-size:600px 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+.skel-post{padding:14px 0;border-bottom:1px solid var(--border)}
+.skel-avatar{width:42px;height:42px;border-radius:50%}
+.skel-line{height:12px;margin-bottom:6px}
+.skel-line.short{width:40%}
+.skel-line.med{width:65%}
+.skel-line.long{width:90%}
+.skel-line.full{width:100%}
+.skel-card{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.skel-circle{border-radius:50%}
+
+/* BUTTON LOADING STATE */
+.btn-loading{position:relative;pointer-events:none;opacity:0.8}
+.btn-loading::after{content:'';display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,0.4);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;margin-left:6px;vertical-align:middle}
+.btn-loading-dark::after{border-color:rgba(0,0,0,0.15);border-top-color:var(--text-mid)}
+
+/* PAGE TRANSITIONS */
+.page{opacity:0;transition:opacity 0.18s ease}
+.page.active{opacity:1}
+
+/* PULL TO REFRESH */
+.pull-indicator{text-align:center;padding:12px;font-size:12px;font-weight:700;color:var(--text-soft);display:none}
+.pull-indicator.visible{display:block}
+
+/* TOAST IMPROVEMENT */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:200;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* NOTIFICATIONS */
+.notif-bell{position:relative;margin-left:auto;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;transition:background 0.15s}
+.notif-bell:hover{background:var(--bark-pale)}
+.notif-bell .ti{font-size:20px;color:var(--text-mid)}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--coral);border-radius:50%;display:none}
+.notif-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:white;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);z-index:100;max-height:400px;overflow-y:auto;display:none}
+.notif-dropdown.open{display:block}
+.notif-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.notif-item{display:flex;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s}
+.notif-item:hover{background:var(--cream)}
+.notif-item.unread{background:var(--grass-pale)}
+.notif-item:last-child{border-bottom:none}
+.notif-icon{width:36px;height:36px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-text{font-size:12.5px;font-weight:700;color:var(--text);line-height:1.4}
+.notif-time{font-size:11px;color:var(--text-soft);font-weight:600;margin-top:2px}
+.notif-empty{padding:24px;text-align:center;font-size:13px;color:var(--text-soft);font-weight:600}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-left:12px}
+.search-input{padding:7px 14px 7px 34px;border:1px solid var(--border-mid);border-radius:20px;background:var(--cream);font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);font-weight:600;outline:none;width:180px;transition:all 0.2s}
+.search-input:focus{width:220px;border-color:var(--grass)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text-soft);pointer-events:none}
+.search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:white;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-lg);z-index:100;max-height:300px;overflow-y:auto;display:none}
+.search-results.open{display:block}
+.search-result-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background 0.1s;border-bottom:1px solid var(--border)}
+.search-result-item:last-child{border-bottom:none}
+.search-result-item:hover{background:var(--grass-pale)}
+.search-result-name{font-size:13px;font-weight:800;color:var(--text)}
+.search-result-sub{font-size:11px;color:var(--text-soft);font-weight:600}
+
+/* PARK CHECK-IN */
+.checkin-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;background:var(--amber);color:white;border:none;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.checkin-btn:hover{background:var(--bark)}
+.checkin-btn.checked-in{background:var(--grass)}
+.checkin-now{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--grass);background:var(--grass-pale);padding:3px 10px;border-radius:20px}
+.park-live-row{display:flex;align-items:center;gap:6px;padding:5px 0;font-size:12px;font-weight:700;color:var(--text-mid)}
+
+/* PLAYDATE */
+.playdate-modal{position:fixed;inset:0;background:rgba(44,26,14,0.5);z-index:170;display:none;align-items:center;justify-content:center;padding:20px}
+.playdate-box{background:var(--warm-white);border-radius:20px;padding:24px;width:100%;max-width:420px;box-shadow:var(--shadow-lg);position:relative}
+.playdate-inbox-item{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:10px;box-shadow:var(--shadow)}
+.playdate-status{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.4px}
+.status-pending{background:var(--amber-pale);color:var(--amber)}
+.status-accepted{background:var(--grass-pale);color:var(--grass)}
+.status-declined{background:var(--coral-pale);color:var(--coral)}
+/* PHOTO GALLERY */
+.photo-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.photo-gallery-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.15s}
+.photo-gallery-img:hover{opacity:0.85}
+.photo-gallery-add{aspect-ratio:1;border:2px dashed var(--border-mid);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--cream);transition:all 0.15s;font-size:22px}
+.photo-gallery-add:hover{border-color:var(--grass);background:var(--grass-pale)}
+.photo-lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.photo-lightbox img{max-width:100%;max-height:90vh;border-radius:12px;object-fit:contain}
+
+/* ACTIVITY FEED CARDS */
+.activity-card{padding:10px 0;margin-bottom:0;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.activity-card:last-of-type{border-bottom:none;margin-bottom:8px}
+.activity-icon{width:36px;height:36px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.activity-text{font-size:12.5px;font-weight:600;color:var(--text-mid);flex:1;line-height:1.4}
+.activity-text strong{color:var(--text);font-weight:800}
+.activity-time{font-size:11px;color:var(--text-soft);font-weight:600;white-space:nowrap}
+
+/* TIP OF THE DAY */
+.tip-card{background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0 12px;margin-bottom:4px}
+.tip-label{font-size:10px;font-weight:800;color:var(--sky);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px}
+.tip-text{font-size:12.5px;font-weight:600;color:var(--text-mid);line-height:1.5}
+
+/* MEMBER DIRECTORY */
+.directory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.directory-card{background:var(--warm-white);border:1px solid var(--border);border-radius:16px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.15s;box-shadow:var(--shadow)}
+.directory-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--grass)}
+.directory-card-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 8px;object-fit:cover;border:2px solid var(--border);display:block}
+.directory-card-emoji{width:64px;height:64px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 8px;border:2px solid var(--border)}
+.directory-card-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.directory-card-breed{font-size:11px;color:var(--text-soft);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.directory-card-badge{font-size:10px;font-weight:800;color:var(--sky);margin-top:4px}
+
+/* BULLETIN BOARD */
+.bulletin-filter-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border-mid);background:var(--cream);font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--text-mid);transition:all 0.15s}
+.bulletin-filter-btn.active{background:var(--grass);color:white;border-color:var(--grass)}
+.bulletin-item{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
+.bulletin-cat-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:800;margin-bottom:6px}
+.bcat-lost{background:#FEE2E2;color:#DC2626}
+.bcat-found{background:#D1FAE5;color:#065F46}
+.bcat-vet{background:var(--sky-pale);color:var(--sky)}
+.bcat-general{background:var(--amber-pale);color:var(--amber)}
+.bulletin-item-title{font-size:14px;font-weight:900;color:var(--text);margin-bottom:4px}
+.bulletin-item-body{font-size:12.5px;color:var(--text-mid);font-weight:600;margin-bottom:6px;line-height:1.5}
+.bulletin-item-footer{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-soft);font-weight:700}
+.bulletin-item-contact{background:var(--grass-pale);color:var(--grass);padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800}
+
+.dog-profile-modal{position:fixed;inset:0;background:rgba(44,26,14,0.5);z-index:160;display:flex;align-items:center;justify-content:center;padding:20px}
+.dog-profile-box{background:var(--warm-white);border-radius:24px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);overflow:hidden;max-height:90vh;overflow-y:auto;position:relative}
+.dog-profile-hero{background:linear-gradient(160deg,var(--grass-pale) 0%,var(--amber-pale) 100%);padding:28px 24px 20px;text-align:center;position:relative}
+.dog-profile-close{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.7);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.dog-profile-avatar{width:88px;height:88px;border-radius:50%;border:3px solid white;box-shadow:0 4px 16px rgba(107,66,38,0.18);margin:0 auto 10px;display:block;object-fit:cover}
+.dog-profile-emoji{width:88px;height:88px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:44px;margin:0 auto 10px;border:3px solid white;box-shadow:0 4px 16px rgba(107,66,38,0.18)}
+.dog-profile-actions{display:flex;gap:8px;justify-content:center;margin-top:14px}
+.dp-action-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;border:none}
+.dp-friend-btn{background:var(--grass);color:white}
+.dp-friend-btn:hover{background:var(--bark)}
+.dp-friend-btn.is-friend{background:var(--grass-pale);color:var(--grass);border:1.5px solid var(--grass)}
+.dp-msg-btn{background:var(--sky);color:white}
+.dp-msg-btn:hover{background:var(--bark)}
+.dog-profile-body{padding:16px 20px 20px}
+.dp-info-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:12.5px;color:var(--text-mid);font-weight:600;border-bottom:1px solid var(--border)}
+.dp-info-row:last-child{border-bottom:none}
+.dp-info-label{color:var(--text-soft);min-width:72px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;padding-top:1px}
+.dp-info-value{color:var(--text);font-weight:700;flex:1}
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:200;transition:transform 0.3s;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
@@ -260,7 +433,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 @media(max-width:768px){
   .sidebar{display:none}
   .feed-layout{grid-template-columns:1fr}
-  .sidebar-col{display:none}
   .profile-layout{grid-template-columns:1fr}
   .messages-layout{grid-template-columns:1fr}
   .sitting-layout{grid-template-columns:1fr}
@@ -295,8 +467,10 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
       <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="signup-password" type="password" placeholder="Min 6 characters" /></div>
       <div class="form-group">
         <label class="form-label">City, State</label>
-        <input class="form-input" id="signup-city" type="text" placeholder="e.g. Cambridge, MA" oninput="formatCityState(this)" />
-        <div class="city-hint">Format: City, ST (e.g. Boston, MA or Austin, TX)</div>
+        <div class="city-combo" id="city-combo-signup">
+          <input class="city-combo-input" id="signup-city" type="text" placeholder="Search your city…" autocomplete="off" oninput="cityComboInput('signup')" onkeydown="cityComboKey(event,'signup')" onfocus="cityComboInput('signup')" />
+          <div class="city-dropdown" id="city-dropdown-signup"></div>
+        </div>
       </div>
       <button class="auth-btn" onclick="doSignup()">Create account 🐾</button>
     </div>
@@ -330,8 +504,10 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
         <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="signup-password-modal" type="password" placeholder="Min 6 characters" /></div>
         <div class="form-group">
           <label class="form-label">City, State</label>
-          <input class="form-input" id="signup-city-modal" type="text" placeholder="e.g. Cambridge, MA" oninput="formatCityState(this)" />
-          <div class="city-hint">Format: City, ST (e.g. Boston, MA or Austin, TX)</div>
+          <div class="city-combo" id="city-combo-modal">
+            <input class="city-combo-input" id="signup-city-modal" type="text" placeholder="Search your city…" autocomplete="off" oninput="cityComboInput('modal')" onkeydown="cityComboKey(event,'modal')" onfocus="cityComboInput('modal')" />
+            <div class="city-dropdown" id="city-dropdown-modal"></div>
+          </div>
         </div>
         <button class="auth-btn" onclick="doSignupModal()">Create account 🐾</button>
       </div>
@@ -392,10 +568,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
         <button class="energy-opt" data-val="no" onclick="pickSitting(this)">Not right now</button>
       </div>
     </div>
-    <button class="auth-btn" style="margin-top:8px" onclick="doOnboard()" id="onboard-btn">Let's go! 🐾</button>
-    <div style="text-align:center;margin-top:12px">
-      <span onclick="skipOnboard()" style="font-size:13px;color:var(--text-soft);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Skip for now →</span>
+    <div class="form-group" id="ob-city-group">
+      <label class="form-label">Your city</label>
+      <div class="city-combo" id="city-combo-onboard">
+        <input class="city-combo-input" id="ob-city" type="text" placeholder="Search your city…" autocomplete="off" oninput="cityComboInput('onboard')" onkeydown="cityComboKey(event,'onboard')" onfocus="cityComboInput('onboard')" />
+        <div class="city-dropdown" id="city-dropdown-onboard"></div>
+      </div>
     </div>
+    <button class="auth-btn" style="margin-top:8px" onclick="doOnboard()" id="onboard-btn">Let's go! 🐾</button>
   </div>
 </div>
 
@@ -412,9 +592,12 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
     <div class="nav-item active" onclick="showPage('feed',this)"><i class="ti ti-home"></i> Feed</div>
     <div class="nav-item" onclick="showPage('neighborhood',this)"><i class="ti ti-map-pin"></i> Neighborhood</div>
     <div class="nav-item" onclick="showPage('parks',this)"><i class="ti ti-trees"></i> Park Visits</div>
-    <div class="nav-section" style="margin-top:8px">Community</div>
+    <div class="nav-section">Community</div>
     <div class="nav-item" id="nav-sitting" onclick="guestNavClick(this,'sitting')"><i class="ti ti-heart"></i> Dog Sitting</div>
     <div class="nav-item" onclick="showPage('friends',this)"><i class="ti ti-users"></i> Friends</div>
+    <div class="nav-item" onclick="showPage('directory',this)"><i class="ti ti-address-book"></i> Member Directory</div>
+    <div class="nav-item" onclick="showPage('bulletin',this)"><i class="ti ti-clipboard-list"></i> Bulletin Board</div>
+    <div class="nav-item" id="nav-playdates" onclick="guestNavClick(this,'playdates')"><i class="ti ti-calendar-event"></i> Playdates <span class="nav-badge" id="playdate-badge" style="display:none">!</span></div>
     <div class="nav-item" id="nav-messages" onclick="guestNavClick(this,'messages')"><i class="ti ti-message-circle"></i> Messages <span class="nav-badge" id="msg-badge" style="display:none">!</span></div>
     <div class="nav-section" style="margin-top:8px">You</div>
     <div class="nav-item" id="nav-profile" onclick="showPage('profile',this)"><i class="ti ti-paw"></i> My Profile</div>
@@ -450,12 +633,31 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
         <div class="topbar-title" id="page-title">🏡 Pawhood Feed</div>
         <div class="topbar-sub" id="page-sub">Your neighborhood</div>
       </div>
+      <!-- Search -->
+      <div class="search-wrap" id="search-wrap">
+        <i class="ti ti-search search-icon"></i>
+        <input class="search-input" id="search-input" type="text" placeholder="Search dogs…" oninput="doSearch(this.value)" onblur="setTimeout(()=>closeSearch(),200)" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <!-- Notification bell -->
+      <div class="notif-bell" id="notif-bell" onclick="toggleNotifDropdown()">
+        <i class="ti ti-bell"></i>
+        <div class="notif-dot" id="notif-dot"></div>
+        <div class="notif-dropdown" id="notif-dropdown">
+          <div class="notif-header">
+            Notifications
+            <span onclick="markAllRead()" style="font-size:11px;color:var(--sky);cursor:pointer;font-weight:700">Mark all read</span>
+          </div>
+          <div id="notif-list"><div class="notif-empty">You're all caught up! 🐾</div></div>
+        </div>
+      </div>
     </div>
 
     <!-- FEED -->
     <div class="page active" id="page-feed">
       <div class="feed-layout">
         <div class="feed-col">
+          <div class="pull-indicator" id="pull-indicator">↓ Release to refresh</div>
           <div class="compose-box" id="compose-box-wrap" style="position:relative">
             <div class="compose-inner">
               <div id="compose-avatar-wrap" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;background:var(--bark-pale);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;"></div>
@@ -475,12 +677,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
             </div>
           </div>
           <div id="feed-posts"><div class="loading"><div class="spinner"></div> Loading posts...</div></div>
-        </div>
-        <div class="sidebar-col">
-          <div class="section-header"><i class="ti ti-map-pin" style="font-size:14px"></i> Dogs nearby</div>
-          <div class="card" style="padding:10px 14px" id="nearby-dogs"><div class="loading"><div class="spinner"></div></div></div>
-          <div class="section-header" style="margin-top:14px"><i class="ti ti-calendar" style="font-size:14px"></i> Today's park visits</div>
-          <div id="today-visits"><div class="loading"><div class="spinner"></div></div></div>
         </div>
       </div>
     </div>
@@ -546,6 +742,57 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
       </div>
     </div>
 
+    <!-- MEMBER DIRECTORY -->
+    <div class="page" id="page-directory">
+      <div style="padding:16px 20px;max-width:900px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+          <div class="section-header" style="margin-bottom:0"><i class="ti ti-address-book" style="font-size:14px"></i> All members in <span id="dir-city-label">your neighborhood</span></div>
+          <input class="form-input" id="dir-search" type="text" placeholder="Filter by name or breed…" oninput="filterDirectory(this.value)" style="max-width:220px;padding:7px 12px;font-size:12px;margin-left:auto" />
+        </div>
+        <div id="dir-count" style="font-size:11px;color:var(--text-soft);font-weight:700;margin-bottom:14px"></div>
+        <div class="directory-grid" id="directory-grid"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
+    <!-- BULLETIN BOARD -->
+    <div class="page" id="page-bulletin">
+      <div style="padding:16px 20px;max-width:720px">
+        <!-- Post form -->
+        <div class="card" style="margin-bottom:16px" id="bulletin-compose">
+          <div class="section-header" style="margin-bottom:12px"><i class="ti ti-pencil" style="font-size:14px"></i> Post to the board</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap" id="bulletin-category-opts">
+            <button class="energy-opt selected" data-cat="lost" onclick="pickBulletinCat(this)">🚨 Lost pet</button>
+            <button class="energy-opt" data-cat="found" onclick="pickBulletinCat(this)">🎉 Found pet</button>
+            <button class="energy-opt" data-cat="vet" onclick="pickBulletinCat(this)">🏥 Vet rec</button>
+            <button class="energy-opt" data-cat="general" onclick="pickBulletinCat(this)">📌 General</button>
+          </div>
+          <input class="form-input" id="bulletin-title" type="text" placeholder="Title (e.g. Lost golden retriever near Main St)" style="margin-bottom:8px" />
+          <textarea class="form-input" id="bulletin-body" rows="3" placeholder="Details…" style="resize:vertical;margin-bottom:8px"></textarea>
+          <input class="form-input" id="bulletin-contact" type="text" placeholder="Contact info (optional — phone, email, etc.)" style="margin-bottom:10px" />
+          <button class="post-btn" onclick="submitBulletin()">Post 📌</button>
+        </div>
+
+        <!-- Filter tabs -->
+        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap" id="bulletin-filter-btns">
+          <button class="bulletin-filter-btn active" data-cat="all" onclick="setBulletinFilter(this,'all')">All</button>
+          <button class="bulletin-filter-btn" data-cat="lost" onclick="setBulletinFilter(this,'lost')">🚨 Lost</button>
+          <button class="bulletin-filter-btn" data-cat="found" onclick="setBulletinFilter(this,'found')">🎉 Found</button>
+          <button class="bulletin-filter-btn" data-cat="vet" onclick="setBulletinFilter(this,'vet')">🏥 Vet recs</button>
+          <button class="bulletin-filter-btn" data-cat="general" onclick="setBulletinFilter(this,'general')">📌 General</button>
+        </div>
+
+        <div id="bulletin-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
+    <!-- PLAYDATES -->
+    <div class="page" id="page-playdates">
+      <div style="padding:16px 20px;max-width:680px">
+        <div class="section-header" style="margin-bottom:12px"><i class="ti ti-calendar-event" style="font-size:14px"></i> Playdate Requests</div>
+        <div id="playdate-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
     <!-- MESSAGES -->
     <div class="page" id="page-messages">
       <div class="messages-layout">
@@ -575,21 +822,170 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
             <div class="profile-stat"><div class="profile-stat-num" id="stat-friends">0</div><div class="profile-stat-label">Neighbors</div></div>
           </div>
           <div class="profile-info">
-            <div class="section-header">About my dog</div>
-            <div class="info-row"><i class="ti ti-heart"></i><span class="info-label">Energy</span><span class="info-value" id="profile-energy">—</span></div>
-            <div class="info-row"><i class="ti ti-shield"></i><span class="info-label">Sitting</span><span class="info-value" id="profile-sitting">—</span></div>
+            <div class="section-header" style="justify-content:space-between">
+              About my dog
+              <button onclick="openEditProfile()" style="background:var(--grass-pale);color:var(--grass);border:1.5px solid var(--grass);padding:3px 12px;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:4px"><i class="ti ti-pencil" style="font-size:12px"></i> Edit</button>
+            </div>
+            <div class="info-row"><i class="ti ti-flame"></i><span class="info-label">Energy</span><span class="info-value" id="profile-energy">—</span></div>
+            <div class="info-row"><i class="ti ti-shield-heart"></i><span class="info-label">Sitting</span><span class="info-value" id="profile-sitting">—</span></div>
+            <div class="info-row" id="profile-gotcha-row" style="display:none"><i class="ti ti-calendar-heart"></i><span class="info-label">Gotcha</span><span class="info-value" id="profile-gotcha">—</span></div>
+            <div class="info-row" id="profile-activities-row" style="display:none"><i class="ti ti-run"></i><span class="info-label">Activities</span><span class="info-value" id="profile-activities">—</span></div>
+            <div class="info-row" id="profile-likes-row" style="display:none"><i class="ti ti-heart"></i><span class="info-label">Loves</span><span class="info-value" id="profile-likes">—</span></div>
+            <div class="info-row" id="profile-dislikes-row" style="display:none"><i class="ti ti-mood-sad"></i><span class="info-label">Dislikes</span><span class="info-value" id="profile-dislikes">—</span></div>
+            <div class="info-row" id="profile-personality-row" style="display:none"><i class="ti ti-sparkles"></i><span class="info-label">Personality</span><span class="info-value" id="profile-personality">—</span></div>
+            <div class="info-row" id="profile-fav-treat-row" style="display:none"><i class="ti ti-cookie"></i><span class="info-label">Fav treat</span><span class="info-value" id="profile-fav-treat">—</span></div>
+            <div class="info-row" id="profile-bio-row" style="display:none"><i class="ti ti-writing"></i><span class="info-label">Bio</span><span class="info-value" id="profile-bio" style="font-style:italic">—</span></div>
           </div>
           <div style="padding:0 16px 16px">
             <button class="post-btn" style="width:100%;background:var(--coral)" onclick="doLogout()"><i class="ti ti-logout"></i> Sign out</button>
           </div>
         </div>
         <div class="profile-feed-col">
-          <div class="section-header" style="margin-bottom:12px"><i class="ti ti-grid-dots" style="font-size:14px"></i> My posts</div>
+          <div class="section-header" style="margin-bottom:12px"><i class="ti ti-photo" style="font-size:14px"></i> Photo gallery</div>
+          <div class="photo-gallery" id="my-gallery"></div>
+          <input type="file" id="gallery-upload-input" accept="image/*" style="display:none" onchange="uploadGalleryPhoto(this)" />
+          <div class="section-header" style="margin-top:18px;margin-bottom:12px"><i class="ti ti-grid-dots" style="font-size:14px"></i> My posts</div>
           <div id="my-posts"><div class="loading"><div class="spinner"></div></div></div>
         </div>
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- PLAYDATE REQUEST MODAL -->
+<div id="playdate-modal" class="playdate-modal" onclick="if(event.target===this)closePlaydateModal()">
+  <div class="playdate-box">
+    <button onclick="closePlaydateModal()" style="position:absolute;top:12px;right:12px;background:var(--cream);border:1px solid var(--border);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
+    <div style="font-size:17px;font-weight:900;color:var(--text);margin-bottom:2px">🐾 Request a Playdate</div>
+    <div style="font-size:12px;color:var(--text-soft);font-weight:600;margin-bottom:16px">with <span id="pd-dog-name" style="color:var(--grass);font-weight:800">—</span></div>
+    <div class="form-group"><label class="form-label">📅 Date</label><input class="form-input" id="pd-date" type="date" /></div>
+    <div class="form-group"><label class="form-label">⏰ Time</label><input class="form-input" id="pd-time" type="time" /></div>
+    <div class="form-group"><label class="form-label">📍 Location</label><input class="form-input" id="pd-location" type="text" placeholder="e.g. Riverside Dog Park" /></div>
+    <div class="form-group"><label class="form-label">💬 Note (optional)</label><textarea class="form-input" id="pd-note" rows="2" placeholder="e.g. Our dogs met last week, would love to meet again!" style="resize:none"></textarea></div>
+    <div id="pd-error" style="font-size:12px;color:var(--coral);font-weight:700;margin-bottom:8px;display:none"></div>
+    <button class="auth-btn" onclick="sendPlaydateRequest()" id="pd-send-btn">Send request 🐾</button>
+  </div>
+</div>
+
+<!-- EDIT PLAYDATE MODAL -->
+<div id="edit-playdate-modal" style="display:none;position:fixed;inset:0;background:rgba(44,26,14,0.5);z-index:160;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeEditPlaydate()">
+  <div style="background:var(--warm-white);border-radius:20px;padding:24px;width:100%;max-width:380px;box-shadow:var(--shadow-lg);position:relative">
+    <button onclick="closeEditPlaydate()" style="position:absolute;top:12px;right:12px;background:var(--cream);border:1px solid var(--border);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
+    <div style="font-size:17px;font-weight:900;color:var(--text);margin-bottom:16px">✏️ Edit Playdate</div>
+    <div class="form-group"><label class="form-label">📅 Date</label><input class="form-input" id="edit-pd-date" type="date" /></div>
+    <div class="form-group"><label class="form-label">⏰ Time</label><input class="form-input" id="edit-pd-time" type="time" /></div>
+    <div class="form-group"><label class="form-label">📍 Location</label><input class="form-input" id="edit-pd-location" type="text" /></div>
+    <div class="form-group"><label class="form-label">💬 Note (optional)</label><textarea class="form-input" id="edit-pd-note" rows="2" style="resize:none"></textarea></div>
+    <button class="auth-btn" onclick="saveEditPlaydate()" id="edit-pd-save-btn">Save changes</button>
+  </div>
+</div>
+
+<!-- PARK CHECK-IN REMINDER -->
+<div id="checkin-reminder" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--warm-white);border:1.5px solid var(--grass);border-radius:16px;padding:14px 20px;box-shadow:var(--shadow-lg);z-index:180;text-align:center;min-width:280px">
+  <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:4px">Still at the park? 🌳</div>
+  <div style="font-size:12px;color:var(--text-soft);font-weight:600;margin-bottom:12px">You checked in 30 minutes ago</div>
+  <div style="display:flex;gap:8px;justify-content:center">
+    <button onclick="extendCheckin()" style="background:var(--grass);color:white;border:none;padding:7px 18px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Yes, still here!</button>
+    <button onclick="doCheckout()" style="background:var(--cream);color:var(--text-mid);border:1.5px solid var(--border);padding:7px 18px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Heading out</button>
+  </div>
+</div>
+
+<!-- DOG PROFILE MODAL -->
+<div id="dog-profile-modal" style="display:none" class="dog-profile-modal" onclick="if(event.target===this)closeDogProfile()">
+  <div class="dog-profile-box">
+    <div class="dog-profile-hero">
+      <button class="dog-profile-close" onclick="closeDogProfile()">✕</button>
+      <div id="dp-avatar-wrap" class="dog-profile-emoji">🐶</div>
+      <div style="font-size:20px;font-weight:900;color:var(--text)" id="dp-name">—</div>
+      <div style="font-size:12px;color:var(--text-mid);font-weight:700;margin-top:2px" id="dp-breed-age">—</div>
+      <div style="font-size:11px;color:var(--text-soft);font-weight:600;margin-top:2px" id="dp-neighborhood">—</div>
+      <div style="font-size:11px;font-weight:700;margin-top:4px" id="dp-last-seen"></div>
+      <div class="dog-profile-actions">
+        <button class="dp-action-btn dp-friend-btn" id="dp-friend-btn" onclick="toggleFriend()">
+          <i class="ti ti-user-plus"></i> <span id="dp-friend-label">Add Friend</span>
+        </button>
+        <button class="dp-action-btn dp-msg-btn" id="dp-msg-btn" onclick="dpStartChat()">
+          <i class="ti ti-message-circle"></i> Message
+        </button>
+        <button class="dp-action-btn" style="background:var(--amber);color:white" onclick="dpRequestPlaydate()">
+          <i class="ti ti-calendar-event"></i> Playdate
+        </button>
+      </div>
+    </div>
+    <div class="dog-profile-body" id="dp-body">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="edit-profile-modal" style="display:none;position:fixed;inset:0;background:rgba(44,26,14,0.5);z-index:150;overflow-y:auto;padding:20px;display:none;align-items:flex-start;justify-content:center">
+  <div style="background:var(--warm-white);border-radius:24px;padding:28px;width:100%;max-width:520px;box-shadow:var(--shadow-lg);margin:auto;position:relative">
+    <button onclick="closeEditProfile()" style="position:absolute;top:16px;right:16px;background:var(--cream);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif">✕</button>
+    <div style="font-size:18px;font-weight:900;color:var(--text);margin-bottom:4px">✏️ Edit Dog Profile</div>
+    <div style="font-size:12px;color:var(--text-soft);font-weight:600;margin-bottom:20px">Keep your pup's profile fresh 🐾</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group"><label class="form-label">Dog's name</label><input class="form-input" id="edit-name" type="text" /></div>
+      <div class="form-group"><label class="form-label">Breed</label><input class="form-input" id="edit-breed" type="text" /></div>
+      <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="edit-age" type="text" placeholder="e.g. 3 years" /></div>
+      <div class="form-group">
+        <label class="form-label">City</label>
+        <div class="city-combo" id="city-combo-edit">
+          <input class="city-combo-input" id="edit-city" type="text" placeholder="Search city…" autocomplete="off" oninput="cityComboInput('edit')" onkeydown="cityComboKey(event,'edit')" onfocus="cityComboInput('edit')" />
+          <div class="city-dropdown" id="city-dropdown-edit"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:4px">
+      <label class="form-label">Pick an emoji</label>
+      <div class="emoji-picker" id="edit-emoji-picker">
+        <div class="emoji-opt" data-emoji="🐶" onclick="pickEditEmoji(this)">🐶</div>
+        <div class="emoji-opt" data-emoji="🐕" onclick="pickEditEmoji(this)">🐕</div>
+        <div class="emoji-opt" data-emoji="🦮" onclick="pickEditEmoji(this)">🦮</div>
+        <div class="emoji-opt" data-emoji="🐩" onclick="pickEditEmoji(this)">🐩</div>
+        <div class="emoji-opt" data-emoji="🦴" onclick="pickEditEmoji(this)">🦴</div>
+        <div class="emoji-opt" data-emoji="🐾" onclick="pickEditEmoji(this)">🐾</div>
+        <div class="emoji-opt" data-emoji="🐕‍🦺" onclick="pickEditEmoji(this)">🐕‍🦺</div>
+        <div class="emoji-opt" data-emoji="🦊" onclick="pickEditEmoji(this)">🦊</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Energy level</label>
+      <div class="energy-opts" id="edit-energy-opts">
+        <button class="energy-opt" data-val="Low" onclick="pickEditEnergy(this)">😴 Low</button>
+        <button class="energy-opt" data-val="Medium" onclick="pickEditEnergy(this)">🚶 Medium</button>
+        <button class="energy-opt" data-val="High" onclick="pickEditEnergy(this)">🏃 High</button>
+        <button class="energy-opt" data-val="Very high" onclick="pickEditEnergy(this)">⚡ Very high</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Can offer free dog sitting?</label>
+      <div class="energy-opts" id="edit-sitting-opts">
+        <button class="energy-opt" data-val="yes" onclick="pickEditSitting(this)">💙 Yes!</button>
+        <button class="energy-opt" data-val="no" onclick="pickEditSitting(this)">Not right now</button>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border);margin:16px 0 14px;padding-top:14px">
+      <div style="font-size:12px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">🌟 More about your dog</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group"><label class="form-label">🎂 Gotcha / Adoption Date</label><input class="form-input" id="edit-gotcha" type="date" /></div>
+        <div class="form-group"><label class="form-label">🍖 Favorite Treat</label><input class="form-input" id="edit-fav-treat" type="text" placeholder="e.g. Peanut butter" /></div>
+      </div>
+      <div class="form-group"><label class="form-label">🏃 Favorite Activities</label><input class="form-input" id="edit-activities" type="text" placeholder="e.g. Fetch, swimming, zoomies" /></div>
+      <div class="form-group"><label class="form-label">❤️ Loves / Likes</label><input class="form-input" id="edit-likes" type="text" placeholder="e.g. Belly rubs, other dogs, car rides" /></div>
+      <div class="form-group"><label class="form-label">😤 Dislikes</label><input class="form-input" id="edit-dislikes" type="text" placeholder="e.g. Thunder, the vacuum, baths" /></div>
+      <div class="form-group"><label class="form-label">✨ Personality</label><input class="form-input" id="edit-personality" type="text" placeholder="e.g. Silly, gentle, always hungry" /></div>
+      <div class="form-group"><label class="form-label">📝 Bio</label><textarea class="form-input" id="edit-bio" rows="3" placeholder="Tell the neighborhood a little about your pup…" style="resize:vertical"></textarea></div>
+    </div>
+
+    <div id="edit-profile-error" style="font-size:12px;color:var(--coral);font-weight:700;margin-bottom:10px;display:none"></div>
+    <button class="auth-btn" onclick="saveEditProfile()" id="edit-save-btn">Save changes 🐾</button>
   </div>
 </div>
 
@@ -607,24 +1003,101 @@ let photoFile = null;
 
 // ---- CITY/STATE FORMAT ----
 function formatCityState(input) {
-  // Auto-uppercase state abbreviation after comma
   let val = input.value;
   const commaIdx = val.lastIndexOf(',');
   if (commaIdx > -1) {
     const city = val.substring(0, commaIdx);
     let state = val.substring(commaIdx + 1);
-    // If state looks like 2 letters, uppercase it
-    if (state.trim().length <= 2) {
-      state = state.toUpperCase();
-      input.value = city + ',' + state;
-    }
+    if (state.trim().length <= 2) { state = state.toUpperCase(); input.value = city + ',' + state; }
   }
 }
 
 function validateCityState(val) {
-  // Accept: "City, ST" or "City, State"
-  return /^[a-zA-Z\s\-]+,\s*[a-zA-Z\s]{2,}$/.test(val.trim());
+  return /^[a-zA-Z\s\-\.]+,\s*[A-Z]{2}$/.test(val.trim());
 }
+
+// ---- CITY DROPDOWN ----
+const US_CITIES = [
+  "Abilene, TX","Akron, OH","Albany, GA","Albany, NY","Albuquerque, NM","Alexandria, LA","Alexandria, VA","Allentown, PA","Amarillo, TX","Anaheim, CA","Anchorage, AK","Ann Arbor, MI","Antioch, CA","Arlington, TX","Arlington, VA","Athens, GA","Atlanta, GA","Augusta, GA","Aurora, CO","Aurora, IL","Austin, TX",
+  "Bakersfield, CA","Baltimore, MD","Baton Rouge, LA","Beaumont, TX","Bellevue, WA","Berkeley, CA","Billings, MT","Birmingham, AL","Boise, ID","Boston, MA","Boulder, CO","Bridgeport, CT","Brownsville, TX","Buffalo, NY",
+  "Cambridge, MA","Cape Coral, FL","Carrollton, TX","Cary, NC","Cedar Rapids, IA","Chandler, AZ","Charleston, SC","Charlotte, NC","Chattanooga, TN","Chesapeake, VA","Chicago, IL","Chula Vista, CA","Cincinnati, OH","Clarksville, TN","Cleveland, OH","Colorado Springs, CO","Columbia, MO","Columbia, SC","Columbus, GA","Columbus, OH","Concord, CA","Coral Springs, FL","Corona, CA","Corpus Christi, TX",
+  "Dallas, TX","Dayton, OH","Denver, CO","Des Moines, IA","Detroit, MI","Durham, NC",
+  "El Paso, TX","Elk Grove, CA","Enterprise, NV","Escondido, CA","Eugene, OR","Evansville, IN",
+  "Fairbanks, AK","Fayetteville, AR","Fayetteville, NC","Fontana, CA","Fort Collins, CO","Fort Lauderdale, FL","Fort Wayne, IN","Fort Worth, TX","Fremont, CA","Fresno, CA","Frisco, TX","Fullerton, CA",
+  "Garden Grove, CA","Garland, TX","Gilbert, AZ","Glendale, AZ","Glendale, CA","Grand Prairie, TX","Grand Rapids, MI","Greensboro, NC","Gresham, OR",
+  "Hampton, VA","Hartford, CT","Henderson, NV","Hialeah, FL","Honolulu, HI","Houston, TX","Huntington Beach, CA","Huntsville, AL",
+  "Independence, MO","Indianapolis, IN","Irvine, CA","Irving, TX",
+  "Jackson, MS","Jacksonville, FL","Jersey City, NJ","Joliet, IL",
+  "Kansas City, KS","Kansas City, MO","Knoxville, TN",
+  "Laredo, TX","Las Vegas, NV","Lexington, KY","Lincoln, NE","Little Rock, AR","Long Beach, CA","Los Angeles, CA","Louisville, KY","Lubbock, TX",
+  "Madison, WI","McAllen, TX","McKinney, TX","Memphis, TN","Mesa, AZ","Miami, FL","Milwaukee, WI","Minneapolis, MN","Modesto, CA","Montgomery, AL","Moreno Valley, CA",
+  "Nashville, TN","New Haven, CT","New Orleans, LA","New York, NY","Newark, NJ","Newport News, VA","Norfolk, VA","North Las Vegas, NV","Norwalk, CA",
+  "Oakland, CA","Oklahoma City, OK","Omaha, NE","Ontario, CA","Orlando, FL","Overland Park, KS","Oxnard, CA",
+  "Palm Bay, FL","Pasadena, CA","Pasadena, TX","Paterson, NJ","Pembroke Pines, FL","Peoria, AZ","Peoria, IL","Philadelphia, PA","Phoenix, AZ","Pittsburgh, PA","Plano, TX","Portland, OR","Providence, RI",
+  "Raleigh, NC","Rancho Cucamonga, CA","Reno, NV","Richmond, VA","Riverside, CA","Rochester, MN","Rochester, NY","Rockford, IL","Sacramento, CA","Salem, OR","Salt Lake City, UT","San Antonio, TX","San Bernardino, CA","San Diego, CA","San Francisco, CA","San Jose, CA","Santa Ana, CA","Santa Clarita, CA","Santa Rosa, CA","Savannah, GA","Scottsdale, AZ","Seattle, WA","Shreveport, LA","Sioux Falls, SD","South Bend, IN","Spokane, WA","Springfield, IL","Springfield, MO","Springfield, MA","St. Louis, MO","St. Paul, MN","St. Petersburg, FL","Stockton, CA","Syracuse, NY",
+  "Tacoma, WA","Tallahassee, FL","Tampa, FL","Tempe, AZ","Toledo, OH","Tucson, AZ","Tulsa, OK",
+  "Vancouver, WA","Virginia Beach, VA",
+  "Washington, DC","Wichita, KS","Winston-Salem, NC","Worcester, MA",
+  "Yonkers, NY"
+];
+
+// Each combo has an id suffix: 'signup', 'modal', 'guest', 'onboard'
+let cityComboFocused = {}; // suffix -> focused option index
+
+function cityComboInput(suffix) {
+  const input = document.getElementById(suffix === 'guest' ? 'guest-city-input' : (suffix === 'onboard' ? 'ob-city' : `signup-city${suffix === 'modal' ? '-modal' : ''}`));
+  const dropdown = document.getElementById(`city-dropdown-${suffix}`);
+  if (!input || !dropdown) return;
+  const q = input.value.toLowerCase().trim();
+  cityComboFocused[suffix] = -1;
+  if (!q) { dropdown.classList.remove('open'); return; }
+  const matches = US_CITIES.filter(c => c.toLowerCase().includes(q)).slice(0, 8);
+  if (!matches.length) {
+    dropdown.innerHTML = `<div class="city-option-none">No cities found — try a different spelling</div>`;
+  } else {
+    dropdown.innerHTML = matches.map((c, i) => `<div class="city-option" data-val="${c}" onmousedown="cityComboSelect('${suffix}','${c}')">${c}</div>`).join('');
+  }
+  dropdown.classList.add('open');
+}
+
+function cityComboSelect(suffix, val) {
+  const input = document.getElementById(suffix === 'guest' ? 'guest-city-input' : (suffix === 'onboard' ? 'ob-city' : `signup-city${suffix === 'modal' ? '-modal' : ''}`));
+  const dropdown = document.getElementById(`city-dropdown-${suffix}`);
+  if (input) input.value = val;
+  if (dropdown) dropdown.classList.remove('open');
+  cityComboFocused[suffix] = -1;
+}
+
+function cityComboKey(e, suffix) {
+  const dropdown = document.getElementById(`city-dropdown-${suffix}`);
+  if (!dropdown || !dropdown.classList.contains('open')) return;
+  const opts = dropdown.querySelectorAll('.city-option');
+  if (!opts.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    cityComboFocused[suffix] = Math.min((cityComboFocused[suffix] || -1) + 1, opts.length - 1);
+    opts.forEach((o, i) => o.classList.toggle('focused', i === cityComboFocused[suffix]));
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    cityComboFocused[suffix] = Math.max((cityComboFocused[suffix] || 0) - 1, 0);
+    opts.forEach((o, i) => o.classList.toggle('focused', i === cityComboFocused[suffix]));
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    const idx = cityComboFocused[suffix] >= 0 ? cityComboFocused[suffix] : 0;
+    if (opts[idx]) cityComboSelect(suffix, opts[idx].dataset.val);
+  } else if (e.key === 'Escape') {
+    dropdown.classList.remove('open');
+  }
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', e => {
+  ['signup','modal','guest','onboard','edit'].forEach(suffix => {
+    const wrap = document.getElementById(`city-combo-${suffix}`);
+    const dd = document.getElementById(`city-dropdown-${suffix}`);
+    if (dd && wrap && !wrap.contains(e.target)) dd.classList.remove('open');
+  });
+});
 
 // ---- PHOTO ----
 function previewPhoto(input) {
@@ -667,11 +1140,13 @@ async function changeProfilePhoto(input) {
   } catch(e) { showToast('Upload failed: ' + e.message); }
 }
 
-function dogAvatar(dog, size=40, fontSize=20) {
+function dogAvatar(dog, size=40, fontSize=20, userId='') {
+  const click = userId ? `onclick="openDogProfile('${userId}')" style="cursor:pointer"` : '';
+  const clickStyle = userId ? `cursor:pointer;` : '';
   if (dog && dog.photo_url) {
-    return `<img src="${escHtml(dog.photo_url)}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;border:2px solid var(--border);display:block" onerror="this.style.display='none'" />`;
+    return `<img src="${escHtml(dog.photo_url)}" ${click} style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;border:2px solid var(--border);display:block;${clickStyle}" onerror="this.style.display='none'" />`;
   }
-  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;border:2px solid var(--border);flex-shrink:0">${dog ? escHtml(dog.emoji||'🐶') : '🐶'}</div>`;
+  return `<div ${click} style="width:${size}px;height:${size}px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;border:2px solid var(--border);flex-shrink:0;${clickStyle}">${dog ? escHtml(dog.emoji||'🐶') : '🐶'}</div>`;
 }
 
 function updateAvatars() {
@@ -700,7 +1175,15 @@ function updateAvatars() {
 
 // ---- AUTH ----
 function switchTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+  // Scope tab buttons to only the visible container to avoid cross-contamination
+  const authScreen = document.getElementById('auth-screen');
+  const authModal = document.getElementById('auth-modal');
+  if (authScreen && authScreen.style.display !== 'none') {
+    authScreen.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+  }
+  if (authModal && authModal.style.display !== 'none') {
+    authModal.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+  }
   ['login-form','signup-form'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display=(id.includes('login')===(tab==='login'))?'block':'none'; });
   ['login-form-modal','signup-form-modal'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display=(id.includes('login')===(tab==='login'))?'block':'none'; });
   ['auth-error','auth-error-modal'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
@@ -750,9 +1233,9 @@ async function doLogin() {
   const pass = document.getElementById('login-password').value;
   if (!email || !pass) return showAuthError('Please fill in all fields');
   const btn = document.querySelector('#login-form .auth-btn');
-  btn.disabled = true; btn.textContent = 'Signing in...';
+  btnLoad(btn, 'Signing in…');
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.disabled = false; btn.textContent = 'Sign in 🐾';
+  btnDone(btn, 'Sign in 🐾');
   if (error) return showAuthError(error.message);
   currentUser = data.user;
   document.getElementById('auth-modal').style.display='none';
@@ -769,9 +1252,9 @@ async function doSignup() {
   if (!validateCityState(city)) return showAuthError('Please use format: City, ST (e.g. Boston, MA)');
   if (pass.length < 6) return showAuthError('Password must be at least 6 characters');
   const btn = document.querySelector('#signup-form .auth-btn');
-  btn.disabled = true; btn.textContent = 'Creating account...';
+  btnLoad(btn, 'Creating account…');
   const { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { neighborhood: city } } });
-  btn.disabled = false; btn.textContent = 'Create account 🐾';
+  btnDone(btn, 'Create account 🐾');
   if (error) return showAuthError(error.message);
   currentUser = data.user;
   if (data.session) { document.getElementById('auth-modal').style.display='none'; document.getElementById('auth-screen').style.display='none'; isGuest=false; await loadAfterAuth(); }
@@ -787,6 +1270,12 @@ async function loadAfterAuth() {
 function showOnboarding() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('onboarding-screen').style.display = 'flex';
+  // Pre-fill city from signup metadata if available
+  const metaCity = currentUser && currentUser.user_metadata && currentUser.user_metadata.neighborhood;
+  if (metaCity) {
+    const obCity = document.getElementById('ob-city');
+    if (obCity) obCity.value = metaCity;
+  }
 }
 
 function pickEmoji(el) {
@@ -806,10 +1295,12 @@ async function doOnboard() {
   const name = document.getElementById('ob-name').value.trim();
   const breed = document.getElementById('ob-breed').value.trim();
   const age = document.getElementById('ob-age').value.trim();
+  const obCity = document.getElementById('ob-city') ? document.getElementById('ob-city').value.trim() : '';
+  const hood = obCity || currentUser.user_metadata?.neighborhood || '';
   if (!name || !breed) return showToast('Please fill in your dog\'s name and breed');
+  if (!validateCityState(hood)) return showToast('Please select your city from the dropdown');
   const btn = document.getElementById('onboard-btn');
-  btn.disabled = true; btn.textContent = 'Setting up...';
-  const hood = currentUser.user_metadata?.neighborhood || '';
+  btnLoad(btn, 'Setting up…');
   let photo_url = null;
   if (photoFile) {
     try { photo_url = await uploadPhoto(photoFile, currentUser.id); } catch(e) { showToast('Photo upload failed, continuing without it'); }
@@ -819,32 +1310,9 @@ async function doOnboard() {
     emoji: selectedEmoji, energy: selectedEnergy,
     can_sit: canSit === 'yes', neighborhood: hood, photo_url
   }).select().single();
-  btn.disabled = false; btn.textContent = "Let's go! 🐾";
+  btnDone(btn, "Let's go! 🐾");
   if (error) return showToast('Error: ' + error.message);
   myDog = data; showApp();
-}
-
-async function skipOnboard() {
-  // Create a minimal placeholder dog profile so the app works
-  const hood = currentUser.user_metadata?.neighborhood || '';
-  const { data, error } = await sb.from('dogs').insert({
-    user_id: currentUser.id,
-    name: 'My Dog',
-    breed: '',
-    age: '',
-    emoji: '🐶',
-    energy: 'Medium',
-    can_sit: false,
-    neighborhood: hood,
-    photo_url: null
-  }).select().single();
-  if (error) return showToast('Error: ' + error.message);
-  myDog = data;
-  showApp();
-  // After app loads, prompt them to complete their profile
-  setTimeout(() => {
-    showToast('Welcome! Tap My Profile anytime to add your dog details 🐾');
-  }, 1000);
 }
 
 async function doLogout() {
@@ -860,11 +1328,15 @@ function showApp() {
   document.getElementById('onboarding-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   updateAvatars();
-  loadFeed(); loadNearbyDogs(); loadTodayVisits();
+  loadFeed();
   setDefaultVisitDate(); loadUpcomingVisits();
   loadSitting(); loadFriends(); loadConversations(); loadMyProfile();
-  subscribeToMessages();
+  loadNotifications(); loadPlaydates();
+  subscribeToMessages(); subscribeToNotifications();
+  startPresenceHeartbeat();
+  setTimeout(initPullToRefresh, 500);
   getLocation();
+  checkExistingCheckin();
 }
 
 function showPage(id, navEl) {
@@ -878,16 +1350,21 @@ function showPage(id, navEl) {
     parks:['🌳 Park Visits','Schedule & see who\'s going'],
     sitting:['💙 Dog Sitting','Free community sitting'],
     friends:['🐶 Friends','Dogs in your city'],
+    directory:['📋 Member Directory','Every pup in your neighborhood'],
+    bulletin:['📌 Bulletin Board','Lost pets, found items & local tips'],
+    playdates:['🐾 Playdates','Meetup requests'],
     messages:['✉️ Messages','Chat with neighbors'],
     profile:['🐾 My Profile', myDog ? myDog.name : 'My dog']
   };
   const t = titles[id]||['Pawhood',''];
   document.getElementById('page-title').textContent = t[0];
   document.getElementById('page-sub').textContent = t[1];
-  if (id === 'neighborhood') loadRealParks();
-  if (id === 'neighborhood') loadNeighborhoodSchedule();
+  if (id === 'neighborhood') { loadRealParks(); loadNeighborhoodSchedule(); }
   if (id === 'profile') loadMyProfile();
+  if (id === 'playdates') { loadPlaydates(); document.getElementById('playdate-badge').style.display='none'; }
   if (id === 'messages') { loadConversations(); document.getElementById('msg-badge').style.display='none'; }
+  if (id === 'directory') loadDirectory();
+  if (id === 'bulletin') loadBulletin();
 }
 
 // ---- GEOLOCATION & REAL PARKS ----
@@ -977,6 +1454,7 @@ async function loadRealParks() {
       return;
     }
     container.innerHTML = parks.map(p => renderParkCard(p)).join('');
+    loadParkCheckinCounts();
   } catch(e) {
     container.innerHTML = '<div class="empty-state"><div class="big-icon">⚠️</div><p>Could not load parks. Check your connection and try again.</p></div>';
   }
@@ -986,9 +1464,8 @@ function renderParkCard(p) {
   const icon = p.type === 'dog_park' ? '🐕' : '🌳';
   const label = p.type === 'dog_park' ? 'Dog Park' : 'Park';
   const distStr = p.dist ? p.dist.toFixed(1) + ' mi away' : '';
-  const mapsUrl = `maps://maps.apple.com/?daddr=${p.lat},${p.lng}&dirflg=d`;
-  const mapsUrlFallback = `https://maps.apple.com/?daddr=${p.lat},${p.lng}&dirflg=d`;
-  return `<div class="real-park-card">
+  const safeId = encodeURIComponent(p.name);
+  return `<div class="real-park-card" id="park-card-${safeId}">
     <div class="real-park-header">
       <div class="real-park-icon">${icon}</div>
       <div style="flex:1;min-width:0">
@@ -997,11 +1474,14 @@ function renderParkCard(p) {
         <div class="real-park-dist">${distStr} · ${label}</div>
       </div>
     </div>
+    <div id="park-live-${safeId}" style="padding:0 16px 8px;min-height:24px"></div>
     <div class="real-park-footer">
       <button class="directions-btn" onclick="openMaps('${escHtml(p.name)}',${p.lat},${p.lng})">
         <i class="ti ti-map" style="font-size:14px"></i> Get directions
       </button>
-      <span class="schedule-mini">Tap to open Apple Maps</span>
+      <button class="checkin-btn" id="checkin-btn-${safeId}" onclick="toggleCheckin('${escHtml(p.name)}','${safeId}')">
+        <i class="ti ti-map-pin"></i> I'm here!
+      </button>
     </div>
   </div>`;
 }
@@ -1028,6 +1508,967 @@ function populateParkDropdown() {
   if (nearbyParks.length > 0) {
     sel.innerHTML = nearbyParks.map(p => `<option value="${escHtml(p.name)}">${escHtml(p.name)}</option>`).join('');
   }
+}
+
+// ---- DOG PROFILE MODAL ----
+let dpCurrentUserId = null, dpCurrentDog = null, dpIsFriend = false;
+
+async function openDogProfile(userId) {
+  if (!userId) return;
+  if (userId === currentUser.id) {
+    showPage('profile', document.querySelector('.nav-item[onclick*=profile]'));
+    return;
+  }
+  dpCurrentUserId = userId;
+  dpCurrentDog = null;
+  dpIsFriend = false;
+
+  // Show modal with loading state
+  document.getElementById('dog-profile-modal').style.display = 'flex';
+  document.getElementById('dp-name').textContent = '…';
+  document.getElementById('dp-breed-age').textContent = '';
+  document.getElementById('dp-neighborhood').textContent = '';
+  document.getElementById('dp-avatar-wrap').innerHTML = '🐶';
+  document.getElementById('dp-avatar-wrap').className = 'dog-profile-emoji';
+  document.getElementById('dp-body').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  document.getElementById('dp-friend-label').textContent = '…';
+  document.getElementById('dp-friend-btn').disabled = true;
+
+  // Fetch dog + friendship status in parallel
+  const [{ data: dog }, { data: friendship }] = await Promise.all([
+    sb.from('dogs').select('*').eq('user_id', userId).single(),
+    sb.from('friendships').select('id').or(
+      `and(user_id.eq.${currentUser.id},friend_id.eq.${userId}),and(user_id.eq.${userId},friend_id.eq.${currentUser.id})`
+    ).limit(1)
+  ]);
+
+  if (!dog) { closeDogProfile(); showToast('Could not load profile'); return; }
+  dpCurrentDog = dog;
+  dpIsFriend = !!(friendship && friendship.length > 0);
+
+  // Avatar
+  const avatarWrap = document.getElementById('dp-avatar-wrap');
+  if (dog.photo_url) {
+    avatarWrap.outerHTML = `<img id="dp-avatar-wrap" src="${escHtml(dog.photo_url)}" class="dog-profile-avatar" />`;
+  } else {
+    avatarWrap.className = 'dog-profile-emoji';
+    avatarWrap.textContent = dog.emoji || '🐶';
+  }
+
+  document.getElementById('dp-name').textContent = dog.name || 'Unknown pup';
+  document.getElementById('dp-breed-age').textContent = [dog.breed, dog.age].filter(Boolean).join(' · ');
+  document.getElementById('dp-neighborhood').textContent = dog.neighborhood || '';
+  document.getElementById('dp-last-seen').textContent = '';
+
+  // Load presence
+  const presMap = await loadPresence([userId]);
+  const lastSeenEl = document.getElementById('dp-last-seen');
+  if (lastSeenEl) {
+    const label = formatLastSeen(presMap[userId]);
+    lastSeenEl.textContent = label;
+    lastSeenEl.style.color = isOnline(presMap[userId]) ? '#22c55e' : 'var(--text-soft)';
+  }
+
+  // Friend button state
+  const friendBtn = document.getElementById('dp-friend-btn');
+  const friendLabel = document.getElementById('dp-friend-label');
+  friendBtn.disabled = false;
+  if (dpIsFriend) {
+    friendBtn.classList.add('is-friend');
+    friendLabel.textContent = 'Friends ✓';
+  } else {
+    friendBtn.classList.remove('is-friend');
+    friendLabel.textContent = 'Add Friend';
+  }
+
+  // Build info body
+  const rows = [];
+  if (dog.energy) rows.push(['🔥 Energy', dog.energy]);
+  if (dog.can_sit) rows.push(['💙 Dog sitting', 'Available to sit']);
+  if (dog.gotcha_date) {
+    const d = new Date(dog.gotcha_date);
+    rows.push(['🎂 Gotcha day', d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})]);
+  }
+  if (dog.favorite_activities) rows.push(['🏃 Activities', dog.favorite_activities]);
+  if (dog.likes) rows.push(['❤️ Loves', dog.likes]);
+  if (dog.dislikes) rows.push(['😤 Dislikes', dog.dislikes]);
+  if (dog.personality) rows.push(['✨ Personality', dog.personality]);
+  if (dog.fav_treat) rows.push(['🍖 Fav treat', dog.fav_treat]);
+  if (dog.bio) rows.push(['📝 Bio', dog.bio]);
+
+  const infoHtml = rows.length
+    ? rows.map(([label, val]) => `
+        <div class="dp-info-row">
+          <span class="dp-info-label">${label}</span>
+          <span class="dp-info-value">${escHtml(String(val))}</span>
+        </div>`).join('')
+    : '<div style="text-align:center;padding:8px;color:var(--text-soft);font-size:13px;font-weight:600">This pup hasn\'t filled in their profile yet 🐾</div>';
+
+  document.getElementById('dp-body').innerHTML = infoHtml +
+    `<div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px">
+      <div class="section-header" style="margin-bottom:8px"><i class="ti ti-photo" style="font-size:13px"></i> Photos</div>
+      <div class="photo-gallery" id="dp-gallery"></div>
+    </div>`;
+
+  // Load gallery after setting innerHTML
+  loadGallery(dog.id, 'dp-gallery', false);
+}
+
+function closeDogProfile() {
+  document.getElementById('dog-profile-modal').style.display = 'none';
+  dpCurrentUserId = null; dpCurrentDog = null;
+}
+
+async function toggleFriend() {
+  if (!dpCurrentUserId) return;
+  const btn = document.getElementById('dp-friend-btn');
+  const label = document.getElementById('dp-friend-label');
+  btn.disabled = true;
+
+  if (dpIsFriend) {
+    // Remove friendship
+    await sb.from('friendships').delete().or(
+      `and(user_id.eq.${currentUser.id},friend_id.eq.${dpCurrentUserId}),and(user_id.eq.${dpCurrentUserId},friend_id.eq.${currentUser.id})`
+    );
+    dpIsFriend = false;
+    btn.classList.remove('is-friend');
+    label.textContent = 'Add Friend';
+    showToast('Friend removed');
+  } else {
+    // Add friendship (both directions for easy querying)
+    await sb.from('friendships').insert([
+      { user_id: currentUser.id, friend_id: dpCurrentUserId },
+    ]);
+    dpIsFriend = true;
+    btn.classList.add('is-friend');
+    label.textContent = 'Friends ✓';
+    showToast(`You and ${dpCurrentDog?.name || 'this pup'} are now friends! 🐾`);
+    await createNotification(dpCurrentUserId, 'friend', `${myDog.name} added you as a friend! 🐶`);
+  }
+  btn.disabled = false;
+}
+
+function dpStartChat() {
+  if (!dpCurrentDog || !dpCurrentUserId) return;
+  closeDogProfile();
+  startChat(dpCurrentUserId, dpCurrentDog.name || '', dpCurrentDog.emoji || '🐶', dpCurrentDog.photo_url || '');
+}
+
+// ---- NOTIFICATIONS ----
+async function createNotification(toUserId, type, text, linkUserId='') {
+  if (toUserId === currentUser.id) return; // don't notify yourself
+  await sb.from('notifications').insert({
+    user_id: toUserId,
+    type,
+    text,
+    link_user_id: linkUserId || currentUser.id,
+    read: false
+  });
+}
+
+async function loadNotifications() {
+  const { data } = await sb.from('notifications')
+    .select('*').eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false }).limit(20);
+  renderNotifications(data || []);
+}
+
+function renderNotifications(items) {
+  const list = document.getElementById('notif-list');
+  const dot = document.getElementById('notif-dot');
+  const unread = items.filter(n => !n.read).length;
+  dot.style.display = unread > 0 ? 'block' : 'none';
+  if (!items.length) { list.innerHTML = '<div class="notif-empty">You\'re all caught up! 🐾</div>'; return; }
+  const icons = { friend:'🐶', message:'💬', reaction:'❤️', playdate:'📅', checkin:'🌳' };
+  list.innerHTML = items.map(n => `
+    <div class="notif-item ${n.read?'':'unread'}" onclick="notifClick('${n.id}','${n.link_user_id||''}','${n.type}')">
+      <div class="notif-icon">${icons[n.type]||'🐾'}</div>
+      <div>
+        <div class="notif-text">${escHtml(n.text)}</div>
+        <div class="notif-time">${formatTimeAgo(n.created_at)}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function notifClick(notifId, linkUserId, type) {
+  await sb.from('notifications').update({ read: true }).eq('id', notifId);
+  toggleNotifDropdown();
+  if (type === 'message') {
+    const navItems = document.querySelectorAll('.nav-item');
+    let msgNav = null; navItems.forEach(n => { if(n.textContent.includes('Messages')) msgNav=n; });
+    showPage('messages', msgNav);
+  } else if (type === 'playdate') {
+    showPage('playdates', document.getElementById('nav-playdates'));
+  } else if (linkUserId) {
+    openDogProfile(linkUserId);
+  }
+  loadNotifications();
+}
+
+async function markAllRead() {
+  await sb.from('notifications').update({ read: true }).eq('user_id', currentUser.id);
+  loadNotifications();
+}
+
+function toggleNotifDropdown() {
+  document.getElementById('notif-dropdown').classList.toggle('open');
+}
+
+function subscribeToNotifications() {
+  sb.channel('notifications-'+currentUser.id)
+    .on('postgres_changes', { event:'INSERT', schema:'public', table:'notifications', filter:`user_id=eq.${currentUser.id}` }, payload => {
+      loadNotifications();
+      showToast(payload.new.text);
+    }).subscribe();
+}
+
+// Close notif dropdown when clicking outside
+document.addEventListener('click', e => {
+  const bell = document.getElementById('notif-bell');
+  if (bell && !bell.contains(e.target)) document.getElementById('notif-dropdown').classList.remove('open');
+});
+
+// ---- SEARCH ----
+let searchTimeout = null;
+async function doSearch(q) {
+  const results = document.getElementById('search-results');
+  clearTimeout(searchTimeout);
+  if (!q || q.length < 2) { results.classList.remove('open'); return; }
+  searchTimeout = setTimeout(async () => {
+    const { data } = await sb.from('dogs').select('*')
+      .eq('neighborhood', myDog.neighborhood)
+      .neq('user_id', currentUser.id)
+      .or(`name.ilike.%${q}%,breed.ilike.%${q}%`)
+      .limit(8);
+    if (!data || !data.length) {
+      results.innerHTML = '<div style="padding:12px 16px;font-size:12px;color:var(--text-soft);font-weight:600">No dogs found</div>';
+      results.classList.add('open'); return;
+    }
+    results.innerHTML = data.map(d => `
+      <div class="search-result-item" onclick="searchSelect('${d.user_id}')">
+        ${d.photo_url
+          ? `<img src="${escHtml(d.photo_url)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--border)" />`
+          : `<div style="width:36px;height:36px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:18px">${d.emoji||'🐶'}</div>`}
+        <div>
+          <div class="search-result-name">${escHtml(d.name)}</div>
+          <div class="search-result-sub">${escHtml(d.breed||'')}${d.age?' · '+escHtml(d.age):''}</div>
+        </div>
+      </div>`).join('');
+    results.classList.add('open');
+  }, 250);
+}
+
+function searchSelect(userId) {
+  document.getElementById('search-input').value = '';
+  closeSearch();
+  openDogProfile(userId);
+}
+
+function closeSearch() {
+  document.getElementById('search-results').classList.remove('open');
+}
+
+// ---- PARK CHECK-IN ----
+let activeCheckin = null; // { parkName, safeId, timer, reminderTimer }
+
+function checkExistingCheckin() {
+  const saved = localStorage.getItem('pawhood_checkin');
+  if (!saved) return;
+  try {
+    const c = JSON.parse(saved);
+    const elapsed = Date.now() - c.ts;
+    if (elapsed > 30 * 60 * 1000) { localStorage.removeItem('pawhood_checkin'); return; }
+    activeCheckin = c;
+    // Restart reminder timer for remaining time
+    const remaining = 30 * 60 * 1000 - elapsed;
+    activeCheckin.reminderTimer = setTimeout(showCheckinReminder, remaining);
+  } catch(e) { localStorage.removeItem('pawhood_checkin'); }
+}
+
+async function toggleCheckin(parkName, safeId) {
+  if (activeCheckin && activeCheckin.parkName === parkName) {
+    await doCheckout(); return;
+  }
+  if (activeCheckin) await doCheckout(true);
+
+  // Insert checkin
+  const { data } = await sb.from('park_checkins').insert({
+    user_id: currentUser.id,
+    dog_id: myDog.id,
+    park_name: parkName,
+    neighborhood: myDog.neighborhood,
+    checked_in_at: new Date().toISOString()
+  }).select().single();
+
+  activeCheckin = { parkName, safeId, id: data?.id, ts: Date.now() };
+  localStorage.setItem('pawhood_checkin', JSON.stringify(activeCheckin));
+
+  // Update button
+  updateCheckinButton(safeId, true, parkName);
+  showToast('You\'re checked in at ' + parkName + '! 🐾');
+
+  // Reminder after 30 min
+  activeCheckin.reminderTimer = setTimeout(showCheckinReminder, 30 * 60 * 1000);
+
+  loadParkCheckinCounts();
+  createNotification(null, 'checkin', null, null); // just local
+}
+
+async function doCheckout(silent = false) {
+  if (!activeCheckin) return;
+  clearTimeout(activeCheckin.reminderTimer);
+  document.getElementById('checkin-reminder').style.display = 'none';
+  if (activeCheckin.id) {
+    await sb.from('park_checkins').delete().eq('id', activeCheckin.id);
+  }
+  const oldSafeId = activeCheckin.safeId;
+  activeCheckin = null;
+  localStorage.removeItem('pawhood_checkin');
+  updateCheckinButton(oldSafeId, false, '');
+  if (!silent) { showToast('Checked out! See you next time 🐾'); loadParkCheckinCounts(); }
+}
+
+function extendCheckin() {
+  document.getElementById('checkin-reminder').style.display = 'none';
+  if (activeCheckin) {
+    activeCheckin.ts = Date.now();
+    activeCheckin.reminderTimer = setTimeout(showCheckinReminder, 30 * 60 * 1000);
+    localStorage.setItem('pawhood_checkin', JSON.stringify(activeCheckin));
+    showToast('Enjoy the park! 🌳');
+  }
+}
+
+function showCheckinReminder() {
+  document.getElementById('checkin-reminder').style.display = 'block';
+}
+
+function updateCheckinButton(safeId, checkedIn, parkName) {
+  const btn = document.getElementById('checkin-btn-' + safeId);
+  if (!btn) return;
+  if (checkedIn) {
+    btn.classList.add('checked-in');
+    btn.innerHTML = '<i class="ti ti-map-pin"></i> Checked in ✓';
+  } else {
+    btn.classList.remove('checked-in');
+    btn.innerHTML = '<i class="ti ti-map-pin"></i> I\'m here!';
+  }
+}
+
+async function loadParkCheckinCounts() {
+  const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+  const { data } = await sb.from('park_checkins')
+    .select('*, dogs(name,emoji,photo_url)')
+    .eq('neighborhood', myDog.neighborhood)
+    .gte('checked_in_at', cutoff);
+  if (!data) return;
+
+  // Group by park
+  const byPark = {};
+  data.forEach(c => {
+    if (!byPark[c.park_name]) byPark[c.park_name] = [];
+    byPark[c.park_name].push(c);
+  });
+
+  // Update each park card's live section and restore check-in button state
+  Object.entries(byPark).forEach(([park, checkins]) => {
+    const safeId = encodeURIComponent(park);
+    const liveEl = document.getElementById('park-live-' + safeId);
+    if (!liveEl) return;
+    const names = checkins.map(c => c.dogs?.name || 'Someone').slice(0, 4);
+    const extra = checkins.length > 4 ? ` +${checkins.length - 4} more` : '';
+    liveEl.innerHTML = `<div class="checkin-now"><span style="width:8px;height:8px;border-radius:50%;background:var(--grass);display:inline-block;animation:pulse 1.5s infinite"></span> ${names.join(', ')}${extra} here now</div>`;
+    // Restore button if I'm checked in here
+    if (activeCheckin && activeCheckin.parkName === park) {
+      updateCheckinButton(safeId, true, park);
+    }
+  });
+}
+
+// ---- PLAYDATES ----
+let pdTargetUserId = null, pdTargetDogName = '', pdTargetPhoto = '', pdTargetEmoji = '🐶';
+
+function dpRequestPlaydate() {
+  if (!dpCurrentDog || !dpCurrentUserId) return;
+  pdTargetUserId = dpCurrentUserId;
+  pdTargetDogName = dpCurrentDog.name || 'this dog';
+  pdTargetPhoto = dpCurrentDog.photo_url || '';
+  pdTargetEmoji = dpCurrentDog.emoji || '🐶';
+  closeDogProfile();
+  openPlaydateModal();
+}
+
+function openPlaydateModal() {
+  document.getElementById('pd-dog-name').textContent = pdTargetDogName;
+  document.getElementById('pd-date').value = '';
+  document.getElementById('pd-time').value = '';
+  document.getElementById('pd-location').value = '';
+  document.getElementById('pd-note').value = '';
+  document.getElementById('pd-error').style.display = 'none';
+  document.getElementById('playdate-modal').style.display = 'flex';
+}
+
+function closePlaydateModal() {
+  document.getElementById('playdate-modal').style.display = 'none';
+}
+
+async function sendPlaydateRequest() {
+  const date = document.getElementById('pd-date').value;
+  const time = document.getElementById('pd-time').value;
+  const location = document.getElementById('pd-location').value.trim();
+  const note = document.getElementById('pd-note').value.trim();
+  const errEl = document.getElementById('pd-error');
+  if (!date || !time || !location) { errEl.textContent = 'Please fill in date, time, and location'; errEl.style.display='block'; return; }
+  const btn = document.getElementById('pd-send-btn');
+  btnLoad(btn, 'Sending…');
+  const { error } = await sb.from('playdates').insert({
+    requester_id: currentUser.id,
+    receiver_id: pdTargetUserId,
+    requester_dog_name: myDog.name,
+    receiver_dog_name: pdTargetDogName,
+    requester_photo: myDog.photo_url || null,
+    requester_emoji: myDog.emoji || '🐶',
+    receiver_photo: pdTargetPhoto || null,
+    receiver_emoji: pdTargetEmoji || '🐶',
+    playdate_date: date,
+    playdate_time: time,
+    location,
+    note: note || null,
+    status: 'pending'
+  });
+  btnDone(btn, 'Send request 🐾');
+  if (error) { errEl.textContent = 'Error: ' + error.message; errEl.style.display='block'; return; }
+  await createNotification(pdTargetUserId, 'playdate', `${myDog.name} wants a playdate with ${pdTargetDogName}! 📅`);
+  closePlaydateModal();
+  showToast('Playdate request sent! 🐾');
+}
+
+async function loadPlaydates() {
+  const container = document.getElementById('playdate-list');
+  if (!container) return;
+  const { data: rawData } = await sb.from('playdates')
+    .select('*')
+    .or(`requester_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+    .order('created_at', { ascending: false });
+  if (!rawData || !rawData.length) {
+    container.innerHTML = '<div class="empty-state"><div class="big-icon">📅</div><p>No playdate requests yet.<br>Find a dog and hit Playdate!</p></div>';
+    return;
+  }
+  // Fetch live dog photos for all unique user_ids in one query
+  const userIds = [...new Set(rawData.flatMap(d => [d.requester_id, d.receiver_id]))];
+  const { data: dogsData } = await sb.from('dogs').select('user_id,name,emoji,photo_url').in('user_id', userIds);
+  const dogsByUserId = {};
+  (dogsData || []).forEach(d => dogsByUserId[d.user_id] = d);
+  const data = rawData.map(d => ({
+    ...d,
+    requester: dogsByUserId[d.requester_id] || {},
+    receiver: dogsByUserId[d.receiver_id] || {}
+  }));
+  const hasPending = data.some(d => d.receiver_id === currentUser.id && d.status === 'pending');
+  if (hasPending) document.getElementById('playdate-badge').style.display = 'inline';
+
+  container.innerHTML = data.map(d => {
+    const isRequester = d.requester_id === currentUser.id;
+    const canRespond = d.status === 'pending' && d.edited_by !== currentUser.id && (!isRequester || d.edited_by);
+    const canEdit = (d.status === 'pending' || d.status === 'accepted') && d.edited_by !== currentUser.id;
+    const dateStr = d.playdate_date ? new Date(d.playdate_date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) : '—';
+    const timeStr = d.playdate_time ? formatTime(d.playdate_time) : '';
+
+    // Both dog avatars
+    const reqPhoto = d.requester?.photo_url || d.requester_photo || '';
+    const reqEmoji = d.requester?.emoji || d.requester_emoji || '🐶';
+    const recPhoto = d.receiver?.photo_url || d.receiver_photo || '';
+    const recEmoji = d.receiver?.emoji || d.receiver_emoji || '🐶';
+
+    const reqAvatar = reqPhoto
+      ? `<img src="${escHtml(reqPhoto)}" onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
+      : `<div onclick="openDogProfile('${d.requester_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${reqEmoji}</div>`;
+    const recAvatar = recPhoto
+      ? `<img src="${escHtml(recPhoto)}" onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);cursor:pointer" />`
+      : `<div onclick="openDogProfile('${d.receiver_id}')" style="width:44px;height:44px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--border);cursor:pointer">${recEmoji}</div>`;
+
+    return `<div class="playdate-inbox-item">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:4px">
+          ${reqAvatar}
+          <span style="font-size:18px;color:var(--text-soft)">🐾</span>
+          ${recAvatar}
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:900;color:var(--text)">${escHtml(d.requester?.name || d.requester_dog_name)} & ${escHtml(d.receiver?.name || d.receiver_dog_name)}</div>
+          <span class="playdate-status status-${d.status}">${d.status === 'pending' && d.edited_by ? '✏️ updated · pending review' : d.status}</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-mid);font-weight:700;margin-bottom:4px">📅 ${dateStr}${timeStr?' at '+timeStr:''} · 📍 ${escHtml(d.location||'')}</div>
+      ${d.note?`<div style="font-size:12px;color:var(--text-soft);font-weight:600;font-style:italic;margin-bottom:8px">"${escHtml(d.note)}"</div>`:''}
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        ${canRespond ? `
+          <button onclick="respondPlaydate('${d.id}','accepted')" style="background:var(--grass);color:white;border:none;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✓ Accept</button>
+          <button onclick="respondPlaydate('${d.id}','declined')" style="background:var(--coral-pale);color:var(--coral);border:1.5px solid var(--coral);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✕ Decline</button>
+        ` : ''}
+        ${canEdit ? `
+          <button onclick="openEditPlaydate('${d.id}','${escHtml(d.playdate_date||'')}','${escHtml(d.playdate_time||'')}','${escHtml(d.location||'')}','${escHtml(d.note||'')}')" style="background:var(--amber-pale);color:var(--amber);border:1.5px solid var(--amber);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">✏️ Edit</button>
+        ` : ''}
+        ${d.status === 'accepted' ? `
+          <button onclick="inviteOthers('${d.id}','${escHtml(d.playdate_date||'')}','${escHtml(d.location||'')}','${escHtml(d.requester_dog_name)}','${escHtml(d.receiver_dog_name)}')" style="background:var(--sky-pale);color:var(--sky);border:1.5px solid var(--sky);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">👋 Invite others</button>
+        ` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function respondPlaydate(id, status) {
+  const { data } = await sb.from('playdates').update({ status, edited_by: null }).eq('id', id).select().single();
+  if (data) {
+    const emoji = status === 'accepted' ? '✅' : '❌';
+    await createNotification(data.requester_id, 'playdate',
+      `${emoji} ${data.receiver_dog_name} ${status} your playdate request!`);
+  }
+  showToast(status === 'accepted' ? 'Playdate accepted! 🐾' : 'Playdate declined');
+  loadPlaydates();
+}
+
+let editingPlaydateId = null;
+function openEditPlaydate(id, date, time, location, note) {
+  editingPlaydateId = id;
+  document.getElementById('edit-pd-date').value = date;
+  document.getElementById('edit-pd-time').value = time;
+  document.getElementById('edit-pd-location').value = location;
+  document.getElementById('edit-pd-note').value = note;
+  document.getElementById('edit-playdate-modal').style.display = 'flex';
+}
+function closeEditPlaydate() {
+  document.getElementById('edit-playdate-modal').style.display = 'none';
+  editingPlaydateId = null;
+}
+async function saveEditPlaydate() {
+  const date = document.getElementById('edit-pd-date').value;
+  const time = document.getElementById('edit-pd-time').value;
+  const location = document.getElementById('edit-pd-location').value.trim();
+  const note = document.getElementById('edit-pd-note').value.trim();
+  if (!date || !time || !location) return showToast('Please fill in date, time, and location');
+  const btn = document.getElementById('edit-pd-save-btn');
+  btnLoad(btn, 'Saving…');
+  const { data, error } = await sb.from('playdates').update({
+    playdate_date: date,
+    playdate_time: time,
+    location,
+    note: note || null,
+    status: 'pending',      // reset to pending so other party must re-accept
+    edited_by: currentUser.id  // track who made the edit
+  }).eq('id', editingPlaydateId).select().single();
+  btnDone(btn, 'Save changes');
+  if (error) return showToast('Error: ' + error.message);
+  if (data) {
+    const otherUserId = data.receiver_id === currentUser.id ? data.requester_id : data.receiver_id;
+    await createNotification(otherUserId, 'playdate', `✏️ ${myDog.name} updated your playdate details — please review and accept!`);
+  }
+  closeEditPlaydate();
+  showToast('Playdate updated! The other dog needs to re-accept 🐾');
+  loadPlaydates();
+}
+
+function inviteOthers(id, date, location, dog1, dog2) {
+  const text = `Hey! ${dog1} & ${dog2} are having a playdate on ${date} at ${location}. Want to join? Check it out on Pawhood! 🐾`;
+  if (navigator.share) {
+    navigator.share({ title: 'Join our playdate!', text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => showToast('Invite copied to clipboard! 📋'));
+  }
+}
+
+// ---- MEMBER DIRECTORY ----
+let allDirectoryDogs = [];
+
+async function loadDirectory() {
+  const grid = document.getElementById('directory-grid');
+  const countEl = document.getElementById('dir-count');
+  const cityLabel = document.getElementById('dir-city-label');
+  grid.innerHTML = skelGrid(6);
+  const { data } = await sb.from('dogs').select('id,user_id,name,breed,age,emoji,photo_url,can_sit,neighborhood')
+    .eq('neighborhood', myDog.neighborhood)
+    .order('name');
+  allDirectoryDogs = data || [];
+  if (cityLabel) cityLabel.textContent = myDog.neighborhood || 'your neighborhood';
+  renderDirectory(allDirectoryDogs);
+}
+
+function renderDirectory(dogs) {
+  const grid = document.getElementById('directory-grid');
+  const countEl = document.getElementById('dir-count');
+  if (countEl) countEl.textContent = `${dogs.length} member${dogs.length !== 1 ? 's' : ''} in your neighborhood`;
+  if (!dogs.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="big-icon">🐾</div><p>No other dogs in your neighborhood yet!</p></div>';
+    return;
+  }
+  grid.innerHTML = dogs.map(d => `
+    <div class="directory-card" onclick="openDogProfile('${d.user_id}')">
+      ${d.photo_url
+        ? `<img src="${escHtml(d.photo_url)}" class="directory-card-avatar" />`
+        : `<div class="directory-card-emoji">${d.emoji || '🐶'}</div>`}
+      <div class="directory-card-name">${escHtml(d.name)}</div>
+      <div class="directory-card-breed">${escHtml(d.breed || '')}${d.age ? ' · ' + escHtml(d.age) : ''}</div>
+      ${d.can_sit ? '<div class="directory-card-badge">💙 Can sit</div>' : ''}
+    </div>`).join('');
+}
+
+function filterDirectory(q) {
+  if (!q.trim()) { renderDirectory(allDirectoryDogs); return; }
+  const lower = q.toLowerCase();
+  renderDirectory(allDirectoryDogs.filter(d =>
+    (d.name || '').toLowerCase().includes(lower) ||
+    (d.breed || '').toLowerCase().includes(lower)
+  ));
+}
+
+// ---- BULLETIN BOARD ----
+let activeBulletinCat = 'lost', bulletinFilter = 'all';
+
+function pickBulletinCat(el) {
+  document.querySelectorAll('#bulletin-category-opts .energy-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  activeBulletinCat = el.dataset.cat;
+}
+
+function setBulletinFilter(el, cat) {
+  document.querySelectorAll('.bulletin-filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  bulletinFilter = cat;
+  loadBulletin();
+}
+
+async function submitBulletin() {
+  const title = document.getElementById('bulletin-title').value.trim();
+  const body = document.getElementById('bulletin-body').value.trim();
+  const contact = document.getElementById('bulletin-contact').value.trim();
+  if (!title || !body) return showToast('Please add a title and details');
+  const { error } = await sb.from('bulletin_posts').insert({
+    user_id: currentUser.id,
+    dog_id: myDog.id,
+    poster_name: myDog.name,
+    poster_emoji: myDog.emoji || '🐶',
+    neighborhood: myDog.neighborhood,
+    category: activeBulletinCat,
+    title, body,
+    contact: contact || null
+  });
+  if (error) return showToast('Error posting: ' + error.message);
+  document.getElementById('bulletin-title').value = '';
+  document.getElementById('bulletin-body').value = '';
+  document.getElementById('bulletin-contact').value = '';
+  showToast('Posted to bulletin board! 📌');
+  loadBulletin();
+}
+
+async function loadBulletin() {
+  const container = document.getElementById('bulletin-list');
+  container.innerHTML = skelCard(2)+skelCard(2)+skelCard(2);
+  let query = sb.from('bulletin_posts').select('*')
+    .eq('neighborhood', myDog.neighborhood)
+    .order('created_at', { ascending: false })
+    .limit(40);
+  if (bulletinFilter !== 'all') query = query.eq('category', bulletinFilter);
+  const { data } = await query;
+  if (!data || !data.length) {
+    container.innerHTML = '<div class="empty-state"><div class="big-icon">📌</div><p>Nothing posted yet.<br>Be the first to share something!</p></div>';
+    return;
+  }
+  const catLabels = { lost: '🚨 Lost pet', found: '🎉 Found pet', vet: '🏥 Vet rec', general: '📌 General' };
+  const catClass = { lost: 'bcat-lost', found: 'bcat-found', vet: 'bcat-vet', general: 'bcat-general' };
+  container.innerHTML = data.map(p => `
+    <div class="bulletin-item">
+      <div class="bulletin-cat-badge ${catClass[p.category] || 'bcat-general'}">${catLabels[p.category] || p.category}</div>
+      <div class="bulletin-item-title">${escHtml(p.title)}</div>
+      <div class="bulletin-item-body">${escHtml(p.body)}</div>
+      ${p.contact ? `<div style="margin-bottom:8px"><span class="bulletin-item-contact">📞 ${escHtml(p.contact)}</span></div>` : ''}
+      <div class="bulletin-item-footer">
+        <span>${p.poster_emoji || '🐶'} ${escHtml(p.poster_name || 'A neighbor')}</span>
+        <span>·</span>
+        <span>${formatTimeAgo(p.created_at)}</span>
+        ${p.user_id === currentUser.id ? `<button onclick="deleteBulletin('${p.id}')" style="margin-left:auto;background:none;border:none;color:var(--coral);font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Delete</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+async function deleteBulletin(id) {
+  await sb.from('bulletin_posts').delete().eq('id', id).eq('user_id', currentUser.id);
+  showToast('Post removed');
+  loadBulletin();
+}
+
+// ---- TIP OF THE DAY ----
+const DOG_TIPS = [
+  "Dogs need at least 30 minutes of exercise daily — even a slow sniff walk counts! 🐾",
+  "Fresh water should be available at all times. Change it daily to keep it clean. 💧",
+  "Brush your dog's teeth 2-3 times a week to prevent dental disease. 🦷",
+  "Never feed dogs grapes, raisins, onions, chocolate, or xylitol — all are toxic. 🚫",
+  "Regular vet check-ups (at least once a year) catch health issues early. 🏥",
+  "Dogs are social animals — quality time with you matters more than toys. 💛",
+  "A tired dog is a good dog! Mental stimulation (puzzles, training) is as tiring as walks. 🧠",
+  "Keep your dog's nails trimmed — overgrown nails can cause pain and posture issues. 💅",
+  "Positive reinforcement works better than punishment every single time. 🎉",
+  "Flea and tick prevention is year-round, not just summer. 🌿",
+  "Dogs communicate with their tail, ears, and body posture — learn to read them! 👀",
+  "Socializing puppies before 16 weeks shapes their personality for life. 🐶",
+  "Never leave a dog in a hot car — temperatures rise dangerously fast. 🌡️",
+  "Grain-free diets have been linked to heart issues in some breeds — ask your vet first. 🌾",
+  "A dog's nose print is as unique as a human fingerprint. 👃",
+  "Spaying and neutering reduces risk of certain cancers and unwanted litters. ✂️",
+  "Dogs dream! The twitching during sleep is normal REM activity. 💤",
+  "Rotate toys to keep your dog mentally stimulated and prevent boredom. 🧸",
+  "Microchipping is the best way to reunite lost dogs with their owners. 📡",
+  "Dogs can learn over 150 words — keep teaching them new ones! 📚",
+  "Senior dogs (7+) benefit from more frequent vet visits — every 6 months. 👴",
+  "Swimming is a great low-impact exercise for dogs with joint issues. 🏊",
+  "Always introduce dogs on neutral ground to reduce territorial tension. 🤝",
+  "A dog's average body temperature is 101-102.5°F — higher than humans. 🌡️",
+  "Thundershirts and white noise can help anxious dogs during storms. ⛈️",
+  "Dogs need shade and water on walks when it's over 75°F outside. ☀️",
+  "Hot pavement burns paw pads — test it with your hand for 5 seconds first. 🔥",
+  "Regular grooming isn't just cosmetic — it helps you spot lumps and skin issues. 🪮",
+  "A wagging tail doesn't always mean happy — context matters! 🐕",
+  "Enrichment feeders and lick mats can calm an anxious or bored dog. 🍯"
+];
+
+function getTipOfDay() {
+  const dayIndex = Math.floor(Date.now() / 86400000) % DOG_TIPS.length;
+  return DOG_TIPS[dayIndex];
+}
+
+function renderTipCard() {
+  return `<div class="tip-card">
+    <div class="tip-label">💡 Tip of the day</div>
+    <div class="tip-text">${getTipOfDay()}</div>
+  </div>`;
+}
+
+// ---- PHOTO GALLERY ----
+async function loadGallery(dogId, containerId, isOwn=false) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const { data } = await sb.from('dog_photos').select('*').eq('dog_id', dogId).order('created_at', { ascending: false }).limit(12);
+  const photos = data || [];
+  const addBtn = isOwn ? `<div class="photo-gallery-add" onclick="document.getElementById('gallery-upload-input').click()" title="Add photo">➕</div>` : '';
+  if (!photos.length && !isOwn) { container.innerHTML = '<div style="font-size:12px;color:var(--text-soft);font-weight:600;grid-column:1/-1;padding:4px 0">No photos yet</div>'; return; }
+  container.innerHTML = addBtn + photos.map(p => `
+    <img src="${escHtml(p.photo_url)}" class="photo-gallery-img" onclick="openLightbox('${escHtml(p.photo_url)}')" />`).join('');
+}
+
+async function uploadGalleryPhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) return showToast('Photo must be under 5MB');
+  showToast('Uploading…');
+  try {
+    const url = await uploadPhoto(file, currentUser.id + '/gallery/' + Date.now());
+    await sb.from('dog_photos').insert({ dog_id: myDog.id, user_id: currentUser.id, photo_url: url });
+    loadGallery(myDog.id, 'my-gallery', true);
+    showToast('Photo added! 📸');
+  } catch(e) { showToast('Upload failed'); }
+  input.value = '';
+}
+
+function openLightbox(url) {
+  const lb = document.createElement('div');
+  lb.className = 'photo-lightbox';
+  lb.innerHTML = `<img src="${escHtml(url)}" />`;
+  lb.onclick = () => lb.remove();
+  document.body.appendChild(lb);
+}
+
+// ---- ACTIVITY FEED ----
+async function loadActivityEvents() {
+  const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString();
+  // Load checkins and accepted playdates from last 48h
+  const [{ data: checkins }, { data: playdates }, { data: newDogs }] = await Promise.all([
+    sb.from('park_checkins').select('*, dogs(name,emoji,photo_url,user_id)').eq('neighborhood', myDog.neighborhood).gte('checked_in_at', cutoff).neq('user_id', currentUser.id).order('checked_in_at', { ascending: false }).limit(5),
+    sb.from('playdates').select('*').or(`requester_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).eq('status', 'accepted').gte('created_at', cutoff).order('created_at', { ascending: false }).limit(3),
+    sb.from('dogs').select('name,emoji,photo_url,user_id,created_at').eq('neighborhood', myDog.neighborhood).gte('created_at', cutoff).neq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(3)
+  ]);
+
+  const events = [];
+  (checkins || []).forEach(c => events.push({ type: 'checkin', ts: c.checked_in_at, dog: c.dogs, park: c.park_name }));
+  for (const p of (playdates || [])) {
+    const [{ data: rDog }, { data: recDog }] = await Promise.all([
+      sb.from('dogs').select('name').eq('user_id', p.requester_id).single(),
+      sb.from('dogs').select('name').eq('user_id', p.receiver_id).single(),
+    ]);
+    events.push({ type: 'playdate', ts: p.created_at, requester: rDog?.name || p.requester_dog_name, receiver: recDog?.name || p.receiver_dog_name });
+  }
+  (newDogs || []).forEach(d => events.push({ type: 'newdog', ts: d.created_at, dog: d }));
+  events.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+  return events;
+}
+
+function renderActivityCard(ev) {
+  if (ev.type === 'checkin') {
+    const dog = ev.dog || {};
+    return `<div class="activity-card">
+      ${dog.photo_url ? `<img src="${escHtml(dog.photo_url)}" class="activity-icon" style="object-fit:cover" onclick="openDogProfile('${dog.user_id}')" />` : `<div class="activity-icon" onclick="openDogProfile('${dog.user_id}')" style="cursor:pointer">${dog.emoji||'🐶'}</div>`}
+      <div class="activity-text"><strong>${escHtml(dog.name||'A neighbor')}</strong> checked in at <strong>${escHtml(ev.park)}</strong> 🌳</div>
+      <div class="activity-time">${formatTimeAgo(ev.ts)}</div>
+    </div>`;
+  }
+  if (ev.type === 'playdate') {
+    return `<div class="activity-card">
+      <div class="activity-icon">📅</div>
+      <div class="activity-text"><strong>${escHtml(ev.requester)}</strong> & <strong>${escHtml(ev.receiver)}</strong> have a playdate! 🐾</div>
+      <div class="activity-time">${formatTimeAgo(ev.ts)}</div>
+    </div>`;
+  }
+  if (ev.type === 'newdog') {
+    const dog = ev.dog || {};
+    return `<div class="activity-card">
+      ${dog.photo_url ? `<img src="${escHtml(dog.photo_url)}" class="activity-icon" style="object-fit:cover;cursor:pointer" onclick="openDogProfile('${dog.user_id}')" />` : `<div class="activity-icon" style="cursor:pointer" onclick="openDogProfile('${dog.user_id}')">${dog.emoji||'🐶'}</div>`}
+      <div class="activity-text">👋 Say hi to <strong>${escHtml(dog.name||'a new pup')}</strong> — just joined your neighborhood!</div>
+      <div class="activity-time">${formatTimeAgo(ev.ts)}</div>
+    </div>`;
+  }
+  return '';
+}
+
+// ---- PRESENCE / ONLINE ----
+const ONLINE_THRESHOLD_MS = 3 * 60 * 1000; // 3 minutes = online
+let presenceHeartbeat = null;
+
+async function updatePresence() {
+  await sb.from('presence').upsert({ user_id: currentUser.id, last_seen: new Date().toISOString() }, { onConflict: 'user_id' });
+}
+
+function startPresenceHeartbeat() {
+  updatePresence();
+  presenceHeartbeat = setInterval(updatePresence, 60000);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) updatePresence();
+  });
+}
+
+async function loadPresence(userIds) {
+  if (!userIds || !userIds.length) return {};
+  const { data } = await sb.from('presence').select('user_id,last_seen').in('user_id', userIds);
+  const map = {};
+  (data || []).forEach(p => { map[p.user_id] = p.last_seen; });
+  return map;
+}
+
+function isOnline(lastSeenTs) {
+  if (!lastSeenTs) return false;
+  return Date.now() - new Date(lastSeenTs).getTime() < ONLINE_THRESHOLD_MS;
+}
+
+function formatLastSeen(lastSeenTs) {
+  if (!lastSeenTs) return 'Never seen';
+  if (isOnline(lastSeenTs)) return '🟢 Online now';
+  return 'Last seen ' + formatTimeAgo(lastSeenTs);
+}
+
+function applyPresenceDots(presenceMap) {
+  // Update all online dots on the current page
+  Object.entries(presenceMap).forEach(([userId, ts]) => {
+    document.querySelectorAll(`[id$="-${userId}"].online-dot, #dot-post-${userId}, #dot-dir-${userId}, #dot-convo-${userId}`).forEach(dot => {
+      dot.classList.toggle('offline', !isOnline(ts));
+    });
+  });
+}
+
+async function refreshFeedPresence() {
+  // Collect all user_ids visible in the feed
+  const userIds = [...new Set([...document.querySelectorAll('[id^="dot-post-"]')].map(el => el.id.replace('dot-post-','')))] ;
+  if (!userIds.length) return;
+  const map = await loadPresence(userIds);
+  applyPresenceDots(map);
+}
+
+async function loadCommentCount(postId) {
+  const { count } = await sb.from('post_comments').select('*', { count: 'exact', head: true }).eq('post_id', postId);
+  const el = document.getElementById('comment-count-' + postId);
+  if (el) el.textContent = count ? `💬 ${count}` : '💬';
+}
+
+// ---- COMMENTS ----
+async function toggleComments(postId, postUserId) {
+  const section = document.getElementById('comments-' + postId);
+  if (!section) return;
+  if (section.style.display === 'block') { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  section.innerHTML = '<div class="loading" style="padding:8px 0"><div class="spinner"></div></div>';
+  await loadComments(postId);
+}
+
+async function loadComments(postId) {
+  const section = document.getElementById('comments-' + postId);
+  if (!section) return;
+  const { data } = await sb.from('post_comments')
+    .select('*, dogs(name,emoji,photo_url,user_id)')
+    .eq('post_id', postId)
+    .order('created_at', { ascending: true });
+
+  // Update comment count button
+  const countEl = document.getElementById('comment-count-' + postId);
+  if (countEl) countEl.textContent = (data && data.length) ? `💬 ${data.length}` : '💬';
+
+  const commentsHtml = (data && data.length) ? data.map(c => {
+    const dog = c.dogs || {};
+    const isOwn = c.user_id === currentUser.id;
+    const avatarEl = dog.photo_url
+      ? `<img src="${escHtml(dog.photo_url)}" class="comment-avatar" onclick="openDogProfile('${dog.user_id}')" />`
+      : `<div class="comment-avatar" onclick="openDogProfile('${dog.user_id}')">${dog.emoji||'🐶'}</div>`;
+    return `<div class="comment-item">
+      ${avatarEl}
+      <div class="comment-bubble">
+        <div class="comment-author" onclick="openDogProfile('${dog.user_id}')">${escHtml(dog.name||'Unknown')}</div>
+        <div class="comment-text">${escHtml(c.content)}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="comment-time">${formatTimeAgo(c.created_at)}</div>
+          ${isOwn?`<button onclick="deleteComment('${c.id}','${postId}')" style="background:none;border:none;color:var(--coral);font-size:10px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;padding:0">Delete</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('') : '<div style="font-size:12px;color:var(--text-soft);font-weight:600;padding:4px 0 8px">No comments yet — be the first! 🐾</div>';
+
+  const myAvatar = myDog?.photo_url
+    ? `<img src="${escHtml(myDog.photo_url)}" class="comment-avatar" style="cursor:default" />`
+    : `<div class="comment-avatar" style="cursor:default">${myDog?.emoji||'🐶'}</div>`;
+
+  section.innerHTML = commentsHtml + `
+    <div class="comment-input-row">
+      ${myAvatar}
+      <input class="comment-input" id="comment-input-${postId}" placeholder="Add a comment…" maxlength="280"
+        onkeydown="if(event.key==='Enter')submitComment('${postId}')" />
+      <button class="comment-send-btn" onclick="submitComment('${postId}')"><i class="ti ti-send" style="font-size:13px"></i></button>
+    </div>`;
+}
+
+async function submitComment(postId) {
+  const input = document.getElementById('comment-input-' + postId);
+  if (!input) return;
+  const content = input.value.trim();
+  if (!content) return;
+  input.value = '';
+  const { error } = await sb.from('post_comments').insert({
+    post_id: postId,
+    user_id: currentUser.id,
+    dog_id: myDog.id,
+    content
+  });
+  if (error) return showToast('Error posting comment');
+  await loadComments(postId);
+  // Notify post owner if not own post
+  const postEl = document.getElementById('post-' + postId);
+  if (postEl) {
+    // get post owner from dot id
+    const dot = postEl.querySelector('[id^="dot-post-"]');
+    if (dot) {
+      const ownerId = dot.id.replace('dot-post-','');
+      if (ownerId !== currentUser.id) {
+        await createNotification(ownerId, 'comment', `💬 ${myDog.name} commented on your post`);
+      }
+    }
+  }
+}
+
+async function deleteComment(commentId, postId) {
+  await sb.from('post_comments').delete().eq('id', commentId).eq('user_id', currentUser.id);
+  loadComments(postId);
 }
 
 // ---- FEED ----
@@ -1057,43 +2498,43 @@ async function submitPost() {
 
 async function loadFeed() {
   const container = document.getElementById('feed-posts');
-  container.innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
-
-  // Fetch posts and which ones the current user has liked in parallel
-  const [postsRes, likesRes] = await Promise.all([
+  container.innerHTML = skelFeed(4);
+  const [{ data }, activityEvents] = await Promise.all([
     sb.from('posts')
-      .select('*, dogs(name,emoji,neighborhood,breed,photo_url)')
+      .select('*, dogs(id,user_id,name,emoji,neighborhood,breed,age,photo_url,energy,can_sit,favorite_activities,likes,dislikes,personality,fav_treat,bio,gotcha_date)')
       .eq('neighborhood', myDog.neighborhood)
-      .order('created_at', {ascending:false})
-      .limit(20),
-    sb.from('post_likes')
-      .select('post_id')
-      .eq('user_id', currentUser.id)
+      .order('created_at', {ascending:false}).limit(20),
+    loadActivityEvents()
   ]);
-
-  const data = postsRes.data;
-  if (!data || data.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts yet. Be the first!</p></div>';
-    return;
+  const tipHtml = renderTipCard();
+  const activityHtml = activityEvents.map(renderActivityCard).join('');
+  const postsHtml = (data && data.length) ? data.map(p => renderPost(p)).join('') : '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts yet. Be the first!</p></div>';
+  container.innerHTML = tipHtml + activityHtml + postsHtml;
+  // Load comment counts for all posts
+  if (data && data.length) {
+    data.forEach(p => loadCommentCount(p.id));
   }
-
-  // Build a set of post IDs the user has already liked
-  const likedSet = new Set((likesRes.data || []).map(l => l.post_id));
-  container.innerHTML = data.map(p => renderPost(p, likedSet.has(p.id))).join('');
+  // Refresh online dots
+  setTimeout(refreshFeedPresence, 300);
 }
 
-function renderPost(p, isLiked=false) {
+function renderPost(p) {
   const dog = p.dogs || {};
   const tagHtml = p.tag ? `<span class="post-tag tag-${p.tag}">${tagLabel(p.tag)}</span>` : '';
   const isOwn = p.user_id === currentUser.id;
-  const avatarHtml = dog.photo_url
-    ? `<img src="${escHtml(dog.photo_url)}" class="post-avatar" style="object-fit:cover" />`
-    : `<div class="post-avatar">${dog.emoji||'🐶'}</div>`;
-  return `<div class="card" id="post-${p.id}">
+  const avatarClick = isOwn
+    ? `onclick="showPage('profile', document.querySelector('.nav-item[onclick*=profile]'))" style="cursor:pointer"`
+    : `onclick="openDogProfile('${p.user_id}')" style="cursor:pointer"`;
+  const onlineDot = `<span class="online-dot" id="dot-post-${p.user_id}"></span>`;
+  const avatarInner = dog.photo_url
+    ? `<img src="${escHtml(dog.photo_url)}" class="post-avatar" style="object-fit:cover" ${avatarClick} />`
+    : `<div class="post-avatar" ${avatarClick}>${dog.emoji||'🐶'}</div>`;
+  const avatarHtml = `<div class="avatar-wrap">${avatarInner}${onlineDot}</div>`;
+  return `<div class="feed-post" id="post-${p.id}">
     <div class="post-header">
       ${avatarHtml}
       <div class="post-meta">
-        <div class="post-dog-name">${escHtml(dog.name||'Unknown dog')}</div>
+        <div class="post-dog-name" ${avatarClick}>${escHtml(dog.name||'Unknown dog')}</div>
         <div class="post-owner">${escHtml(dog.neighborhood||'')}</div>
       </div>
       <div class="post-time">${formatTimeAgo(p.created_at)}</div>
@@ -1101,50 +2542,39 @@ function renderPost(p, isLiked=false) {
     <div class="post-body">${escHtml(p.content)}</div>
     ${tagHtml?`<div>${tagHtml}</div>`:''}
     <div class="post-actions">
-      <button class="action-btn ${isLiked?'liked':''}" id="like-btn-${p.id}" onclick="toggleLike('${p.id}',this)">
+      <button class="action-btn ${p.liked?'liked':''}" id="like-btn-${p.id}" onclick="toggleLike('${p.id}',this)">
         <i class="ti ti-heart"></i> <span id="likes-${p.id}">${p.likes||0}</span>
       </button>
+      <button class="action-btn" onclick="toggleComments('${p.id}','${p.user_id}')">
+        <i class="ti ti-message-2"></i> <span id="comment-count-${p.id}">💬</span>
+      </button>
+      ${!isOwn?`<button class="action-btn" onclick="openDogProfile('${p.user_id}')"><i class="ti ti-paw"></i> Profile</button>`:''}
       ${!isOwn?`<button class="action-btn" onclick="startChat('${p.user_id}','${dog.name||''}','${dog.emoji||'🐶'}','${dog.photo_url||''}')"><i class="ti ti-message-circle"></i> Message</button>`:''}
       ${isOwn?`<button class="action-btn" style="margin-left:auto;color:var(--coral)" onclick="deletePost('${p.id}')"><i class="ti ti-trash"></i> Delete</button>`:''}
     </div>
+    <div class="comments-section" id="comments-${p.id}" style="display:none"></div>
   </div>`;
 }
 
 function tagLabel(tag) {
-  return {park:'🌳 Park visit',playdate:'📅 Playdate',sitting:'💙 Sitting offer'}[tag]||tag;
+  return {park:'🌳 Park visit',playdate:'📅 Playdate',sitting:'💙 Sitting offer',sitting_need:'🙏 Needs a sitter'}[tag]||tag;
 }
 
 async function toggleLike(postId, btn) {
-  // Prevent double-clicking while request is in flight
-  if (btn.disabled) return;
-  btn.disabled = true;
-
   const sp = document.getElementById('likes-'+postId);
   const cur = parseInt(sp.textContent)||0;
   const liked = btn.classList.contains('liked');
-
-  if (liked) {
-    // Unlike — delete from post_likes
-    const { error } = await sb.from('post_likes').delete()
-      .eq('post_id', postId).eq('user_id', currentUser.id);
-    if (!error) {
-      btn.classList.remove('liked');
-      sp.textContent = Math.max(0, cur - 1);
-      await sb.from('posts').update({ likes: Math.max(0, cur - 1) }).eq('id', postId);
-    }
-  } else {
-    // Like — insert into post_likes (UNIQUE constraint prevents duplicates)
-    const { error } = await sb.from('post_likes').insert({
-      post_id: postId, user_id: currentUser.id
-    });
-    if (!error) {
-      btn.classList.add('liked');
-      sp.textContent = cur + 1;
-      await sb.from('posts').update({ likes: cur + 1 }).eq('id', postId);
-    }
+  // Optimistic update immediately
+  btn.classList.toggle('liked', !liked);
+  sp.textContent = liked ? Math.max(0, cur-1) : cur+1;
+  // Then persist
+  const {error} = await sb.from('posts').update({likes: liked ? Math.max(0,cur-1) : cur+1}).eq('id',postId);
+  if (error) {
+    // Revert on error
+    btn.classList.toggle('liked', liked);
+    sp.textContent = cur;
+    showToast('Could not update like');
   }
-
-  btn.disabled = false;
 }
 
 async function deletePost(postId) {
@@ -1155,24 +2585,6 @@ async function deletePost(postId) {
 }
 
 // ---- NEARBY DOGS ----
-async function loadNearbyDogs() {
-  const container = document.getElementById('nearby-dogs');
-  const { data } = await sb.from('dogs').select('*').eq('neighborhood',myDog.neighborhood).neq('user_id',currentUser.id).limit(6);
-  if (!data||data.length===0) {
-    container.innerHTML='<div style="font-size:12px;color:var(--text-soft);padding:8px 0;font-weight:600">No other dogs yet. Invite neighbors!</div>';
-    return;
-  }
-  container.innerHTML = data.map(d => `
-    <div class="dog-nearby">
-      ${dogAvatar(d,40,20)}
-      <div class="dog-info">
-        <div class="dog-name-small">${escHtml(d.name)}</div>
-        <div class="dog-breed-small">${escHtml(d.breed||'')}</div>
-      </div>
-      <button class="follow-btn" onclick="startChat('${d.user_id}','${d.name}','${d.emoji||'🐶'}','${d.photo_url||''}')">Chat</button>
-    </div>`).join('');
-}
-
 // ---- PARK VISITS ----
 function setDefaultVisitDate() {
   const d = new Date();
@@ -1216,7 +2628,7 @@ async function loadUpcomingVisits() {
       <div style="font-size:10px;font-weight:800;color:${isOwn?'var(--amber)':'var(--grass)'};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">${isOwn?'You':'Neighbor'}</div>
       <div class="upcoming-park-name">${escHtml(v.park_name)}</div>
       <div class="upcoming-time-row"><i class="ti ti-clock"></i> ${formatVisitDate(v.visit_date,v.visit_time)}</div>
-      <div style="display:flex;align-items:center;gap:6px">${dogAvatar(dog,28,14)}<span style="font-size:12px;font-weight:700;color:var(--text-mid)">${escHtml(dog.name||'')}</span></div>
+      <div style="display:flex;align-items:center;gap:6px">${dogAvatar(dog,28,14,isOwn?'':v.user_id)}<span style="font-size:12px;font-weight:700;color:var(--text-mid);cursor:${isOwn?'default':'pointer'}" ${!isOwn?`onclick="openDogProfile('${v.user_id}')"`:''}>${escHtml(dog.name||'')}</span></div>
       ${v.note?`<div style="font-size:11px;color:var(--text-soft);font-weight:600;margin-top:4px">"${escHtml(v.note)}"</div>`:''}
       ${!isOwn?`<div class="upcoming-going"><button class="join-btn" style="margin-left:0;margin-top:8px" onclick="startChat('${v.user_id}','${dog.name||''}','${dog.emoji||'🐶'}','${dog.photo_url||''}')">Message</button></div>`:`<button class="post-btn" style="margin-top:8px;background:var(--coral);font-size:11px;padding:4px 12px" onclick="deleteVisit('${v.id}')">Cancel</button>`}
     </div>`;
@@ -1230,18 +2642,19 @@ async function deleteVisit(id) {
 
 async function loadTodayVisits() {
   const today=new Date().toISOString().split('T')[0];
-  const {data}=await sb.from('park_visits').select('*,dogs(name,emoji,photo_url)').eq('neighborhood',myDog.neighborhood).eq('visit_date',today).order('visit_time').limit(5);
+  const {data}=await sb.from('park_visits').select('*,dogs(name,emoji,photo_url,user_id)').eq('neighborhood',myDog.neighborhood).eq('visit_date',today).order('visit_time').limit(5);
   const container=document.getElementById('today-visits');
   if (!data||data.length===0){container.innerHTML='<div style="font-size:12px;color:var(--text-soft);font-weight:600;padding:8px 0">No visits today yet!</div>';return;}
   container.innerHTML=data.map(v=>{
     const dog=v.dogs||{};
+    const isOwn=v.user_id===currentUser.id;
     return `<div class="park-visit-card">
       <div class="park-visit-header">
         <i class="ti ti-trees" style="font-size:16px;color:var(--grass)"></i>
         <span class="pv-park-name">${escHtml(v.park_name)}</span>
         <span class="pv-time">${formatTime(v.visit_time)}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:6px">${dogAvatar(dog,24,13)}<span style="font-size:12px;font-weight:700;color:var(--text-mid)">${escHtml(dog.name||'')}</span></div>
+      <div style="display:flex;align-items:center;gap:6px">${dogAvatar(dog,24,13,isOwn?'':v.user_id)}<span style="font-size:12px;font-weight:700;color:var(--text-mid)">${escHtml(dog.name||'')}</span></div>
     </div>`;
   }).join('');
 }
@@ -1273,12 +2686,15 @@ async function loadSitting() {
   if (!data||data.length===0){container.innerHTML='<div class="sitting-card" style="grid-column:1/-1"><div class="empty-state" style="padding:20px"><div class="big-icon">💙</div><p>No sitters yet in your city!</p></div></div>';return;}
   container.innerHTML=data.map(d=>`
     <div class="sitting-card">
-      <div class="sitting-header">
-        ${dogAvatar(d,46,22)}
-        <div><div style="font-size:14px;font-weight:800;color:var(--text)">${escHtml(d.name)}'s owner</div><div style="font-size:11px;color:var(--text-soft);font-weight:600">${escHtml(d.neighborhood||'')}</div></div>
+      <div class="sitting-header" onclick="openDogProfile('${d.user_id}')" style="cursor:pointer">
+        ${dogAvatar(d,46,22,d.user_id)}
+        <div><div style="font-size:14px;font-weight:800;color:var(--text)">${escHtml(d.name)}</div><div style="font-size:11px;color:var(--text-soft);font-weight:600">${escHtml(d.neighborhood||'')}</div></div>
       </div>
       <div class="sitting-details">${escHtml(d.breed||'')} · ${escHtml(d.age||'')} · Energy: ${escHtml(d.energy||'')}</div>
-      <button class="request-btn" onclick="startChat('${d.user_id}','${d.name}','${d.emoji||'🐶'}','${d.photo_url||''}')">Message about sitting</button>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="request-btn" onclick="openDogProfile('${d.user_id}')">View profile</button>
+        <button class="request-btn" style="background:var(--sky-pale);color:var(--sky);border-color:var(--sky)" onclick="startChat('${d.user_id}','${d.name}','${d.emoji||'🐶'}','${d.photo_url||''}')">Message</button>
+      </div>
     </div>`).join('');
 }
 
@@ -1295,7 +2711,7 @@ async function toggleSitting() {
 async function postSittingNeed() {
   const text=document.getElementById('sitting-need-text').value.trim();
   if (!text) return showToast('Describe when you need sitting');
-  await sb.from('posts').insert({user_id:currentUser.id,dog_id:myDog.id,content:text,tag:'sitting',neighborhood:myDog.neighborhood});
+  await sb.from('posts').insert({user_id:currentUser.id,dog_id:myDog.id,content:text,tag:'sitting_need',neighborhood:myDog.neighborhood});
   document.getElementById('sitting-need-text').value='';
   showToast('Posted! 💙'); loadFeed();
 }
@@ -1303,61 +2719,80 @@ async function postSittingNeed() {
 // ---- FRIENDS ----
 async function loadFriends() {
   const container=document.getElementById('friends-grid');
+  container.innerHTML = skelGrid(6);
   const {data}=await sb.from('dogs').select('*').eq('neighborhood',myDog.neighborhood).neq('user_id',currentUser.id);
   if (!data||data.length===0){container.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="big-icon">🐶</div><p>No other dogs yet! Invite neighbors.</p></div>';return;}
   container.innerHTML=data.map(d=>`
-    <div class="friend-card" onclick="startChat('${d.user_id}','${d.name}','${d.emoji||'🐶'}','${d.photo_url||''}')">
+    <div class="friend-card" onclick="openDogProfile('${d.user_id}')">
       ${d.photo_url
         ? `<img src="${escHtml(d.photo_url)}" class="friend-dog-img" />`
         : `<div style="font-size:40px;margin-bottom:8px">${d.emoji||'🐶'}</div>`}
       <div style="font-size:14px;font-weight:800;color:var(--text)">${escHtml(d.name)}</div>
       <div style="font-size:11px;color:var(--text-soft);font-weight:600;margin-bottom:6px">${escHtml(d.breed||'')}${d.age?` · ${escHtml(d.age)}`:''}</div>
       ${d.can_sit?'<span class="badge badge-sitter">💙 Can sit</span>':''}
-      <div style="margin-top:8px;font-size:11px;color:var(--sky);font-weight:700">Tap to chat →</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--sky);font-weight:700">View profile →</div>
     </div>`).join('');
 }
 
 // ---- MESSAGES ----
-async function loadConversations() {
+async function loadConversations(pendingUserId='', pendingName='', pendingEmoji='🐶', pendingPhoto='') {
   const container=document.getElementById('convo-list');
+  container.innerHTML = skelConvo(4);
   const {data}=await sb.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at',{ascending:false});
-  if (!data||data.length===0){container.innerHTML='<div style="padding:16px;font-size:12px;color:var(--text-soft);font-weight:600">No messages yet. Chat from Friends!</div>';return;}
   const convos={};
-  data.forEach(m=>{
+  (data||[]).forEach(m=>{
     const pid=m.sender_id===currentUser.id?m.receiver_id:m.sender_id;
     if (!convos[pid]) convos[pid]={lastMsg:m,pid,name:m.sender_id===currentUser.id?m.receiver_name:m.sender_name,emoji:m.sender_id===currentUser.id?m.receiver_emoji:m.sender_emoji,photo:m.sender_id===currentUser.id?m.receiver_photo:m.sender_photo};
   });
-  container.innerHTML=Object.values(convos).map(c=>`
-    <div class="convo-item ${currentConvoUserId===c.pid?'active':''}" onclick="openChat('${c.pid}','${c.name||''}','${c.emoji||'🐶'}','${c.photo||''}')">
-      ${c.photo?`<img src="${escHtml(c.photo)}" class="convo-avatar" style="object-fit:cover" />`:`<div class="convo-avatar">${c.emoji||'🐶'}</div>`}
+  // Add pending new convo at top if not already present
+  if (pendingUserId && !convos[pendingUserId]) {
+    convos[pendingUserId] = { pid: pendingUserId, name: pendingName, emoji: pendingEmoji, photo: pendingPhoto, lastMsg: { content: 'New conversation' } };
+  }
+  const list = Object.values(convos);
+  if (!list.length){container.innerHTML='<div style="padding:16px;font-size:12px;color:var(--text-soft);font-weight:600">No messages yet. Find a dog and say hi! 👋</div>';return;}
+  container.innerHTML=list.map(c=>`
+    <div class="convo-item ${currentConvoUserId===c.pid?'active':''}" onclick="openChat('${c.pid}','${escHtml(c.name||'')}','${c.emoji||'🐶'}','${c.photo||''}')">
+      ${c.photo
+        ? `<img src="${escHtml(c.photo)}" class="convo-avatar" style="object-fit:cover;cursor:pointer" onclick="event.stopPropagation();openDogProfile('${c.pid}')" />`
+        : `<div class="convo-avatar" style="cursor:pointer" onclick="event.stopPropagation();openDogProfile('${c.pid}')">${c.emoji||'🐶'}</div>`}
       <div class="convo-info">
         <div class="convo-name">${escHtml(c.name||'Neighbor')}</div>
-        <div class="convo-preview">${escHtml(c.lastMsg.content||'')}</div>
+        <div class="convo-preview">${escHtml(c.lastMsg?.content||'')}</div>
       </div>
     </div>`).join('');
 }
 
 async function startChat(userId,dogName,emoji,photo='') {
-  // Find messages page nav item
   const navItems=document.querySelectorAll('.nav-item');
   let msgNav=null;
   navItems.forEach(n=>{if(n.textContent.includes('Messages'))msgNav=n;});
   showPage('messages',msgNav);
+  await loadConversations(userId, dogName, emoji, photo);
   await openChat(userId,dogName,emoji,photo);
 }
 
 async function openChat(userId,dogName,emoji,photo='') {
   currentConvoUserId=userId;
   const panel=document.getElementById('chat-panel');
-  const avatarHtml=photo?`<img src="${escHtml(photo)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover" />`:`<div style="font-size:24px">${emoji}</div>`;
+  const avatarHtml=photo
+    ? `<img src="${escHtml(photo)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;cursor:pointer" onclick="openDogProfile('${userId}')" />`
+    : `<div style="font-size:24px;cursor:pointer" onclick="openDogProfile('${userId}')">${emoji}</div>`;
   panel.innerHTML=`
-    <div class="chat-header">${avatarHtml}<div><div style="font-size:14px;font-weight:800;color:var(--text)">${escHtml(dogName)}'s owner</div></div></div>
+    <div class="chat-header">${avatarHtml}<div style="cursor:pointer" onclick="openDogProfile('${userId}')"><div style="font-size:14px;font-weight:800;color:var(--text)">${escHtml(dogName)}</div><div style="font-size:11px;color:var(--text-soft);font-weight:600" id="chat-last-seen">…</div></div></div>
     <div class="chat-messages" id="chat-messages"><div class="loading"><div class="spinner"></div></div></div>
     <div class="chat-input-row">
       <input class="chat-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMessage('${userId}','${dogName}','${emoji}','${photo}')" />
       <button class="chat-send-btn" onclick="sendMessage('${userId}','${dogName}','${emoji}','${photo}')"><i class="ti ti-send" style="font-size:16px"></i></button>
     </div>`;
   await loadMessages(userId);
+  // Load last seen for chat header
+  loadPresence([userId]).then(map => {
+    const el = document.getElementById('chat-last-seen');
+    if (el) {
+      el.textContent = formatLastSeen(map[userId]);
+      el.style.color = isOnline(map[userId]) ? '#22c55e' : 'var(--text-soft)';
+    }
+  });
 }
 
 async function loadMessages(userId) {
@@ -1384,6 +2819,7 @@ async function sendMessage(toUserId,dogName,emoji,photo='') {
     sender_name:myDog?.name||'',sender_emoji:myDog?.emoji||'🐶',sender_photo:myDog?.photo_url||'',
     receiver_name:dogName,receiver_emoji:emoji,receiver_photo:photo
   });
+  await createNotification(toUserId, 'message', `New message from ${myDog?.name||'a neighbor'}! 💬`);
   await loadMessages(toUserId);
 }
 
@@ -1391,8 +2827,13 @@ function subscribeToMessages() {
   sb.channel('messages').on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},payload=>{
     const m=payload.new;
     if (m.receiver_id===currentUser.id) {
-      if (currentConvoUserId===m.sender_id) loadMessages(m.sender_id);
-      else { document.getElementById('msg-badge').style.display='inline'; showToast('New message from '+(m.sender_name||'a neighbor')+'! 💬'); }
+      if (currentConvoUserId===m.sender_id) {
+        loadMessages(m.sender_id);
+      } else {
+        document.getElementById('msg-badge').style.display='inline';
+        showToast('New message from '+(m.sender_name||'a neighbor')+'! 💬');
+        loadNotifications(); // update bell dot
+      }
     }
   }).subscribe();
 }
@@ -1406,7 +2847,26 @@ async function loadMyProfile() {
   document.getElementById('profile-neighborhood').textContent=myDog.neighborhood||'';
   document.getElementById('profile-energy').textContent=myDog.energy||'—';
   document.getElementById('profile-sitting').textContent=myDog.can_sit?'Available ✓':'Not available';
-  document.getElementById('profile-badges').innerHTML=(myDog.can_sit?'<span class="badge badge-sitter">💙 Can sit</span>':'')+'<span class="badge badge-park">🌳 Park lover</span>';
+  document.getElementById('profile-badges').innerHTML=(myDog.can_sit?'<span class="badge badge-sitter">💙 Can sit</span>':'');
+
+  // New fields — show row only if value exists
+  function setInfoRow(rowId, valId, val) {
+    const row = document.getElementById(rowId);
+    const el = document.getElementById(valId);
+    if (val) { el.textContent = val; row.style.display = 'flex'; }
+    else { row.style.display = 'none'; }
+  }
+  if (myDog.gotcha_date) {
+    const d = new Date(myDog.gotcha_date);
+    const label = d.toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+    setInfoRow('profile-gotcha-row','profile-gotcha', '🎂 ' + label);
+  } else { document.getElementById('profile-gotcha-row').style.display='none'; }
+  setInfoRow('profile-activities-row','profile-activities', myDog.favorite_activities);
+  setInfoRow('profile-likes-row','profile-likes', myDog.likes);
+  setInfoRow('profile-dislikes-row','profile-dislikes', myDog.dislikes);
+  setInfoRow('profile-personality-row','profile-personality', myDog.personality);
+  setInfoRow('profile-fav-treat-row','profile-fav-treat', myDog.fav_treat);
+  setInfoRow('profile-bio-row','profile-bio', myDog.bio);
 
   const [{count:pc},{count:vc},{count:fc}]=await Promise.all([
     sb.from('posts').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id),
@@ -1417,11 +2877,13 @@ async function loadMyProfile() {
   document.getElementById('stat-visits').textContent=vc||0;
   document.getElementById('stat-friends').textContent=fc||0;
 
+  loadGallery(myDog.id, 'my-gallery', true);
+
   const {data:posts}=await sb.from('posts').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(10);
   const el=document.getElementById('my-posts');
   if (!posts||posts.length===0){el.innerHTML='<div class="empty-state"><div class="big-icon">📝</div><p>No posts yet!</p></div>';return;}
   el.innerHTML=posts.map(p=>`
-    <div class="card">
+    <div class="feed-post">
       <div class="post-header">
         ${dogAvatar(myDog,42,22)}
         <div class="post-meta"><div class="post-dog-name">${escHtml(myDog.name)}</div></div>
@@ -1436,6 +2898,199 @@ async function loadMyProfile() {
     </div>`).join('');
 }
 
+// ---- EDIT PROFILE ----
+let editEmoji = '🐶', editEnergy = 'Low', editCanSit = 'yes';
+
+function openEditProfile() {
+  if (!myDog) return;
+  editEmoji = myDog.emoji || '🐶';
+  editEnergy = myDog.energy || 'Low';
+  editCanSit = myDog.can_sit ? 'yes' : 'no';
+
+  document.getElementById('edit-name').value = myDog.name || '';
+  document.getElementById('edit-breed').value = myDog.breed || '';
+  document.getElementById('edit-age').value = myDog.age || '';
+  document.getElementById('edit-city').value = myDog.neighborhood || '';
+  document.getElementById('edit-gotcha').value = myDog.gotcha_date || '';
+  document.getElementById('edit-activities').value = myDog.favorite_activities || '';
+  document.getElementById('edit-likes').value = myDog.likes || '';
+  document.getElementById('edit-dislikes').value = myDog.dislikes || '';
+  document.getElementById('edit-personality').value = myDog.personality || '';
+  document.getElementById('edit-fav-treat').value = myDog.fav_treat || '';
+  document.getElementById('edit-bio').value = myDog.bio || '';
+
+  // Set emoji selection
+  document.querySelectorAll('#edit-emoji-picker .emoji-opt').forEach(el =>
+    el.classList.toggle('selected', el.dataset.emoji === editEmoji)
+  );
+  // Set energy selection
+  document.querySelectorAll('#edit-energy-opts .energy-opt').forEach(el =>
+    el.classList.toggle('selected', el.dataset.val === editEnergy)
+  );
+  // Set sitting selection
+  document.querySelectorAll('#edit-sitting-opts .energy-opt').forEach(el =>
+    el.classList.toggle('selected', el.dataset.val === editCanSit)
+  );
+
+  document.getElementById('edit-profile-error').style.display = 'none';
+  const modal = document.getElementById('edit-profile-modal');
+  modal.style.display = 'flex';
+  modal.scrollTop = 0;
+}
+
+function closeEditProfile() {
+  document.getElementById('edit-profile-modal').style.display = 'none';
+}
+
+function pickEditEmoji(el) {
+  document.querySelectorAll('#edit-emoji-picker .emoji-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected'); editEmoji = el.dataset.emoji;
+}
+function pickEditEnergy(el) {
+  document.querySelectorAll('#edit-energy-opts .energy-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected'); editEnergy = el.dataset.val;
+}
+function pickEditSitting(el) {
+  document.querySelectorAll('#edit-sitting-opts .energy-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected'); editCanSit = el.dataset.val;
+}
+
+async function saveEditProfile() {
+  const name = document.getElementById('edit-name').value.trim();
+  const breed = document.getElementById('edit-breed').value.trim();
+  const age = document.getElementById('edit-age').value.trim();
+  const city = document.getElementById('edit-city').value.trim();
+  const errEl = document.getElementById('edit-profile-error');
+
+  if (!name || !breed) { errEl.textContent = 'Name and breed are required'; errEl.style.display = 'block'; return; }
+  if (city && !validateCityState(city)) { errEl.textContent = 'Please select a city from the dropdown'; errEl.style.display = 'block'; return; }
+
+  const btn = document.getElementById('edit-save-btn');
+  btnLoad(btn, 'Saving…');
+
+  const updates = {
+    name, breed, age,
+    emoji: editEmoji,
+    energy: editEnergy,
+    can_sit: editCanSit === 'yes',
+    neighborhood: city || myDog.neighborhood,
+    gotcha_date: document.getElementById('edit-gotcha').value || null,
+    favorite_activities: document.getElementById('edit-activities').value.trim() || null,
+    likes: document.getElementById('edit-likes').value.trim() || null,
+    dislikes: document.getElementById('edit-dislikes').value.trim() || null,
+    personality: document.getElementById('edit-personality').value.trim() || null,
+    fav_treat: document.getElementById('edit-fav-treat').value.trim() || null,
+    bio: document.getElementById('edit-bio').value.trim() || null,
+  };
+
+  const { data, error } = await sb.from('dogs').update(updates).eq('id', myDog.id).select().single();
+  btnDone(btn, 'Save changes 🐾');
+
+  if (error) { errEl.textContent = 'Error saving: ' + error.message; errEl.style.display = 'block'; return; }
+  myDog = data;
+
+  // Propagate name changes to playdates
+  if (updates.name !== myDog.name) {
+    await Promise.all([
+      sb.from('playdates').update({ requester_dog_name: updates.name }).eq('requester_id', currentUser.id),
+      sb.from('playdates').update({ receiver_dog_name: updates.name }).eq('receiver_id', currentUser.id),
+    ]);
+  }
+
+  closeEditProfile();
+  loadMyProfile();
+  showToast('Profile updated! 🐾');
+}
+
+// Close edit modal on backdrop click
+document.getElementById('edit-profile-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeEditProfile();
+});
+
+// ---- SKELETON SCREENS ----
+function skelPost() {
+  return `<div class="skel-post">
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <div class="skeleton skel-avatar"></div>
+      <div style="flex:1;padding-top:4px">
+        <div class="skeleton skel-line short" style="margin-bottom:8px"></div>
+        <div class="skeleton skel-line med"></div>
+      </div>
+    </div>
+    <div class="skeleton skel-line long" style="margin-bottom:6px"></div>
+    <div class="skeleton skel-line med"></div>
+  </div>`;
+}
+
+function skelFeed(n=4) { return Array(n).fill(skelPost()).join(''); }
+
+function skelCard(lines=2) {
+  return `<div class="skel-card">
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+      <div class="skeleton skel-avatar" style="width:44px;height:44px"></div>
+      <div style="flex:1">
+        <div class="skeleton skel-line short" style="margin-bottom:6px"></div>
+        <div class="skeleton skel-line med"></div>
+      </div>
+    </div>
+    ${Array(lines).fill(`<div class="skeleton skel-line full" style="margin-bottom:6px"></div>`).join('')}
+  </div>`;
+}
+
+function skelGrid(n=6) {
+  return `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px">
+    ${Array(n).fill(`<div class="skel-card" style="text-align:center">
+      <div class="skeleton skel-circle" style="width:64px;height:64px;margin:0 auto 8px"></div>
+      <div class="skeleton skel-line med" style="margin:0 auto 6px"></div>
+      <div class="skeleton skel-line short" style="margin:0 auto"></div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function skelConvo(n=4) {
+  return Array(n).fill(`<div style="display:flex;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border)">
+    <div class="skeleton skel-avatar" style="width:40px;height:40px"></div>
+    <div style="flex:1;padding-top:4px">
+      <div class="skeleton skel-line short" style="margin-bottom:6px"></div>
+      <div class="skeleton skel-line med"></div>
+    </div>
+  </div>`).join('');
+}
+
+// ---- BUTTON LOADING HELPERS ----
+function btnLoad(btn, text='') {
+  btn.disabled = true;
+  btn._origText = btn.innerHTML;
+  if (text) btn.innerHTML = `<div class="spinner spinner-sm"></div>${text}`;
+  else btn.classList.add('btn-loading');
+}
+
+function btnDone(btn, text='') {
+  btn.disabled = false;
+  btn.classList.remove('btn-loading','btn-loading-dark');
+  if (btn._origText) { btn.innerHTML = btn._origText; btn._origText = null; }
+  if (text) btn.textContent = text;
+}
+
+// ---- PULL TO REFRESH ----
+function initPullToRefresh() {
+  const feedCol = document.querySelector('.feed-col');
+  if (!feedCol) return;
+  let startY = 0, pulling = false;
+  const indicator = document.getElementById('pull-indicator');
+  feedCol.addEventListener('touchstart', e => { if (feedCol.scrollTop === 0) startY = e.touches[0].clientY; }, { passive: true });
+  feedCol.addEventListener('touchmove', e => {
+    if (!startY) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 60) { pulling = true; if (indicator) indicator.classList.add('visible'); }
+  }, { passive: true });
+  feedCol.addEventListener('touchend', () => {
+    if (pulling) { loadFeed(); showToast('Feed refreshed 🐾'); }
+    pulling = false; startY = 0;
+    if (indicator) indicator.classList.remove('visible');
+  });
+}
+
 // ---- UTILS ----
 function escHtml(str){if(!str)return'';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function formatTimeAgo(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago'}
@@ -1448,9 +3103,22 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 let isGuest = false;
 
 function showAuthModal(tab='signup') {
-  document.getElementById('auth-modal').style.display = 'flex';
-  switchTab(tab);
-  document.getElementById('auth-error').style.display = 'none';
+  if (isGuest) {
+    // Take guest back to the main auth screen with the right tab selected
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+    // Reset form visibility manually to avoid cross-contamination with modal forms
+    document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
+    document.querySelectorAll('#auth-screen .auth-tab').forEach((t, i) =>
+      t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'signup'))
+    );
+    document.getElementById('auth-error').style.display = 'none';
+  } else {
+    document.getElementById('auth-modal').style.display = 'flex';
+    switchTab(tab);
+    document.getElementById('auth-error').style.display = 'none';
+  }
 }
 
 function closeAuthModal(e, force=false) {
@@ -1475,15 +3143,18 @@ function browseAsGuest() {
     <div style="background:var(--warm-white);border-radius:20px;padding:28px;width:100%;max-width:360px;box-shadow:var(--shadow-lg)">
       <div style="font-size:20px;font-weight:900;color:var(--text);margin-bottom:6px">Which city? 📍</div>
       <div style="font-size:13px;color:var(--text-soft);font-weight:600;margin-bottom:18px">We'll show you dogs and parks near you</div>
-      <input id="guest-city-input" class="form-input" type="text" placeholder="e.g. Boston, MA" oninput="formatCityState(this)" style="margin-bottom:12px" />
-      <div id="guest-city-error" style="font-size:12px;color:var(--coral);font-weight:700;margin-bottom:10px;display:none">Please use format: City, ST (e.g. Boston, MA)</div>
+      <div class="city-combo" id="city-combo-guest" style="margin-bottom:12px">
+        <input class="city-combo-input" id="guest-city-input" type="text" placeholder="Search your city…" autocomplete="off" oninput="cityComboInput('guest')" onkeydown="cityComboKey(event,'guest')" onfocus="cityComboInput('guest')" />
+        <div class="city-dropdown" id="city-dropdown-guest"></div>
+      </div>
+      <div id="guest-city-error" style="font-size:12px;color:var(--coral);font-weight:700;margin-bottom:10px;display:none">Please select a city from the list</div>
       <button onclick="enterAsGuest()" style="width:100%;background:var(--grass);color:white;border:none;padding:12px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">Browse 🐾</button>
       <div style="text-align:center;margin-top:12px">
         <span onclick="document.getElementById('guest-city-picker').remove()" style="font-size:12px;color:var(--text-soft);cursor:pointer;font-weight:700">← Back</span>
       </div>
     </div>`;
   document.body.appendChild(picker);
-  setTimeout(() => document.getElementById('guest-city-input').focus(), 100);
+  setTimeout(() => { const el = document.getElementById('guest-city-input'); if(el) el.focus(); }, 100);
 }
 
 function enterAsGuest() {
@@ -1535,7 +3206,7 @@ function enterAsGuest() {
 async function loadGuestFeed(neighborhood) {
   // Feed — same query as logged in users, filtered by neighborhood
   const container = document.getElementById('feed-posts');
-  container.innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
+  container.innerHTML = skelFeed(4);
   const {data} = await sb.from('posts')
     .select('*, dogs(name,emoji,neighborhood,breed,photo_url)')
     .eq('neighborhood', neighborhood)
@@ -1574,7 +3245,7 @@ async function loadGuestFeed(neighborhood) {
   if (dogs && dogs.length > 0) {
     nearbyEl.innerHTML = dogs.map(d => `
       <div class="dog-nearby">
-        ${dogAvatar(d,40,20)}
+        ${dogAvatar(d,40,20,d.user_id)}
         <div class="dog-info">
           <div class="dog-name-small">${escHtml(d.name)}</div>
           <div class="dog-breed-small">${escHtml(d.breed||'')}</div>
