@@ -175,6 +175,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .tag-park{background:var(--grass-pale);color:var(--grass)}
 .tag-playdate{background:var(--amber-pale);color:var(--amber)}
 .tag-sitting{background:var(--sky-pale);color:var(--sky)}
+.tag-question{background:var(--sky-pale);color:var(--sky)}
 .tag-sitting_need{background:var(--amber-pale);color:var(--amber)}
 .post-actions{display:flex;gap:4px;padding-top:8px;border-top:1px solid var(--border);margin-top:8px}
 .action-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:700;color:var(--text-soft);font-family:'Nunito',sans-serif;transition:all 0.15s}
@@ -403,11 +404,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .activity-text strong{color:var(--text);font-weight:800}
 .activity-time{font-size:11px;color:var(--text-soft);font-weight:600;white-space:nowrap}
 
-/* TIP OF THE DAY */
-.tip-card{background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0 12px;margin-bottom:4px}
-.tip-label{font-size:10px;font-weight:800;color:var(--sky);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px}
-.tip-text{font-size:12.5px;font-weight:600;color:var(--text-mid);line-height:1.5}
-
 /* MEMBER DIRECTORY */
 .directory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
 .directory-card{background:var(--warm-white);border:1px solid var(--border);border-radius:16px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.15s;box-shadow:var(--shadow)}
@@ -418,19 +414,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .directory-card-breed{font-size:11px;color:var(--text-soft);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .directory-card-badge{font-size:10px;font-weight:800;color:var(--sky);margin-top:4px}
 
-/* BULLETIN BOARD */
-.bulletin-filter-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border-mid);background:var(--cream);font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--text-mid);transition:all 0.15s}
-.bulletin-filter-btn.active{background:var(--grass);color:white;border-color:var(--grass)}
-.bulletin-item{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
-.bulletin-cat-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:800;margin-bottom:6px}
-.bcat-lost{background:#FEE2E2;color:#DC2626}
-.bcat-found{background:#D1FAE5;color:#065F46}
-.bcat-vet{background:var(--sky-pale);color:var(--sky)}
-.bcat-general{background:var(--amber-pale);color:var(--amber)}
-.bulletin-item-title{font-size:14px;font-weight:900;color:var(--text);margin-bottom:4px}
-.bulletin-item-body{font-size:12.5px;color:var(--text-mid);font-weight:600;margin-bottom:6px;line-height:1.5}
-.bulletin-item-footer{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-soft);font-weight:700}
-.bulletin-item-contact{background:var(--grass-pale);color:var(--grass);padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800}
 
 .dog-profile-modal{position:fixed;inset:0;background:rgba(44,26,14,0.5);z-index:160;display:flex;align-items:center;justify-content:center;padding:20px}
 .dog-profile-box{background:var(--warm-white);border-radius:24px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);overflow:hidden;max-height:90vh;overflow-y:auto;position:relative}
@@ -501,7 +484,7 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
 
 /* ---------- cards ---------- */
 .card,.today-schedule-box,.real-park-card,.sitting-card,.upcoming-visit,.friend-card,
-.directory-card,.bulletin-item,.playdate-inbox-item{
+.directory-card,.playdate-inbox-item{
   background:var(--warm-white);border:none;border-radius:var(--r-card);box-shadow:var(--shadow);
 }
 .section-header{font-size:12px;font-weight:800;color:var(--text-soft);letter-spacing:0.4px}
@@ -535,22 +518,9 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
 .action-btn:hover{background:transparent;color:var(--grass)}
 .post-tag{padding:3px 10px;font-size:11px;font-weight:800}
 .comment-bubble{border-radius:14px;background:var(--cream)}
-.tip-card,.activity-card{background:var(--warm-white);border:none;border-radius:var(--r-card);
+.activity-card{background:var(--warm-white);border:none;border-radius:var(--r-card);
   box-shadow:var(--shadow);padding:13px 16px;margin-bottom:12px}
 .activity-card:last-of-type{border-bottom:none}
-
-/* ---------- filter chip row (from mobile design) ---------- */
-.chip-row{display:flex;gap:8px;overflow-x:auto;padding:0 0 14px;scrollbar-width:none}
-.chip-row::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r-pill);
-  font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;border:1.5px solid var(--border-mid);
-  background:var(--warm-white);color:var(--text-mid);transition:all 0.15s;font-family:'Nunito',sans-serif}
-.chip .ti{font-size:15px}
-.chip.active{color:#fff}
-.chip[data-tag="park"].active{background:var(--grass);border-color:var(--grass)}
-.chip[data-tag="playdate"].active{background:var(--amber);border-color:var(--amber)}
-.chip[data-tag="sitting"].active{background:var(--coral);border-color:var(--coral)}
-.chip[data-tag="sitting_need"].active{background:var(--sky);border-color:var(--sky)}
 
 /* ---------- segmented switch (List / Map) ---------- */
 .mode-switch{display:flex;background:var(--sand);border-radius:var(--r-pill);padding:4px;margin-bottom:14px}
@@ -606,12 +576,10 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
 .settings-row .settings-label{flex:1;font-weight:800;font-size:14px;color:var(--text)}
 .settings-row .ti-chevron-right{font-size:17px;color:var(--text-faint)}
 
-/* ---------- bulletin / misc pills ---------- */
-.bulletin-filter-btn{border-radius:var(--r-pill);border:1.5px solid var(--border-mid);background:var(--warm-white)}
-.bulletin-filter-btn.active{background:var(--grass);border-color:var(--grass)}
+/* ---------- misc pills ---------- */
 .energy-opt,.emoji-opt{border-color:var(--border-mid);border-radius:14px}
 .energy-opt:hover,.energy-opt.selected,.emoji-opt:hover,.emoji-opt.selected{border-color:var(--grass);background:var(--grass-pale);color:var(--grass)}
-.avail-pill,.bulletin-item-contact{border-radius:var(--r-pill)}
+.avail-pill{border-radius:var(--r-pill)}
 
 /* ---------- guest banner (was unstyled) ---------- */
 .guest-banner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 20px;
@@ -695,7 +663,7 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
 }
 @media(min-width:769px){
   .chat-back-btn{display:none!important}
-  .feed-col,.chip-row{margin-left:auto;margin-right:auto}
+  .feed-col{margin-left:auto;margin-right:auto}
 }
 .chat-back-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--sand);
   align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
@@ -823,6 +791,7 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
       </div>
     </div>
 
+    <div class="form-group"><label class="form-label">Your name</label><input class="form-input" id="ob-owner-name" type="text" placeholder="e.g. Sarah M." /></div>
     <div class="form-group"><label class="form-label">Dog's name</label><input class="form-input" id="ob-name" type="text" placeholder="e.g. Biscuit" /></div>
     <div class="form-group"><label class="form-label">Breed</label><input class="form-input" id="ob-breed" type="text" placeholder="e.g. Golden Retriever" /></div>
     <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="ob-age" type="text" placeholder="e.g. 3 years" /></div>
@@ -884,7 +853,6 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
     <div class="nav-item" id="nav-sitting" onclick="guestNavClick(this,'sitting')"><i class="ti ti-heart"></i> Dog Sitting</div>
     <div class="nav-item" onclick="showPage('friends',this)"><i class="ti ti-users"></i> Friends</div>
     <div class="nav-item" onclick="showPage('directory',this)"><i class="ti ti-address-book"></i> Member Directory</div>
-    <div class="nav-item" onclick="showPage('bulletin',this)"><i class="ti ti-clipboard-list"></i> Bulletin Board</div>
     <div class="nav-item" id="nav-playdates" onclick="guestNavClick(this,'playdates')"><i class="ti ti-calendar-event"></i> Playdates <span class="nav-badge" id="playdate-badge" style="display:none">!</span></div>
     <div class="nav-item" id="nav-messages" onclick="guestNavClick(this,'messages')"><i class="ti ti-message-circle"></i> Messages <span class="nav-badge" id="msg-badge" style="display:none">!</span></div>
     <div class="nav-section" style="margin-top:8px">You</div>
@@ -946,13 +914,6 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
       <div class="feed-layout">
         <div class="feed-col">
           <div class="pull-indicator" id="pull-indicator">↓ Release to refresh</div>
-          <!-- CATEGORY FILTER CHIPS -->
-          <div class="chip-row" id="feed-filter-chips">
-            <button class="chip" data-tag="park" onclick="setFeedFilter('park')"><i class="ti ti-trees"></i> Park</button>
-            <button class="chip" data-tag="playdate" onclick="setFeedFilter('playdate')"><i class="ti ti-calendar"></i> Playdate</button>
-            <button class="chip" data-tag="sitting" onclick="setFeedFilter('sitting')"><i class="ti ti-heart"></i> Sitting</button>
-            <button class="chip" data-tag="sitting_need" onclick="setFeedFilter('sitting_need')"><i class="ti ti-help"></i> Needs a sitter</button>
-          </div>
           <div class="compose-box" id="compose-box-wrap" style="position:relative">
             <div class="compose-inner">
               <div id="compose-avatar-wrap" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;background:var(--bark-pale);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;"></div>
@@ -961,7 +922,7 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
             <div class="compose-actions">
               <button class="compose-tag-btn" id="tag-park-btn" onclick="toggleTag('park')"><i class="ti ti-trees"></i> Park visit</button>
               <button class="compose-tag-btn" id="tag-playdate-btn" onclick="toggleTag('playdate')"><i class="ti ti-calendar"></i> Playdate</button>
-              <button class="compose-tag-btn" id="tag-sitting-btn" onclick="toggleTag('sitting')"><i class="ti ti-heart"></i> Sitting offer</button>
+              <button class="compose-tag-btn" id="tag-question-btn" onclick="toggleTag('question')"><i class="ti ti-help"></i> Question</button>
               <button class="send-btn" onclick="submitPost()">Post 🐾</button>
             </div>
             <!-- Guest overlay -->
@@ -1052,37 +1013,6 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
         </div>
         <div id="dir-count" style="font-size:11px;color:var(--text-soft);font-weight:700;margin-bottom:14px"></div>
         <div class="directory-grid" id="directory-grid"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
-
-    <!-- BULLETIN BOARD -->
-    <div class="page" id="page-bulletin">
-      <div style="padding:16px 20px;max-width:720px">
-        <!-- Post form -->
-        <div class="card" style="margin-bottom:16px" id="bulletin-compose">
-          <div class="section-header" style="margin-bottom:12px"><i class="ti ti-pencil" style="font-size:14px"></i> Post to the board</div>
-          <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap" id="bulletin-category-opts">
-            <button class="energy-opt selected" data-cat="lost" onclick="pickBulletinCat(this)">🚨 Lost pet</button>
-            <button class="energy-opt" data-cat="found" onclick="pickBulletinCat(this)">🎉 Found pet</button>
-            <button class="energy-opt" data-cat="vet" onclick="pickBulletinCat(this)">🏥 Vet rec</button>
-            <button class="energy-opt" data-cat="general" onclick="pickBulletinCat(this)">📌 General</button>
-          </div>
-          <input class="form-input" id="bulletin-title" type="text" placeholder="Title (e.g. Lost golden retriever near Main St)" style="margin-bottom:8px" />
-          <textarea class="form-input" id="bulletin-body" rows="3" placeholder="Details…" style="resize:vertical;margin-bottom:8px"></textarea>
-          <input class="form-input" id="bulletin-contact" type="text" placeholder="Contact info (optional — phone, email, etc.)" style="margin-bottom:10px" />
-          <button class="post-btn" onclick="submitBulletin()">Post 📌</button>
-        </div>
-
-        <!-- Filter tabs -->
-        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap" id="bulletin-filter-btns">
-          <button class="bulletin-filter-btn active" data-cat="all" onclick="setBulletinFilter(this,'all')">All</button>
-          <button class="bulletin-filter-btn" data-cat="lost" onclick="setBulletinFilter(this,'lost')">🚨 Lost</button>
-          <button class="bulletin-filter-btn" data-cat="found" onclick="setBulletinFilter(this,'found')">🎉 Found</button>
-          <button class="bulletin-filter-btn" data-cat="vet" onclick="setBulletinFilter(this,'vet')">🏥 Vet recs</button>
-          <button class="bulletin-filter-btn" data-cat="general" onclick="setBulletinFilter(this,'general')">📌 General</button>
-        </div>
-
-        <div id="bulletin-list"><div class="loading"><div class="spinner"></div></div></div>
       </div>
     </div>
 
@@ -1201,7 +1131,6 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
   <button class="sheet-item" onclick="sheetNav('sitting')"><i class="ti ti-heart"></i><span class="sheet-label">Dog Sitting</span><i class="ti ti-chevron-right" style="color:var(--text-faint)"></i></button>
   <button class="sheet-item" onclick="sheetNav('playdates')"><i class="ti ti-calendar-event"></i><span class="sheet-label">Playdates</span><span class="nav-badge" id="sheet-playdate-badge" style="display:none">!</span><i class="ti ti-chevron-right" style="color:var(--text-faint)"></i></button>
   <button class="sheet-item" onclick="sheetNav('friends')"><i class="ti ti-users"></i><span class="sheet-label">Friends</span><i class="ti ti-chevron-right" style="color:var(--text-faint)"></i></button>
-  <button class="sheet-item" onclick="sheetNav('bulletin')"><i class="ti ti-clipboard-list"></i><span class="sheet-label">Bulletin Board</span><i class="ti ti-chevron-right" style="color:var(--text-faint)"></i></button>
 </div>
 
 <!-- PLAYDATE REQUEST MODAL -->
@@ -1278,6 +1207,7 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
     <div style="font-size:12px;color:var(--text-soft);font-weight:600;margin-bottom:20px">Keep your pup's profile fresh 🐾</div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group"><label class="form-label">Your name</label><input class="form-input" id="edit-owner-name" type="text" placeholder="e.g. Sarah M." /></div>
       <div class="form-group"><label class="form-label">Dog's name</label><input class="form-input" id="edit-name" type="text" /></div>
       <div class="form-group"><label class="form-label">Breed</label><input class="form-input" id="edit-breed" type="text" /></div>
       <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="edit-age" type="text" placeholder="e.g. 3 years" /></div>
@@ -1653,6 +1583,7 @@ function pickSitting(el) {
 }
 
 async function doOnboard() {
+  const ownerName = document.getElementById('ob-owner-name').value.trim();
   const name = document.getElementById('ob-name').value.trim();
   const breed = document.getElementById('ob-breed').value.trim();
   const age = document.getElementById('ob-age').value.trim();
@@ -1667,7 +1598,7 @@ async function doOnboard() {
     try { photo_url = await uploadPhoto(photoFile, currentUser.id); } catch(e) { showToast('Photo upload failed, continuing without it'); }
   }
   const { data, error } = await sb.from('dogs').insert({
-    user_id: currentUser.id, name, breed, age,
+    user_id: currentUser.id, name, breed, age, owner_name: ownerName || null,
     emoji: selectedEmoji, energy: selectedEnergy,
     can_sit: canSit === 'yes', neighborhood: hood, photo_url
   }).select().single();
@@ -1738,7 +1669,6 @@ function showPage(id, navEl) {
     sitting:['Dog Sitting','Free community sitting'],
     friends:['Friends','Dogs in your city'],
     directory:['Dogs','Every pup in your neighborhood'],
-    bulletin:['Bulletin Board','Lost pets, found items & local tips'],
     playdates:['Playdates','Meetup requests'],
     messages:['Messages','Chat with neighbors'],
     profile:[myDog ? myDog.name : 'My Profile', myDog ? `${myDog.breed||'Dog'} · ${myDog.age||''}`.trim() : 'My dog']
@@ -1758,7 +1688,6 @@ function showPage(id, navEl) {
   if (id === 'playdates') { loadPlaydates(); document.getElementById('playdate-badge').style.display='none'; setSheetBadge('playdates', false); }
   if (id === 'messages') { loadConversations(); document.getElementById('msg-badge').style.display='none'; document.getElementById('tab-msg-badge').style.display='none'; }
   if (id === 'directory') loadDirectory();
-  if (id === 'bulletin') loadBulletin();
 }
 
 // ---- BOTTOM TAB BAR + MORE SHEET (mobile) ----
@@ -2058,7 +1987,7 @@ async function openDogProfile(userId) {
 
   document.getElementById('dp-name').textContent = dog.name || 'Unknown pup';
   document.getElementById('dp-breed-age').textContent = [dog.breed, dog.age].filter(Boolean).join(' · ');
-  document.getElementById('dp-neighborhood').textContent = dog.neighborhood || '';
+  document.getElementById('dp-neighborhood').textContent = [dog.owner_name, dog.neighborhood].filter(Boolean).join(' · ');
   document.getElementById('dp-last-seen').textContent = '';
 
   // Load presence
@@ -2585,7 +2514,7 @@ async function loadDirectory() {
   const countEl = document.getElementById('dir-count');
   const cityLabel = document.getElementById('dir-city-label');
   grid.innerHTML = skelGrid(6);
-  const { data } = await sb.from('dogs').select('id,user_id,name,breed,age,emoji,photo_url,can_sit,neighborhood')
+  const { data } = await sb.from('dogs').select('id,user_id,name,owner_name,breed,age,emoji,photo_url,can_sit,neighborhood')
     .eq('neighborhood', myDog.neighborhood)
     .order('name');
   allDirectoryDogs = data || [];
@@ -2607,6 +2536,7 @@ function renderDirectory(dogs) {
         ? `<img src="${escHtml(d.photo_url)}" class="directory-card-avatar" />`
         : `<div class="directory-card-emoji">${d.emoji || '🐶'}</div>`}
       <div class="directory-card-name">${escHtml(d.name)}</div>
+      ${d.owner_name ? `<div class="directory-card-breed">${escHtml(d.owner_name)}</div>` : ''}
       <div class="directory-card-breed">${escHtml(d.breed || '')}${d.age ? ' · ' + escHtml(d.age) : ''}</div>
       ${d.can_sit ? '<div class="directory-card-badge">💙 Can sit</div>' : ''}
     </div>`).join('');
@@ -2619,127 +2549,6 @@ function filterDirectory(q) {
     (d.name || '').toLowerCase().includes(lower) ||
     (d.breed || '').toLowerCase().includes(lower)
   ));
-}
-
-// ---- BULLETIN BOARD ----
-let activeBulletinCat = 'lost', bulletinFilter = 'all';
-
-function pickBulletinCat(el) {
-  document.querySelectorAll('#bulletin-category-opts .energy-opt').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-  activeBulletinCat = el.dataset.cat;
-}
-
-function setBulletinFilter(el, cat) {
-  document.querySelectorAll('.bulletin-filter-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  bulletinFilter = cat;
-  loadBulletin();
-}
-
-async function submitBulletin() {
-  const title = document.getElementById('bulletin-title').value.trim();
-  const body = document.getElementById('bulletin-body').value.trim();
-  const contact = document.getElementById('bulletin-contact').value.trim();
-  if (!title || !body) return showToast('Please add a title and details');
-  const { error } = await sb.from('bulletin_posts').insert({
-    user_id: currentUser.id,
-    dog_id: myDog.id,
-    poster_name: myDog.name,
-    poster_emoji: myDog.emoji || '🐶',
-    neighborhood: myDog.neighborhood,
-    category: activeBulletinCat,
-    title, body,
-    contact: contact || null
-  });
-  if (error) return showToast('Error posting: ' + error.message);
-  document.getElementById('bulletin-title').value = '';
-  document.getElementById('bulletin-body').value = '';
-  document.getElementById('bulletin-contact').value = '';
-  showToast('Posted to bulletin board! 📌');
-  loadBulletin();
-}
-
-async function loadBulletin() {
-  const container = document.getElementById('bulletin-list');
-  container.innerHTML = skelCard(2)+skelCard(2)+skelCard(2);
-  let query = sb.from('bulletin_posts').select('*')
-    .eq('neighborhood', myDog.neighborhood)
-    .order('created_at', { ascending: false })
-    .limit(40);
-  if (bulletinFilter !== 'all') query = query.eq('category', bulletinFilter);
-  const { data } = await query;
-  if (!data || !data.length) {
-    container.innerHTML = '<div class="empty-state"><div class="big-icon">📌</div><p>Nothing posted yet.<br>Be the first to share something!</p></div>';
-    return;
-  }
-  const catLabels = { lost: '🚨 Lost pet', found: '🎉 Found pet', vet: '🏥 Vet rec', general: '📌 General' };
-  const catClass = { lost: 'bcat-lost', found: 'bcat-found', vet: 'bcat-vet', general: 'bcat-general' };
-  container.innerHTML = data.map(p => `
-    <div class="bulletin-item">
-      <div class="bulletin-cat-badge ${catClass[p.category] || 'bcat-general'}">${catLabels[p.category] || p.category}</div>
-      <div class="bulletin-item-title">${escHtml(p.title)}</div>
-      <div class="bulletin-item-body">${escHtml(p.body)}</div>
-      ${p.contact ? `<div style="margin-bottom:8px"><span class="bulletin-item-contact">📞 ${escHtml(p.contact)}</span></div>` : ''}
-      <div class="bulletin-item-footer">
-        <span>${p.poster_emoji || '🐶'} ${escHtml(p.poster_name || 'A neighbor')}</span>
-        <span>·</span>
-        <span>${formatTimeAgo(p.created_at)}</span>
-        ${p.user_id === currentUser.id ? `<button onclick="deleteBulletin('${p.id}')" style="margin-left:auto;background:none;border:none;color:var(--coral);font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Delete</button>` : ''}
-      </div>
-    </div>`).join('');
-}
-
-async function deleteBulletin(id) {
-  await sb.from('bulletin_posts').delete().eq('id', id).eq('user_id', currentUser.id);
-  showToast('Post removed');
-  loadBulletin();
-}
-
-// ---- TIP OF THE DAY ----
-const DOG_TIPS = [
-  "Dogs need at least 30 minutes of exercise daily — even a slow sniff walk counts! 🐾",
-  "Fresh water should be available at all times. Change it daily to keep it clean. 💧",
-  "Brush your dog's teeth 2-3 times a week to prevent dental disease. 🦷",
-  "Never feed dogs grapes, raisins, onions, chocolate, or xylitol — all are toxic. 🚫",
-  "Regular vet check-ups (at least once a year) catch health issues early. 🏥",
-  "Dogs are social animals — quality time with you matters more than toys. 💛",
-  "A tired dog is a good dog! Mental stimulation (puzzles, training) is as tiring as walks. 🧠",
-  "Keep your dog's nails trimmed — overgrown nails can cause pain and posture issues. 💅",
-  "Positive reinforcement works better than punishment every single time. 🎉",
-  "Flea and tick prevention is year-round, not just summer. 🌿",
-  "Dogs communicate with their tail, ears, and body posture — learn to read them! 👀",
-  "Socializing puppies before 16 weeks shapes their personality for life. 🐶",
-  "Never leave a dog in a hot car — temperatures rise dangerously fast. 🌡️",
-  "Grain-free diets have been linked to heart issues in some breeds — ask your vet first. 🌾",
-  "A dog's nose print is as unique as a human fingerprint. 👃",
-  "Spaying and neutering reduces risk of certain cancers and unwanted litters. ✂️",
-  "Dogs dream! The twitching during sleep is normal REM activity. 💤",
-  "Rotate toys to keep your dog mentally stimulated and prevent boredom. 🧸",
-  "Microchipping is the best way to reunite lost dogs with their owners. 📡",
-  "Dogs can learn over 150 words — keep teaching them new ones! 📚",
-  "Senior dogs (7+) benefit from more frequent vet visits — every 6 months. 👴",
-  "Swimming is a great low-impact exercise for dogs with joint issues. 🏊",
-  "Always introduce dogs on neutral ground to reduce territorial tension. 🤝",
-  "A dog's average body temperature is 101-102.5°F — higher than humans. 🌡️",
-  "Thundershirts and white noise can help anxious dogs during storms. ⛈️",
-  "Dogs need shade and water on walks when it's over 75°F outside. ☀️",
-  "Hot pavement burns paw pads — test it with your hand for 5 seconds first. 🔥",
-  "Regular grooming isn't just cosmetic — it helps you spot lumps and skin issues. 🪮",
-  "A wagging tail doesn't always mean happy — context matters! 🐕",
-  "Enrichment feeders and lick mats can calm an anxious or bored dog. 🍯"
-];
-
-function getTipOfDay() {
-  const dayIndex = Math.floor(Date.now() / 86400000) % DOG_TIPS.length;
-  return DOG_TIPS[dayIndex];
-}
-
-function renderTipCard() {
-  return `<div class="tip-card">
-    <div class="tip-label">💡 Tip of the day</div>
-    <div class="tip-text">${getTipOfDay()}</div>
-  </div>`;
 }
 
 // ---- PHOTO GALLERY ----
@@ -2975,7 +2784,7 @@ async function deleteComment(commentId, postId) {
 // ---- FEED ----
 function toggleTag(tag) {
   activeTag = activeTag === tag ? null : tag;
-  ['park','playdate','sitting'].forEach(t => {
+  ['park','playdate','question'].forEach(t => {
     document.getElementById('tag-'+t+'-btn').classList.toggle('selected', activeTag === t);
   });
 }
@@ -2993,19 +2802,19 @@ async function submitPost() {
   if (error) return showToast('Error: ' + error.message);
   document.getElementById('compose-text').value = '';
   activeTag = null;
-  ['park','playdate','sitting'].forEach(t => document.getElementById('tag-'+t+'-btn').classList.remove('selected'));
+  ['park','playdate','question'].forEach(t => document.getElementById('tag-'+t+'-btn').classList.remove('selected'));
   showToast('Posted! 🐾'); loadFeed();
 }
 
-// Cached feed data so the category chips can filter without a re-fetch
-let feedPostsData = [], feedActivityEvents = [], feedFilter = null;
+// Cached feed data
+let feedPostsData = [], feedActivityEvents = [];
 
 async function loadFeed() {
   const container = document.getElementById('feed-posts');
   container.innerHTML = skelFeed(4);
   const [{ data }, activityEvents] = await Promise.all([
     sb.from('posts')
-      .select('*, dogs(id,user_id,name,emoji,neighborhood,breed,age,photo_url,energy,can_sit,favorite_activities,likes,dislikes,personality,fav_treat,bio,gotcha_date)')
+      .select('*, dogs(id,user_id,name,owner_name,emoji,neighborhood,breed,age,photo_url,energy,can_sit,favorite_activities,likes,dislikes,personality,fav_treat,bio,gotcha_date)')
       .eq('neighborhood', myDog.neighborhood)
       .order('created_at', {ascending:false}).limit(20),
     loadActivityEvents()
@@ -3015,32 +2824,18 @@ async function loadFeed() {
   renderFeedList();
 }
 
-// Renders the cached feed, honouring the active category chip
+// Renders the cached feed
 function renderFeedList() {
   const container = document.getElementById('feed-posts');
   if (!container) return;
-  const posts = feedFilter ? feedPostsData.filter(p => p.tag === feedFilter) : feedPostsData;
-  // the tip + activity strip only belong on the unfiltered feed
-  const headerHtml = feedFilter ? '' : renderTipCard() + feedActivityEvents.map(renderActivityCard).join('');
-  let postsHtml;
-  if (posts.length) {
-    postsHtml = posts.map(p => renderPost(p)).join('');
-  } else if (feedFilter) {
-    postsHtml = `<div class="empty-state"><div class="big-icon">🔍</div><p>No ${tagLabel(feedFilter).replace(/^\S+\s/,'')} posts yet.</p>
-      <button class="post-btn" style="margin-top:12px" onclick="setFeedFilter(null)">Show all posts</button></div>`;
-  } else {
-    postsHtml = '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts yet. Be the first!</p></div>';
-  }
+  const posts = feedPostsData;
+  const headerHtml = feedActivityEvents.map(renderActivityCard).join('');
+  const postsHtml = posts.length
+    ? posts.map(p => renderPost(p)).join('')
+    : '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts yet. Be the first!</p></div>';
   container.innerHTML = headerHtml + postsHtml;
   posts.forEach(p => loadCommentCount(p.id));
   setTimeout(refreshFeedPresence, 300);
-}
-
-function setFeedFilter(tag) {
-  feedFilter = (feedFilter === tag) ? null : tag;
-  document.querySelectorAll('#feed-filter-chips .chip')
-    .forEach(c => c.classList.toggle('active', c.dataset.tag === feedFilter));
-  renderFeedList();
 }
 
 function renderPost(p) {
@@ -3068,7 +2863,7 @@ function renderPost(p) {
       ${avatarHtml}
       <div class="post-meta">
         <div class="post-dog-name" ${avatarClick}>${escHtml(dog.name||'Unknown dog')}</div>
-        <div class="post-owner">${dog.neighborhood?escHtml(dog.neighborhood)+' · ':''}${formatTimeAgo(p.created_at)}</div>
+        <div class="post-owner">${escHtml(dog.owner_name||dog.neighborhood||'')}${(dog.owner_name||dog.neighborhood)?' · ':''}${formatTimeAgo(p.created_at)}</div>
       </div>
       ${menuHtml}
     </div>
@@ -3101,7 +2896,7 @@ function closePostMenus() {
 document.addEventListener('click', () => closePostMenus());
 
 function tagLabel(tag) {
-  return {park:'🌳 Park visit',playdate:'📅 Playdate',sitting:'💙 Sitting offer',sitting_need:'🙏 Needs a sitter'}[tag]||tag;
+  return {park:'🌳 Park visit',playdate:'📅 Playdate',question:'❓ Question',sitting:'💙 Sitting offer',sitting_need:'🙏 Needs a sitter'}[tag]||tag;
 }
 
 async function toggleLike(postId, btn) {
@@ -3460,6 +3255,7 @@ function openEditProfile() {
   editEnergy = myDog.energy || 'Low';
   editCanSit = myDog.can_sit ? 'yes' : 'no';
 
+  document.getElementById('edit-owner-name').value = myDog.owner_name || '';
   document.getElementById('edit-name').value = myDog.name || '';
   document.getElementById('edit-breed').value = myDog.breed || '';
   document.getElementById('edit-age').value = myDog.age || '';
@@ -3509,6 +3305,7 @@ function pickEditSitting(el) {
 }
 
 async function saveEditProfile() {
+  const ownerName = document.getElementById('edit-owner-name').value.trim();
   const name = document.getElementById('edit-name').value.trim();
   const breed = document.getElementById('edit-breed').value.trim();
   const age = document.getElementById('edit-age').value.trim();
@@ -3522,7 +3319,7 @@ async function saveEditProfile() {
   btnLoad(btn, 'Saving…');
 
   const updates = {
-    name, breed, age,
+    name, breed, age, owner_name: ownerName || null,
     emoji: editEmoji,
     energy: editEnergy,
     can_sit: editCanSit === 'yes',
@@ -3750,8 +3547,6 @@ function enterAsGuest() {
   // Update page subtitle
   document.getElementById('page-title').textContent = guestNeighborhood;
   document.getElementById('page-sub').textContent = 'Browsing as a guest';
-  // guests get a read-only feed rendered separately, so the category chips don't apply
-  document.getElementById('feed-filter-chips').style.display = 'none';
   syncTabBar('feed');
 
   // Load the same data a logged-in user would see
@@ -3764,7 +3559,7 @@ async function loadGuestFeed(neighborhood) {
   const container = document.getElementById('feed-posts');
   container.innerHTML = skelFeed(4);
   const {data} = await sb.from('posts')
-    .select('*, dogs(name,emoji,neighborhood,breed,photo_url)')
+    .select('*, dogs(name,owner_name,emoji,neighborhood,breed,photo_url)')
     .eq('neighborhood', neighborhood)
     .order('created_at', {ascending:false}).limit(20);
   if (!data||data.length===0) {
@@ -3781,7 +3576,7 @@ async function loadGuestFeed(neighborhood) {
           ${avatarHtml}
           <div class="post-meta">
             <div class="post-dog-name">${escHtml(dog.name||'Unknown dog')}</div>
-            <div class="post-owner">${dog.neighborhood?escHtml(dog.neighborhood)+' · ':''}${formatTimeAgo(p.created_at)}</div>
+            <div class="post-owner">${escHtml(dog.owner_name||dog.neighborhood||'')}${(dog.owner_name||dog.neighborhood)?' · ':''}${formatTimeAgo(p.created_at)}</div>
           </div>
         </div>
         <div class="post-body">${escHtml(p.content)}</div>
