@@ -522,19 +522,6 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
   box-shadow:var(--shadow);padding:13px 16px;margin-bottom:12px}
 .activity-card:last-of-type{border-bottom:none}
 
-/* ---------- filter chip row (from mobile design) ---------- */
-.chip-row{display:flex;gap:8px;overflow-x:auto;padding:0 0 14px;scrollbar-width:none}
-.chip-row::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r-pill);
-  font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;border:1.5px solid var(--border-mid);
-  background:var(--warm-white);color:var(--text-mid);transition:all 0.15s;font-family:'Nunito',sans-serif}
-.chip .ti{font-size:15px}
-.chip.active{color:#fff}
-.chip[data-tag="park"].active{background:var(--grass);border-color:var(--grass)}
-.chip[data-tag="playdate"].active{background:var(--amber);border-color:var(--amber)}
-.chip[data-tag="question"].active{background:var(--coral);border-color:var(--coral)}
-.chip[data-tag="sitting_need"].active{background:var(--sky);border-color:var(--sky)}
-
 /* ---------- segmented switch (List / Map) ---------- */
 .mode-switch{display:flex;background:var(--sand);border-radius:var(--r-pill);padding:4px;margin-bottom:14px}
 .mode-btn{flex:1;padding:9px;border-radius:var(--r-pill);border:none;cursor:pointer;font-weight:800;
@@ -676,7 +663,7 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
 }
 @media(min-width:769px){
   .chat-back-btn{display:none!important}
-  .feed-col,.chip-row{margin-left:auto;margin-right:auto}
+  .feed-col{margin-left:auto;margin-right:auto}
 }
 .chat-back-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--sand);
   align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
@@ -927,13 +914,6 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
       <div class="feed-layout">
         <div class="feed-col">
           <div class="pull-indicator" id="pull-indicator">↓ Release to refresh</div>
-          <!-- CATEGORY FILTER CHIPS -->
-          <div class="chip-row" id="feed-filter-chips">
-            <button class="chip" data-tag="park" onclick="setFeedFilter('park')"><i class="ti ti-trees"></i> Park</button>
-            <button class="chip" data-tag="playdate" onclick="setFeedFilter('playdate')"><i class="ti ti-calendar"></i> Playdate</button>
-            <button class="chip" data-tag="question" onclick="setFeedFilter('question')"><i class="ti ti-help"></i> Question</button>
-            <button class="chip" data-tag="sitting_need" onclick="setFeedFilter('sitting_need')"><i class="ti ti-help"></i> Needs a sitter</button>
-          </div>
           <div class="compose-box" id="compose-box-wrap" style="position:relative">
             <div class="compose-inner">
               <div id="compose-avatar-wrap" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;background:var(--bark-pale);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;"></div>
@@ -2826,8 +2806,8 @@ async function submitPost() {
   showToast('Posted! 🐾'); loadFeed();
 }
 
-// Cached feed data so the category chips can filter without a re-fetch
-let feedPostsData = [], feedActivityEvents = [], feedFilter = null;
+// Cached feed data
+let feedPostsData = [], feedActivityEvents = [];
 
 async function loadFeed() {
   const container = document.getElementById('feed-posts');
@@ -2844,32 +2824,18 @@ async function loadFeed() {
   renderFeedList();
 }
 
-// Renders the cached feed, honouring the active category chip
+// Renders the cached feed
 function renderFeedList() {
   const container = document.getElementById('feed-posts');
   if (!container) return;
-  const posts = feedFilter ? feedPostsData.filter(p => p.tag === feedFilter) : feedPostsData;
-  // the activity strip only belongs on the unfiltered feed
-  const headerHtml = feedFilter ? '' : feedActivityEvents.map(renderActivityCard).join('');
-  let postsHtml;
-  if (posts.length) {
-    postsHtml = posts.map(p => renderPost(p)).join('');
-  } else if (feedFilter) {
-    postsHtml = `<div class="empty-state"><div class="big-icon">🔍</div><p>No ${tagLabel(feedFilter).replace(/^\S+\s/,'')} posts yet.</p>
-      <button class="post-btn" style="margin-top:12px" onclick="setFeedFilter(null)">Show all posts</button></div>`;
-  } else {
-    postsHtml = '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts yet. Be the first!</p></div>';
-  }
+  const posts = feedPostsData;
+  const headerHtml = feedActivityEvents.map(renderActivityCard).join('');
+  const postsHtml = posts.length
+    ? posts.map(p => renderPost(p)).join('')
+    : '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts yet. Be the first!</p></div>';
   container.innerHTML = headerHtml + postsHtml;
   posts.forEach(p => loadCommentCount(p.id));
   setTimeout(refreshFeedPresence, 300);
-}
-
-function setFeedFilter(tag) {
-  feedFilter = (feedFilter === tag) ? null : tag;
-  document.querySelectorAll('#feed-filter-chips .chip')
-    .forEach(c => c.classList.toggle('active', c.dataset.tag === feedFilter));
-  renderFeedList();
 }
 
 function renderPost(p) {
@@ -3581,8 +3547,6 @@ function enterAsGuest() {
   // Update page subtitle
   document.getElementById('page-title').textContent = guestNeighborhood;
   document.getElementById('page-sub').textContent = 'Browsing as a guest';
-  // guests get a read-only feed rendered separately, so the category chips don't apply
-  document.getElementById('feed-filter-chips').style.display = 'none';
   syncTabBar('feed');
 
   // Load the same data a logged-in user would see
