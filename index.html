@@ -163,6 +163,13 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .post-dog-name{font-size:14px;font-weight:800;color:var(--text)}
 .post-owner{font-size:12px;color:var(--text-soft);font-weight:600}
 .post-time{font-size:11px;color:var(--text-soft);margin-left:auto;white-space:nowrap}
+.post-menu{position:relative;flex-shrink:0}
+.post-menu-btn{width:28px;height:28px;border-radius:50%;border:none;background:transparent;color:var(--text-soft);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background 0.15s}
+.post-menu-btn:hover{background:var(--bark-pale)}
+.post-menu-dropdown{display:none;position:absolute;top:calc(100% + 4px);right:0;background:white;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-lg);z-index:50;min-width:160px;overflow:hidden}
+.post-menu-dropdown.open{display:block}
+.post-menu-item{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12.5px;font-weight:700;color:var(--text);cursor:pointer;transition:background 0.1s}
+.post-menu-item:hover{background:var(--cream)}
 .post-body{font-size:13.5px;color:var(--text);line-height:1.55;margin-bottom:10px;font-weight:600}
 .post-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;margin-right:5px;margin-bottom:5px}
 .tag-park{background:var(--grass-pale);color:var(--grass)}
@@ -1342,6 +1349,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null, myDog = null, currentConvoUserId = null, activeTag = null;
 let nearbyParks = [], userLat = null, userLng = null;
+let nearbyCountLabel = "Your dog's neighborhood";
 let selectedEmoji = '🐶', selectedEnergy = 'Low', canSit = 'yes';
 let photoFile = null;
 
@@ -1484,13 +1492,22 @@ async function changeProfilePhoto(input) {
   } catch(e) { showToast('Upload failed: ' + e.message); }
 }
 
+const AVATAR_COLORS = ['#E05A3A','#D4830A','#3A7BD5','#1A7A5C','#9B6A47'];
+function avatarColor(seed) {
+  seed = String(seed || 'pawhood');
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
 function dogAvatar(dog, size=40, fontSize=20, userId='') {
   const click = userId ? `onclick="openDogProfile('${userId}')" style="cursor:pointer"` : '';
   const clickStyle = userId ? `cursor:pointer;` : '';
   if (dog && dog.photo_url) {
     return `<img src="${escHtml(dog.photo_url)}" ${click} style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;border:2px solid var(--border);display:block;${clickStyle}" onerror="this.style.display='none'" />`;
   }
-  return `<div ${click} style="width:${size}px;height:${size}px;border-radius:50%;background:var(--bark-pale);display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;border:2px solid var(--border);flex-shrink:0;${clickStyle}">${dog ? escHtml(dog.emoji||'🐶') : '🐶'}</div>`;
+  const bg = avatarColor(dog && (dog.user_id || dog.id || dog.name) || userId);
+  return `<div ${click} style="width:${size}px;height:${size}px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;font-size:${fontSize}px;border:2px solid var(--border);flex-shrink:0;${clickStyle}">${dog ? escHtml(dog.emoji||'🐶') : '🐶'}</div>`;
 }
 
 function updateAvatars() {
@@ -1686,6 +1703,17 @@ function showApp() {
   setTimeout(initPullToRefresh, 500);
   getLocation();
   checkExistingCheckin();
+  updateNearbyCount();
+}
+
+async function updateNearbyCount() {
+  if (!myDog || !myDog.neighborhood) return;
+  const { count } = await sb.from('dogs').select('*', { count: 'exact', head: true })
+    .eq('neighborhood', myDog.neighborhood).neq('user_id', currentUser.id);
+  nearbyCountLabel = `${count || 0} dog${count === 1 ? '' : 's'} nearby`;
+  const sub = document.getElementById('page-sub');
+  const feedPage = document.getElementById('page-feed');
+  if (sub && feedPage && feedPage.classList.contains('active')) sub.textContent = nearbyCountLabel;
 }
 
 // Which bottom tab each page belongs to (pages not listed live under "More")
@@ -1704,7 +1732,7 @@ function showPage(id, navEl) {
 
   const city = (myDog && myDog.neighborhood) ? myDog.neighborhood : 'Your neighborhood';
   const titles = {
-    feed:[city, 'Your dog\'s neighborhood'],
+    feed:[city, nearbyCountLabel],
     neighborhood:['Parks','Real parks & green spaces near you'],
     parks:['Park Visits','Schedule & see who\'s going'],
     sitting:['Dog Sitting','Free community sitting'],
@@ -3025,16 +3053,24 @@ function renderPost(p) {
   const onlineDot = `<span class="online-dot" id="dot-post-${p.user_id}"></span>`;
   const avatarInner = dog.photo_url
     ? `<img src="${escHtml(dog.photo_url)}" class="post-avatar" style="object-fit:cover" ${avatarClick} />`
-    : `<div class="post-avatar" ${avatarClick}>${dog.emoji||'🐶'}</div>`;
+    : `<div class="post-avatar" style="background:${avatarColor(p.user_id)}" ${avatarClick}>${dog.emoji||'🐶'}</div>`;
   const avatarHtml = `<div class="avatar-wrap">${avatarInner}${onlineDot}</div>`;
+  const menuHtml = `<div class="post-menu">
+      <button class="post-menu-btn" onclick="togglePostMenu('${p.id}', event)"><i class="ti ti-dots"></i></button>
+      <div class="post-menu-dropdown" id="post-menu-${p.id}">
+        ${!isOwn?`<div class="post-menu-item" onclick="closePostMenus();openDogProfile('${p.user_id}')"><i class="ti ti-paw"></i> View profile</div>`:''}
+        ${!isOwn?`<div class="post-menu-item" onclick="closePostMenus();startChat('${p.user_id}','${dog.name||''}','${dog.emoji||'🐶'}','${dog.photo_url||''}')"><i class="ti ti-message-circle"></i> Message</div>`:''}
+        ${isOwn?`<div class="post-menu-item" style="color:var(--coral)" onclick="closePostMenus();deletePost('${p.id}')"><i class="ti ti-trash"></i> Delete</div>`:''}
+      </div>
+    </div>`;
   return `<div class="feed-post" id="post-${p.id}">
     <div class="post-header">
       ${avatarHtml}
       <div class="post-meta">
         <div class="post-dog-name" ${avatarClick}>${escHtml(dog.name||'Unknown dog')}</div>
-        <div class="post-owner">${escHtml(dog.neighborhood||'')}</div>
+        <div class="post-owner">${dog.neighborhood?escHtml(dog.neighborhood)+' · ':''}${formatTimeAgo(p.created_at)}</div>
       </div>
-      <div class="post-time">${formatTimeAgo(p.created_at)}</div>
+      ${menuHtml}
     </div>
     <div class="post-body">${escHtml(p.content)}</div>
     ${tagHtml?`<div>${tagHtml}</div>`:''}
@@ -3045,13 +3081,24 @@ function renderPost(p) {
       <button class="action-btn" onclick="toggleComments('${p.id}','${p.user_id}')">
         <i class="ti ti-message-2"></i> <span id="comment-count-${p.id}">💬</span>
       </button>
-      ${!isOwn?`<button class="action-btn" onclick="openDogProfile('${p.user_id}')"><i class="ti ti-paw"></i> Profile</button>`:''}
-      ${!isOwn?`<button class="action-btn" onclick="startChat('${p.user_id}','${dog.name||''}','${dog.emoji||'🐶'}','${dog.photo_url||''}')"><i class="ti ti-message-circle"></i> Message</button>`:''}
-      ${isOwn?`<button class="action-btn" style="margin-left:auto;color:var(--coral)" onclick="deletePost('${p.id}')"><i class="ti ti-trash"></i> Delete</button>`:''}
     </div>
     <div class="comments-section" id="comments-${p.id}" style="display:none"></div>
   </div>`;
 }
+
+function togglePostMenu(postId, event) {
+  event.stopPropagation();
+  const dropdown = document.getElementById('post-menu-'+postId);
+  const wasOpen = dropdown.classList.contains('open');
+  closePostMenus();
+  if (!wasOpen) dropdown.classList.add('open');
+}
+
+function closePostMenus() {
+  document.querySelectorAll('.post-menu-dropdown.open').forEach(d => d.classList.remove('open'));
+}
+
+document.addEventListener('click', () => closePostMenus());
 
 function tagLabel(tag) {
   return {park:'🌳 Park visit',playdate:'📅 Playdate',sitting:'💙 Sitting offer',sitting_need:'🙏 Needs a sitter'}[tag]||tag;
@@ -3728,15 +3775,14 @@ async function loadGuestFeed(neighborhood) {
       const tagHtml = p.tag ? `<span class="post-tag tag-${p.tag}">${tagLabel(p.tag)}</span>` : '';
       const avatarHtml = dog.photo_url
         ? `<img src="${escHtml(dog.photo_url)}" class="post-avatar" style="object-fit:cover" />`
-        : `<div class="post-avatar">${dog.emoji||'🐾'}</div>`;
+        : `<div class="post-avatar" style="background:${avatarColor(dog.name)}">${dog.emoji||'🐾'}</div>`;
       return `<div class="card">
         <div class="post-header">
           ${avatarHtml}
           <div class="post-meta">
             <div class="post-dog-name">${escHtml(dog.name||'Unknown dog')}</div>
-            <div class="post-owner">${escHtml(dog.neighborhood||'')}</div>
+            <div class="post-owner">${dog.neighborhood?escHtml(dog.neighborhood)+' · ':''}${formatTimeAgo(p.created_at)}</div>
           </div>
-          <div class="post-time">${formatTimeAgo(p.created_at)}</div>
         </div>
         <div class="post-body">${escHtml(p.content)}</div>
         ${tagHtml?`<div>${tagHtml}</div>`:''}
