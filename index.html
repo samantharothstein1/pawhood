@@ -119,8 +119,9 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .page{display:none;flex:1}
 .page.active{display:flex;flex-direction:column}
 
-.feed-layout{display:flex;flex-direction:column;flex:1;min-height:0}
+.feed-layout{display:grid;grid-template-columns:1fr 300px;flex:1;min-height:0}
 .feed-col{padding:0 20px;overflow-y:auto;max-width:680px;width:100%;margin:0 auto;background:var(--warm-white)}
+.activity-panel{padding:16px;overflow-y:auto;border-left:1px solid var(--border)}
 
 .card{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:none}
 .feed-post{background:transparent;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:14px 0;margin-bottom:0}
@@ -440,6 +441,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 @media(max-width:768px){
   .sidebar{display:none}
   .feed-layout{grid-template-columns:1fr}
+  .activity-panel{display:none}
   .profile-layout{grid-template-columns:1fr}
   .messages-layout{grid-template-columns:1fr}
   .sitting-layout{grid-template-columns:1fr}
@@ -521,18 +523,31 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
 .activity-card{background:var(--warm-white);border:none;border-radius:var(--r-card);
   box-shadow:var(--shadow);padding:13px 16px;margin-bottom:12px}
 .activity-card:last-of-type{border-bottom:none}
-.status-delete-btn{background:none;border:none;color:var(--text-faint);cursor:pointer;padding:4px;flex-shrink:0;display:flex;align-items:center;font-size:14px}
-.status-delete-btn:hover{color:var(--coral)}
 
-/* ---------- status compose panel ---------- */
-.compose-status-row{display:flex;gap:6px;margin-top:8px;padding-left:52px;flex-wrap:wrap}
-.compose-status-options{display:none;gap:8px;margin-top:10px;padding-left:52px;align-items:center;flex-wrap:wrap}
-.status-location-row{display:flex;gap:6px;align-items:center;flex:1;min-width:200px}
+/* ---------- friend activity side panel ---------- */
+.activity-panel-card{background:var(--warm-white);border-radius:var(--r-card);box-shadow:var(--shadow);padding:14px;margin-bottom:14px}
+.activity-panel-title{font-size:11px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.my-status-current{font-size:12.5px;font-weight:700;color:var(--grass);background:var(--grass-pale);padding:10px 12px;border-radius:12px;margin-bottom:8px;line-height:1.4}
+.my-status-clear-btn{width:100%;background:transparent;border:1.5px solid var(--border-mid);color:var(--text-soft);padding:7px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.my-status-clear-btn:hover{border-color:var(--coral);color:var(--coral)}
+.status-preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.status-preset-btn{display:flex;align-items:center;gap:5px;padding:8px 6px;border-radius:12px;border:1.5px solid var(--border-mid);
+  background:var(--cream);color:var(--text-mid);font-weight:800;font-size:11.5px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.status-preset-btn:hover{border-color:var(--grass)}
+.status-preset-btn.selected{background:var(--grass);color:#fff;border-color:var(--grass)}
+.compose-status-options{display:none;flex-direction:column;gap:8px;margin-top:10px}
+.status-location-row{display:flex;gap:6px;align-items:center}
 .status-location-row .form-input{flex:1}
 .status-locate-btn{background:var(--grass);color:white;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s}
 .status-locate-btn:hover{background:var(--bark)}
 .status-locate-btn:disabled{opacity:0.6;cursor:not-allowed}
-.status-duration-select{width:auto;min-width:150px}
+.status-duration-select{width:100%}
+.friend-activity-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.friend-activity-item:last-child{border-bottom:none}
+.friend-activity-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;object-fit:cover;cursor:pointer}
+.friend-activity-text{font-size:12px;color:var(--text-mid);font-weight:600;line-height:1.4;flex:1}
+.friend-activity-text strong{color:var(--text);font-weight:800}
+.friend-activity-time{font-size:10.5px;color:var(--text-faint);font-weight:600;white-space:nowrap}
 
 /* ---------- segmented switch (List / Map) ---------- */
 .mode-switch{display:flex;background:var(--sand);border-radius:var(--r-pill);padding:4px;margin-bottom:14px}
@@ -931,28 +946,6 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
               <div id="compose-avatar-wrap" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;background:var(--bark-pale);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;"></div>
               <textarea class="compose-input" id="compose-text" rows="2" placeholder="What's your dog up to today?"></textarea>
             </div>
-            <!-- Quick status presets — fill the box above, or just tap Post as-is -->
-            <div class="compose-status-row">
-              <button class="compose-tag-btn" id="status-park-btn" onclick="toggleStatusPreset('park')"><i class="ti ti-trees"></i> At the Park</button>
-              <button class="compose-tag-btn" id="status-walk-btn" onclick="toggleStatusPreset('walk')"><i class="ti ti-walk"></i> On a Walk</button>
-              <button class="compose-tag-btn" id="status-vet-btn" onclick="toggleStatusPreset('vet')"><i class="ti ti-heart"></i> At the Vet</button>
-              <button class="compose-tag-btn" id="status-nap-btn" onclick="toggleStatusPreset('nap')"><i class="ti ti-moon"></i> Napping</button>
-            </div>
-            <!-- Shown only when a status preset is active -->
-            <div class="compose-status-options" id="compose-status-options">
-              <div class="status-location-row">
-                <input class="form-input" id="status-location" type="text" placeholder="Add a location (optional)" />
-                <button class="status-locate-btn" onclick="useMyLocation()" title="Use my current location"><i class="ti ti-map-pin"></i></button>
-              </div>
-              <select class="form-select status-duration-select" id="status-duration">
-                <option value="30">Visible for 30 min</option>
-                <option value="60" selected>Visible for 1 hour</option>
-                <option value="120">Visible for 2 hours</option>
-                <option value="240">Visible for 4 hours</option>
-                <option value="1440">Visible for 24 hours</option>
-                <option value="">Don't expire</option>
-              </select>
-            </div>
             <div class="compose-actions">
               <button class="compose-tag-btn" id="tag-park-btn" onclick="toggleTag('park')"><i class="ti ti-trees"></i> Park visit</button>
               <button class="compose-tag-btn" id="tag-playdate-btn" onclick="toggleTag('playdate')"><i class="ti ti-calendar"></i> Playdate</button>
@@ -967,6 +960,46 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
             </div>
           </div>
           <div id="feed-posts"><div class="loading"><div class="spinner"></div> Loading posts...</div></div>
+        </div>
+
+        <!-- FRIEND ACTIVITY SIDE PANEL -->
+        <div class="activity-panel" id="activity-panel">
+          <div class="activity-panel-card" id="my-status-card">
+            <div class="activity-panel-title">Your Status</div>
+            <div id="my-status-display" style="display:none">
+              <div class="my-status-current" id="my-status-current-text"></div>
+              <button class="my-status-clear-btn" onclick="clearMyStatus()">End status</button>
+            </div>
+            <div id="my-status-form">
+              <div class="status-preset-grid">
+                <button class="status-preset-btn" id="panel-status-park-btn" onclick="toggleStatusPreset('park')"><i class="ti ti-trees"></i> At the Park</button>
+                <button class="status-preset-btn" id="panel-status-walk-btn" onclick="toggleStatusPreset('walk')"><i class="ti ti-walk"></i> On a Walk</button>
+                <button class="status-preset-btn" id="panel-status-vet-btn" onclick="toggleStatusPreset('vet')"><i class="ti ti-heart"></i> At the Vet</button>
+                <button class="status-preset-btn" id="panel-status-nap-btn" onclick="toggleStatusPreset('nap')"><i class="ti ti-moon"></i> Napping</button>
+              </div>
+              <div class="compose-status-options" id="compose-status-options">
+                <textarea class="form-input" id="status-text" rows="2" placeholder="Say more (optional)…" style="resize:vertical"></textarea>
+                <div class="status-location-row">
+                  <input class="form-input" id="status-location" type="text" placeholder="Add a location (optional)" />
+                  <button class="status-locate-btn" onclick="useMyLocation()" title="Use my current location"><i class="ti ti-map-pin"></i></button>
+                </div>
+                <select class="form-select status-duration-select" id="status-duration">
+                  <option value="30">Visible for 30 min</option>
+                  <option value="60" selected>Visible for 1 hour</option>
+                  <option value="120">Visible for 2 hours</option>
+                  <option value="240">Visible for 4 hours</option>
+                  <option value="1440">Visible for 24 hours</option>
+                  <option value="">Until I turn it off</option>
+                </select>
+                <button class="post-btn" style="width:100%" onclick="setMyStatus()">Share status 🐾</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="activity-panel-card">
+            <div class="activity-panel-title">Friend Activity</div>
+            <div id="friend-activity-list"><div class="loading"><div class="spinner"></div></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1669,6 +1702,8 @@ function showApp() {
   getLocation();
   checkExistingCheckin();
   updateNearbyCount();
+  loadMyStatus();
+  loadFriendActivity();
 }
 
 async function updateNearbyCount() {
@@ -2821,11 +2856,26 @@ function toggleTag(tag) {
   ['park','playdate','question'].forEach(t => {
     document.getElementById('tag-'+t+'-btn').classList.toggle('selected', activeTag === t);
   });
-  // a post is either a regular tagged post or a status — not both
-  if (activeTag) clearStatusPreset();
 }
 
-// ---- QUICK STATUS (built into the compose box) ----
+async function submitPost() {
+  const text = document.getElementById('compose-text').value.trim();
+  if (!text) return showToast('Write something first!');
+  const btn = document.querySelector('.send-btn');
+  btn.disabled = true;
+  const { error } = await sb.from('posts').insert({
+    user_id: currentUser.id, dog_id: myDog.id,
+    content: text, tag: activeTag, neighborhood: myDog.neighborhood
+  });
+  btn.disabled = false;
+  if (error) return showToast('Error: ' + error.message);
+  document.getElementById('compose-text').value = '';
+  activeTag = null;
+  ['park','playdate','question'].forEach(t => document.getElementById('tag-'+t+'-btn').classList.remove('selected'));
+  showToast('Posted! 🐾'); loadFeed();
+}
+
+// ---- FRIEND ACTIVITY SIDE PANEL (Spotify-style "what are friends up to right now") ----
 let activeStatus = null;
 const STATUS_PRESETS = {
   park: { emoji: '🌳', label: 'At the Park', defaultText: 'is at the park' },
@@ -2837,20 +2887,16 @@ const STATUS_PRESETS = {
 function toggleStatusPreset(type) {
   activeStatus = activeStatus === type ? null : type;
   ['park','walk','vet','nap'].forEach(t => {
-    document.getElementById('status-'+t+'-btn').classList.toggle('selected', activeStatus === t);
+    document.getElementById('panel-status-'+t+'-btn').classList.toggle('selected', activeStatus === t);
   });
   document.getElementById('compose-status-options').style.display = activeStatus ? 'flex' : 'none';
-  if (activeStatus) {
-    // a post is either a regular tagged post or a status — not both
-    activeTag = null;
-    ['park','playdate','question'].forEach(t => document.getElementById('tag-'+t+'-btn').classList.remove('selected'));
-  }
 }
 
-function clearStatusPreset() {
+function resetStatusForm() {
   activeStatus = null;
-  ['park','walk','vet','nap'].forEach(t => document.getElementById('status-'+t+'-btn').classList.remove('selected'));
+  ['park','walk','vet','nap'].forEach(t => document.getElementById('panel-status-'+t+'-btn').classList.remove('selected'));
   document.getElementById('compose-status-options').style.display = 'none';
+  document.getElementById('status-text').value = '';
   document.getElementById('status-location').value = '';
   document.getElementById('status-duration').value = '60';
 }
@@ -2891,42 +2937,90 @@ async function reverseGeocode(lat, lng) {
   }
 }
 
-async function submitPost() {
-  const text = document.getElementById('compose-text').value.trim();
-  const btn = document.querySelector('.send-btn');
+async function setMyStatus() {
+  if (!activeStatus) return showToast('Pick a status first');
+  const preset = STATUS_PRESETS[activeStatus];
+  const text = document.getElementById('status-text').value.trim();
+  const location = document.getElementById('status-location').value.trim();
+  const durationMins = document.getElementById('status-duration').value;
+  const content = text || preset.defaultText;
+  const expires_at = durationMins ? new Date(Date.now() + parseInt(durationMins) * 60000).toISOString() : null;
 
-  if (activeStatus) {
-    const preset = STATUS_PRESETS[activeStatus];
-    const location = document.getElementById('status-location').value.trim();
-    const durationMins = document.getElementById('status-duration').value;
-    const content = `${text || preset.defaultText}${location ? ' · 📍 ' + location : ''} ${preset.emoji}`;
-    const expires_at = durationMins ? new Date(Date.now() + parseInt(durationMins) * 60000).toISOString() : null;
+  const { error } = await sb.from('dog_status').insert({
+    user_id: currentUser.id, dog_id: myDog.id,
+    content, emoji: preset.emoji, location: location || null,
+    neighborhood: myDog.neighborhood, expires_at
+  });
+  if (error) return showToast('Error: ' + error.message);
+  resetStatusForm();
+  showToast('Status shared! 🐾');
+  loadMyStatus();
+  loadFriendActivity();
+}
 
-    btn.disabled = true;
-    const { error } = await sb.from('posts').insert({
-      user_id: currentUser.id, dog_id: myDog.id,
-      content, tag: 'status', neighborhood: myDog.neighborhood, expires_at
-    });
-    btn.disabled = false;
-    if (error) return showToast('Error: ' + error.message);
-    document.getElementById('compose-text').value = '';
-    clearStatusPreset();
-    showToast('Status posted! 🐾'); loadFeed();
+async function clearMyStatus() {
+  await sb.from('dog_status').delete().eq('user_id', currentUser.id);
+  loadMyStatus();
+  loadFriendActivity();
+}
+
+function isExpired(row) {
+  return row.expires_at && new Date(row.expires_at) < new Date();
+}
+
+function statusLine(row) {
+  return `${escHtml(row.content)}${row.location ? ' · 📍 ' + escHtml(row.location) : ''} ${row.emoji || ''}`;
+}
+
+async function loadMyStatus() {
+  const displayEl = document.getElementById('my-status-display');
+  const formEl = document.getElementById('my-status-form');
+  if (!displayEl || !myDog) return;
+  const { data } = await sb.from('dog_status').select('*')
+    .eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(1);
+  const row = data && data[0] && !isExpired(data[0]) ? data[0] : null;
+  if (row) {
+    document.getElementById('my-status-current-text').innerHTML = statusLine(row);
+    displayEl.style.display = 'block';
+    formEl.style.display = 'none';
+  } else {
+    displayEl.style.display = 'none';
+    formEl.style.display = 'block';
+  }
+}
+
+async function loadFriendActivity() {
+  const container = document.getElementById('friend-activity-list');
+  if (!container || !myDog) return;
+  const { data } = await sb.from('dog_status')
+    .select('*, dogs(name,emoji,photo_url,user_id)')
+    .eq('neighborhood', myDog.neighborhood)
+    .neq('user_id', currentUser.id)
+    .order('created_at', { ascending: false })
+    .limit(50);
+  const rows = data || [];
+  const seen = new Set();
+  const active = [];
+  for (const row of rows) {
+    if (seen.has(row.user_id) || isExpired(row)) continue;
+    seen.add(row.user_id);
+    active.push(row);
+  }
+  if (!active.length) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--text-soft);font-weight:600;text-align:center;padding:12px 0">No one nearby has shared a status yet.</div>';
     return;
   }
-
-  if (!text) return showToast('Write something first!');
-  btn.disabled = true;
-  const { error } = await sb.from('posts').insert({
-    user_id: currentUser.id, dog_id: myDog.id,
-    content: text, tag: activeTag, neighborhood: myDog.neighborhood
-  });
-  btn.disabled = false;
-  if (error) return showToast('Error: ' + error.message);
-  document.getElementById('compose-text').value = '';
-  activeTag = null;
-  ['park','playdate','question'].forEach(t => document.getElementById('tag-'+t+'-btn').classList.remove('selected'));
-  showToast('Posted! 🐾'); loadFeed();
+  container.innerHTML = active.map(row => {
+    const dog = row.dogs || {};
+    const avatarHtml = dog.photo_url
+      ? `<img src="${escHtml(dog.photo_url)}" class="friend-activity-avatar" style="object-fit:cover" onclick="openDogProfile('${row.user_id}')" />`
+      : `<div class="friend-activity-avatar" style="background:${avatarColor(row.user_id)}" onclick="openDogProfile('${row.user_id}')">${dog.emoji||'🐶'}</div>`;
+    return `<div class="friend-activity-item">
+      ${avatarHtml}
+      <div class="friend-activity-text"><strong>${escHtml(dog.name||'A neighbor')}</strong> ${statusLine(row)}</div>
+      <div class="friend-activity-time">${formatTimeAgo(row.created_at)}</div>
+    </div>`;
+  }).join('');
 }
 
 // Cached feed data
@@ -2942,14 +3036,9 @@ async function loadFeed() {
       .order('created_at', {ascending:false}).limit(20),
     loadActivityEvents()
   ]);
-  feedPostsData = (data || []).filter(p => !isExpiredStatus(p));
+  feedPostsData = data || [];
   feedActivityEvents = activityEvents || [];
   renderFeedList();
-}
-
-// Status posts with a duration disappear from the feed once expires_at passes
-function isExpiredStatus(p) {
-  return p.expires_at && new Date(p.expires_at) < new Date();
 }
 
 // Renders the cached feed
@@ -2966,26 +3055,8 @@ function renderFeedList() {
   setTimeout(refreshFeedPresence, 300);
 }
 
-// Compact card for quick status posts (At the Park / On a Walk / etc.) — no likes/comments, just the update
-function renderStatusPost(p, dog) {
-  const isOwn = p.user_id === currentUser.id;
-  const avatarClick = isOwn
-    ? `onclick="showPage('profile', document.querySelector('.nav-item[onclick*=profile]'))" style="cursor:pointer"`
-    : `onclick="openDogProfile('${p.user_id}')" style="cursor:pointer"`;
-  const iconHtml = dog.photo_url
-    ? `<img src="${escHtml(dog.photo_url)}" class="activity-icon" style="object-fit:cover" ${avatarClick} />`
-    : `<div class="activity-icon" style="background:${avatarColor(p.user_id)}" ${avatarClick}>${dog.emoji||'🐶'}</div>`;
-  return `<div class="activity-card" id="post-${p.id}">
-    ${iconHtml}
-    <div class="activity-text"><strong>${escHtml(dog.name||'A neighbor')}</strong> ${escHtml(p.content)}</div>
-    <div class="activity-time">${formatTimeAgo(p.created_at)}</div>
-    ${isOwn ? `<button class="status-delete-btn" onclick="deletePost('${p.id}')" title="Remove"><i class="ti ti-trash"></i></button>` : ''}
-  </div>`;
-}
-
 function renderPost(p) {
   const dog = p.dogs || {};
-  if (p.tag === 'status') return renderStatusPost(p, dog);
   const tagHtml = p.tag ? `<span class="post-tag tag-${p.tag}">${tagLabel(p.tag)}</span>` : '';
   const isOwn = p.user_id === currentUser.id;
   const avatarClick = isOwn
@@ -3676,6 +3747,7 @@ function enterAsGuest() {
   document.getElementById('sidebar-guest').style.display = 'block';
   document.getElementById('sidebar-logged-in').style.display = 'none';
   document.getElementById('compose-guest-lock').style.display = 'flex';
+  document.getElementById('activity-panel').style.display = 'none';
   document.getElementById('nav-sitting').style.opacity = '0.4';
   document.getElementById('nav-messages').style.opacity = '0.4';
   document.getElementById('nav-profile').style.display = 'none';
@@ -3704,26 +3776,15 @@ async function loadGuestFeed(neighborhood) {
   // Feed — same query as logged in users, filtered by neighborhood
   const container = document.getElementById('feed-posts');
   container.innerHTML = skelFeed(4);
-  const {data: rawData} = await sb.from('posts')
+  const {data} = await sb.from('posts')
     .select('*, dogs(name,owner_name,emoji,neighborhood,breed,photo_url)')
     .eq('neighborhood', neighborhood)
     .order('created_at', {ascending:false}).limit(20);
-  const data = (rawData || []).filter(p => !isExpiredStatus(p));
   if (!data||data.length===0) {
     container.innerHTML = '<div class="empty-state"><div class="big-icon">🐾</div><p>No posts in ' + escHtml(neighborhood) + ' yet.<br>Join to be the first!</p></div>';
   } else {
     container.innerHTML = data.map(p => {
       const dog = p.dogs||{};
-      if (p.tag === 'status') {
-        const iconHtml = dog.photo_url
-          ? `<img src="${escHtml(dog.photo_url)}" class="activity-icon" style="object-fit:cover" />`
-          : `<div class="activity-icon" style="background:${avatarColor(dog.name)}">${dog.emoji||'🐾'}</div>`;
-        return `<div class="activity-card">
-          ${iconHtml}
-          <div class="activity-text"><strong>${escHtml(dog.name||'A neighbor')}</strong> ${escHtml(p.content)}</div>
-          <div class="activity-time">${formatTimeAgo(p.created_at)}</div>
-        </div>`;
-      }
       const tagHtml = p.tag ? `<span class="post-tag tag-${p.tag}">${tagLabel(p.tag)}</span>` : '';
       const avatarHtml = dog.photo_url
         ? `<img src="${escHtml(dog.photo_url)}" class="post-avatar" style="object-fit:cover" />`
