@@ -119,8 +119,9 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 .page{display:none;flex:1}
 .page.active{display:flex;flex-direction:column}
 
-.feed-layout{display:flex;flex-direction:column;flex:1;min-height:0}
+.feed-layout{display:grid;grid-template-columns:1fr 300px;flex:1;min-height:0}
 .feed-col{padding:0 20px;overflow-y:auto;max-width:680px;width:100%;margin:0 auto;background:var(--warm-white)}
+.activity-panel{padding:16px;overflow-y:auto;border-left:1px solid var(--border)}
 
 .card{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:none}
 .feed-post{background:transparent;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:14px 0;margin-bottom:0}
@@ -440,6 +441,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 @media(max-width:768px){
   .sidebar{display:none}
   .feed-layout{grid-template-columns:1fr}
+  .activity-panel{display:none}
   .profile-layout{grid-template-columns:1fr}
   .messages-layout{grid-template-columns:1fr}
   .sitting-layout{grid-template-columns:1fr}
@@ -521,6 +523,31 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
 .activity-card{background:var(--warm-white);border:none;border-radius:var(--r-card);
   box-shadow:var(--shadow);padding:13px 16px;margin-bottom:12px}
 .activity-card:last-of-type{border-bottom:none}
+
+/* ---------- friend activity side panel ---------- */
+.activity-panel-card{background:var(--warm-white);border-radius:var(--r-card);box-shadow:var(--shadow);padding:14px;margin-bottom:14px}
+.activity-panel-title{font-size:11px;font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.my-status-current{font-size:12.5px;font-weight:700;color:var(--grass);background:var(--grass-pale);padding:10px 12px;border-radius:12px;margin-bottom:8px;line-height:1.4}
+.my-status-clear-btn{width:100%;background:transparent;border:1.5px solid var(--border-mid);color:var(--text-soft);padding:7px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.my-status-clear-btn:hover{border-color:var(--coral);color:var(--coral)}
+.status-preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.status-preset-btn{display:flex;align-items:center;gap:5px;padding:8px 6px;border-radius:12px;border:1.5px solid var(--border-mid);
+  background:var(--cream);color:var(--text-mid);font-weight:800;font-size:11.5px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s}
+.status-preset-btn:hover{border-color:var(--grass)}
+.status-preset-btn.selected{background:var(--grass);color:#fff;border-color:var(--grass)}
+.compose-status-options{display:none;flex-direction:column;gap:8px;margin-top:10px}
+.status-location-row{display:flex;gap:6px;align-items:center}
+.status-location-row .form-input{flex:1}
+.status-locate-btn{background:var(--grass);color:white;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s}
+.status-locate-btn:hover{background:var(--bark)}
+.status-locate-btn:disabled{opacity:0.6;cursor:not-allowed}
+.status-duration-select{width:100%}
+.friend-activity-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.friend-activity-item:last-child{border-bottom:none}
+.friend-activity-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;object-fit:cover;cursor:pointer}
+.friend-activity-text{font-size:12px;color:var(--text-mid);font-weight:600;line-height:1.4;flex:1}
+.friend-activity-text strong{color:var(--text);font-weight:800}
+.friend-activity-time{font-size:10.5px;color:var(--text-faint);font-weight:600;white-space:nowrap}
 
 /* ---------- segmented switch (List / Map) ---------- */
 .mode-switch{display:flex;background:var(--sand);border-radius:var(--r-pill);padding:4px;margin-bottom:14px}
@@ -933,6 +960,46 @@ button,input,textarea,select{font-family:'Nunito',sans-serif}
             </div>
           </div>
           <div id="feed-posts"><div class="loading"><div class="spinner"></div> Loading posts...</div></div>
+        </div>
+
+        <!-- FRIEND ACTIVITY SIDE PANEL -->
+        <div class="activity-panel" id="activity-panel">
+          <div class="activity-panel-card" id="my-status-card">
+            <div class="activity-panel-title">Your Status</div>
+            <div id="my-status-display" style="display:none">
+              <div class="my-status-current" id="my-status-current-text"></div>
+              <button class="my-status-clear-btn" onclick="clearMyStatus()">End status</button>
+            </div>
+            <div id="my-status-form">
+              <div class="status-preset-grid">
+                <button class="status-preset-btn" id="panel-status-park-btn" onclick="toggleStatusPreset('park')"><i class="ti ti-trees"></i> At the Park</button>
+                <button class="status-preset-btn" id="panel-status-walk-btn" onclick="toggleStatusPreset('walk')"><i class="ti ti-walk"></i> On a Walk</button>
+                <button class="status-preset-btn" id="panel-status-vet-btn" onclick="toggleStatusPreset('vet')"><i class="ti ti-heart"></i> At the Vet</button>
+                <button class="status-preset-btn" id="panel-status-nap-btn" onclick="toggleStatusPreset('nap')"><i class="ti ti-moon"></i> Napping</button>
+              </div>
+              <div class="compose-status-options" id="compose-status-options">
+                <textarea class="form-input" id="status-text" rows="2" placeholder="Say more (optional)…" style="resize:vertical"></textarea>
+                <div class="status-location-row">
+                  <input class="form-input" id="status-location" type="text" placeholder="Add a location (optional)" />
+                  <button class="status-locate-btn" onclick="useMyLocation()" title="Use my current location"><i class="ti ti-map-pin"></i></button>
+                </div>
+                <select class="form-select status-duration-select" id="status-duration">
+                  <option value="30">Visible for 30 min</option>
+                  <option value="60" selected>Visible for 1 hour</option>
+                  <option value="120">Visible for 2 hours</option>
+                  <option value="240">Visible for 4 hours</option>
+                  <option value="1440">Visible for 24 hours</option>
+                  <option value="">Until I turn it off</option>
+                </select>
+                <button class="post-btn" style="width:100%" onclick="setMyStatus()">Share status 🐾</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="activity-panel-card">
+            <div class="activity-panel-title">Friend Activity</div>
+            <div id="friend-activity-list"><div class="loading"><div class="spinner"></div></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1635,6 +1702,8 @@ function showApp() {
   getLocation();
   checkExistingCheckin();
   updateNearbyCount();
+  loadMyStatus();
+  loadFriendActivity();
 }
 
 async function updateNearbyCount() {
@@ -2806,6 +2875,154 @@ async function submitPost() {
   showToast('Posted! 🐾'); loadFeed();
 }
 
+// ---- FRIEND ACTIVITY SIDE PANEL (Spotify-style "what are friends up to right now") ----
+let activeStatus = null;
+const STATUS_PRESETS = {
+  park: { emoji: '🌳', label: 'At the Park', defaultText: 'is at the park' },
+  walk: { emoji: '🚶', label: 'On a Walk', defaultText: 'is out on a walk' },
+  vet:  { emoji: '🏥', label: 'At the Vet', defaultText: 'is at the vet' },
+  nap:  { emoji: '😴', label: 'Napping', defaultText: 'is napping' },
+};
+
+function toggleStatusPreset(type) {
+  activeStatus = activeStatus === type ? null : type;
+  ['park','walk','vet','nap'].forEach(t => {
+    document.getElementById('panel-status-'+t+'-btn').classList.toggle('selected', activeStatus === t);
+  });
+  document.getElementById('compose-status-options').style.display = activeStatus ? 'flex' : 'none';
+}
+
+function resetStatusForm() {
+  activeStatus = null;
+  ['park','walk','vet','nap'].forEach(t => document.getElementById('panel-status-'+t+'-btn').classList.remove('selected'));
+  document.getElementById('compose-status-options').style.display = 'none';
+  document.getElementById('status-text').value = '';
+  document.getElementById('status-location').value = '';
+  document.getElementById('status-duration').value = '60';
+}
+
+// Auto-fills the location field: nearest named park for "At the Park", otherwise a general reverse-geocoded place
+async function useMyLocation() {
+  const input = document.getElementById('status-location');
+  const btn = document.querySelector('.status-locate-btn');
+  if (!navigator.geolocation) return showToast('Location not available on this device');
+  btn.disabled = true;
+  showToast('Finding your location…');
+  try {
+    const pos = await new Promise((resolve, reject) =>
+      navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 8000 }));
+    let label = null;
+    if (activeStatus === 'park') {
+      try {
+        const parks = await fetchNearbyParks(pos.coords.latitude, pos.coords.longitude);
+        if (parks && parks[0]) label = parks[0].name;
+      } catch (e) {}
+    }
+    if (!label) label = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+    input.value = label;
+  } catch (e) {
+    showToast('Could not get your location');
+  }
+  btn.disabled = false;
+}
+
+async function reverseGeocode(lat, lng) {
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16`);
+    const data = await res.json();
+    const a = data.address || {};
+    return a.leisure || a.road || a.neighbourhood || a.suburb || a.city || 'nearby';
+  } catch (e) {
+    return 'nearby';
+  }
+}
+
+async function setMyStatus() {
+  if (!activeStatus) return showToast('Pick a status first');
+  const preset = STATUS_PRESETS[activeStatus];
+  const text = document.getElementById('status-text').value.trim();
+  const location = document.getElementById('status-location').value.trim();
+  const durationMins = document.getElementById('status-duration').value;
+  const content = text || preset.defaultText;
+  const expires_at = durationMins ? new Date(Date.now() + parseInt(durationMins) * 60000).toISOString() : null;
+
+  const { error } = await sb.from('dog_status').insert({
+    user_id: currentUser.id, dog_id: myDog.id,
+    content, emoji: preset.emoji, location: location || null,
+    neighborhood: myDog.neighborhood, expires_at
+  });
+  if (error) return showToast('Error: ' + error.message);
+  resetStatusForm();
+  showToast('Status shared! 🐾');
+  loadMyStatus();
+  loadFriendActivity();
+}
+
+async function clearMyStatus() {
+  await sb.from('dog_status').delete().eq('user_id', currentUser.id);
+  loadMyStatus();
+  loadFriendActivity();
+}
+
+function isExpired(row) {
+  return row.expires_at && new Date(row.expires_at) < new Date();
+}
+
+function statusLine(row) {
+  return `${escHtml(row.content)}${row.location ? ' · 📍 ' + escHtml(row.location) : ''} ${row.emoji || ''}`;
+}
+
+async function loadMyStatus() {
+  const displayEl = document.getElementById('my-status-display');
+  const formEl = document.getElementById('my-status-form');
+  if (!displayEl || !myDog) return;
+  const { data } = await sb.from('dog_status').select('*')
+    .eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(1);
+  const row = data && data[0] && !isExpired(data[0]) ? data[0] : null;
+  if (row) {
+    document.getElementById('my-status-current-text').innerHTML = statusLine(row);
+    displayEl.style.display = 'block';
+    formEl.style.display = 'none';
+  } else {
+    displayEl.style.display = 'none';
+    formEl.style.display = 'block';
+  }
+}
+
+async function loadFriendActivity() {
+  const container = document.getElementById('friend-activity-list');
+  if (!container || !myDog) return;
+  const { data } = await sb.from('dog_status')
+    .select('*, dogs(name,emoji,photo_url,user_id)')
+    .eq('neighborhood', myDog.neighborhood)
+    .neq('user_id', currentUser.id)
+    .order('created_at', { ascending: false })
+    .limit(50);
+  const rows = data || [];
+  const seen = new Set();
+  const active = [];
+  for (const row of rows) {
+    if (seen.has(row.user_id) || isExpired(row)) continue;
+    seen.add(row.user_id);
+    active.push(row);
+  }
+  if (!active.length) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--text-soft);font-weight:600;text-align:center;padding:12px 0">No one nearby has shared a status yet.</div>';
+    return;
+  }
+  container.innerHTML = active.map(row => {
+    const dog = row.dogs || {};
+    const avatarHtml = dog.photo_url
+      ? `<img src="${escHtml(dog.photo_url)}" class="friend-activity-avatar" style="object-fit:cover" onclick="openDogProfile('${row.user_id}')" />`
+      : `<div class="friend-activity-avatar" style="background:${avatarColor(row.user_id)}" onclick="openDogProfile('${row.user_id}')">${dog.emoji||'🐶'}</div>`;
+    return `<div class="friend-activity-item">
+      ${avatarHtml}
+      <div class="friend-activity-text"><strong>${escHtml(dog.name||'A neighbor')}</strong> ${statusLine(row)}</div>
+      <div class="friend-activity-time">${formatTimeAgo(row.created_at)}</div>
+    </div>`;
+  }).join('');
+}
+
 // Cached feed data
 let feedPostsData = [], feedActivityEvents = [];
 
@@ -3530,6 +3747,7 @@ function enterAsGuest() {
   document.getElementById('sidebar-guest').style.display = 'block';
   document.getElementById('sidebar-logged-in').style.display = 'none';
   document.getElementById('compose-guest-lock').style.display = 'flex';
+  document.getElementById('activity-panel').style.display = 'none';
   document.getElementById('nav-sitting').style.opacity = '0.4';
   document.getElementById('nav-messages').style.opacity = '0.4';
   document.getElementById('nav-profile').style.display = 'none';
